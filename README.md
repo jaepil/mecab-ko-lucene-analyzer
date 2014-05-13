@@ -2,7 +2,7 @@
 
 ## 소개
 
-[mecab-ko-lucene-analyzer](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer)는 [mecab-ko](https://bitbucket.org/eunjeon/mecab-ko), [mecab-ko-dic](https://bitbucket.org/bibreen/mecab-ko-dic)을 사용한 lucene/solr용 한국어 형태소 분석기입니다.
+[mecab-ko-lucene-analyzer](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer)는 [mecab-ko](https://bitbucket.org/eunjeon/mecab-ko), [mecab-ko-dic](https://bitbucket.org/eunjeon/mecab-ko-dic)을 사용한 lucene/solr용 한국어 형태소 분석기입니다.
 
 다음과 같은 기능들을 제공합니다.
 
@@ -28,7 +28,7 @@
 
 ### mecab-ko(형태소 분석기 엔진)과 mecab-ko-dic(사전 파일) 설치
 
-mecab-ko와 mecab-ko-dic의 설치는 [mecab-ko-dic 설명](https://bitbucket.org/bibreen/mecab-ko-dic)을 참조하시기 바랍니다.
+mecab-ko와 mecab-ko-dic의 설치는 [mecab-ko-dic 설명](https://bitbucket.org/eunjeon/mecab-ko-dic)을 참조하시기 바랍니다.
 
 ### MeCab.jar와 libMeCab.so 설치
 Solr example(Solr with Jetty)의 사용을 기준으로 설명합니다.
@@ -86,10 +86,10 @@ __주의 사항__
     <!-- Korean -->
     <fieldType name="text_ko" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">
-        <tokenizer class="com.github.bibreen.mecab_ko_lucene_analyzer.StandardIndexTokenizerFactory"/>
+        <tokenizer class="org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.StandardIndexTokenizerFactory"/>
       </analyzer>
       <analyzer type="query">
-        <tokenizer class="com.github.bibreen.mecab_ko_lucene_analyzer.StandardQueryTokenizerFactory"/>
+        <tokenizer class="org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.StandardQueryTokenizerFactory"/>
       </analyzer>
     </fieldType>
 
@@ -101,7 +101,7 @@ __주의 사항__
     <!-- Korean -->
     <fieldType name="text_ko" class="solr.TextField" positionIncrementGap="100">
       <analyzer>
-        <tokenizer class="com.github.bibreen.mecab_ko_lucene_analyzer.StandardIndexTokenizerFactory" compoundNounMinLength="3"/>
+        <tokenizer class="org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.StandardIndexTokenizerFactory" compoundNounMinLength="3"/>
       </analyzer>
     </fieldType>
 

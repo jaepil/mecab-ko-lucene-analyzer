@@ -6,7 +6,7 @@
  * You may obtain a copy of the License at
  * 
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *   
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,8 +29,8 @@ public final class PosIdManager {
     COMPOUND(1), INFLECT(2), PREANALYSIS(3),
     E(100), IC(110), J(120), MAG(130), MAJ(131), MM(140), N(150), SF(160),
     SH(161), SL(162), SN(163), SP(164), SSC(165), SSO(166), SC(167), SY(168),
-    VA(170), VCN(171), VCP(172), VV(173), VX(174), XPN(181), XR(182), XSA(183),
-    XSN(184), XSV(185),
+    SE(169), VA(170), VCN(171), VCP(172), VV(173), VX(174), XPN(181), XR(182), 
+    XSA(183), XSN(184), XSV(185),
     EOJEOL(900);
 
     private int num;
@@ -65,6 +65,7 @@ public final class PosIdManager {
       case 166: return PosId.SSO;
       case 167: return PosId.SC;
       case 168: return PosId.SY;
+      case 169: return PosId.SE;
       case 170: return PosId.VA;
       case 171: return PosId.VCN;
       case 172: return PosId.VCP;

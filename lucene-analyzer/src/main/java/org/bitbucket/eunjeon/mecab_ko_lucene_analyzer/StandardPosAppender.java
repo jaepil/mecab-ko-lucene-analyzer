@@ -102,7 +102,7 @@ public class StandardPosAppender extends PosAppender {
     // 단독으로 쓰인 심볼은 token 생성 제외한다.
     PosId posId = pos.getPosId();
     return posId == PosId.SF ||
-        posId.in(PosId.SP, PosId.SY);
+        posId.in(PosId.SP, PosId.SE);
   }
 
   @Override

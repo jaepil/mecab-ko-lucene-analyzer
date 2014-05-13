@@ -2,7 +2,7 @@
 
 ## 소개
 
-[mecab-ko-lucene-analyzer](https://github.com/bibreen/mecab-ko-lucene-analyzer)는 [mecab-ko](https://bitbucket.org/bibreen/mecab-ko), [mecab-ko-dic](https://bitbucket.org/bibreen/mecab-ko-dic)을 사용한 lucene/solr용 한국어 형태소 분석기입니다.
+[mecab-ko-lucene-analyzer](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer)는 [mecab-ko](https://bitbucket.org/eunjeon/mecab-ko), [mecab-ko-dic](https://bitbucket.org/bibreen/mecab-ko-dic)을 사용한 lucene/solr용 한국어 형태소 분석기입니다.
 
 다음과 같은 기능들을 제공합니다.
 
@@ -10,7 +10,7 @@
   - 복합명사 분해
   - 원어절 추출
 
-[ElasticSearch](http://www.elasticsearch.org/)용 형태소 분석기의 사용 설명서는 [mecab-ko analysis for ElasticSearch](https://github.com/bibreen/mecab-ko-lucene-analyzer/tree/master/elasticsearch-analysis-mecab-ko)에서 보실 수 있습니다.
+[ElasticSearch](http://www.elasticsearch.org/)용 형태소 분석기의 사용 설명서는 [mecab-ko analysis for ElasticSearch](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/src/553e9677f01d4bf7a3543526e924a3e34bd5b8af/elasticsearch-analysis-mecab-ko/?at=master)에서 보실 수 있습니다.
 
 ## 특징
 
@@ -52,21 +52,22 @@ __주의 사항__
   - OpenJDK를 사용하시는 경우, 최적화 옵션을 -O나 -O1로 고쳐야 합니다. [mecab-ko-lucene-analyzer OpenJDK에서 사용하기](http://eunjeon.blogspot.kr/2013/04/mecab-ko-lucene-analyzer-openjdk.html) 참조
 
 ### mecab-ko-lucene-analyzer 다운로드 및 설치
-[mecab-ko-lucene-analyzer 다운로드 페이지](https://bitbucket.org/bibreen/mecab-ko-dic/downloads)에서 `mecab-ko-lucene-analyzer-XX.tar.gz`의 최신 버전을 다운 받아 압축을 풀면 두개의 jar파일이 있습니다. 
+[mecab-ko-lucene-analyzer 다운로드 페이지](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/downloads)에서 `mecab-ko-lucene-analyzer-XX.tar.gz`의 최신 버전을 다운 받아 압축을 풀면 두개의 jar파일이 있습니다. 
 
   - mecab-ko-mecab-loader-XX.jar: System classpath에 복사합니다. (ex: `[solr 디렉터리]/example/lib/ext`)
   - mecab-ko-lucene-analyzer-XX.jar: Solr 라이브러리 디렉터리에 설치합니다. (ex: `[solr 디렉터리]/example/solr/lib`)
 
-#### mecab-ko-lucene-analyzer 버전별 mecab-ko-dic, Lucene/Solr 지원 버전
+#### mecab-ko-lucene-analyzer 버전별 mecab-ko-dic, Lucene/Solr, elasticsearch 지원 버전
 
-| mecab-ko-lucene-analyzer | mecab-ko-dic                 | Lucene/Solr                 |
-| ------------------------ | ---------------------------- | --------------------------- |
-| **0.14.x**               | mecab-ko-dic-1.5.0 or higher | Lucene/Solr 4.3.x or higher |
-| **0.13.x**               | mecab-ko-dic-1.4.0           | Lucene/Solr 4.3.x or higher |
-| **0.12.x**               | mecab-ko-dic-1.4.0           | Lucene/Solr 4.3.x           |
-| **0.11.x**               | mecab-ko-dic-1.3.0 - 1.4.0   | Lucene/Solr 4.3.x           |
-| **0.10.x**               | mecab-ko-dic-1.3.0 - 1.4.0   | Lucene/Solr 4.1.x - 4.2.x   |
-| **0.9.x**                | mecab-ko-dic-1.1.0 - 1.4.0   | Lucene/Solr 4.1.x - 4.2.x   |
+| mecab-ko-lucene-analyzer | mecab-ko-dic                 | Lucene/Solr                 | elasticsearch               |
+| ------------------------ | ---------------------------- | --------------------------- | --------------------------- |
+| **0.15.x**               | mecab-ko-dic-1.6.0 or higher | Lucene/Solr 4.3.x or higher | 0.90.x or higher            |
+| **0.14.x**               | mecab-ko-dic-1.5.0 or higher | Lucene/Solr 4.3.x or higher | 0.90.x or higher            |
+| **0.13.x**               | mecab-ko-dic-1.4.0           | Lucene/Solr 4.3.x or higher | 0.90.x or higher            |
+| **0.12.x**               | mecab-ko-dic-1.4.0           | Lucene/Solr 4.3.x           | 0.90.x or higher            |
+| **0.11.x**               | mecab-ko-dic-1.3.0 - 1.4.0   | Lucene/Solr 4.3.x           | 0.90.x or higher            |
+| **0.10.x**               | mecab-ko-dic-1.3.0 - 1.4.0   | Lucene/Solr 4.1.x - 4.2.x   | 0.90.x or higher            |
+| **0.9.x**                | mecab-ko-dic-1.1.0 - 1.4.0   | Lucene/Solr 4.1.x - 4.2.x   | 0.90.x or higher            |
 
 ## 사용법
 
@@ -114,4 +115,4 @@ __주의 사항__
 
 ## 라이센스
 Copyright 2013 Yongwoon Lee, Yungho Yu.
-`mecab-ko-lucene-analyzer`는 아파치 라이센스 2.0에 따라 소프트웨어를 사용, 재배포 할 수 있습니다. 더 자세한 사항은 [Apache License Version 2.0](https://github.com/bibreen/mecab-ko-lucene-analyzer/blob/master/LICENSE)을 참조하시기 바랍니다.
+`mecab-ko-lucene-analyzer`는 아파치 라이센스 2.0에 따라 소프트웨어를 사용, 재배포 할 수 있습니다. 더 자세한 사항은 [Apache License Version 2.0](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/raw/553e9677f01d4bf7a3543526e924a3e34bd5b8af/LICENSE)을 참조하시기 바랍니다.

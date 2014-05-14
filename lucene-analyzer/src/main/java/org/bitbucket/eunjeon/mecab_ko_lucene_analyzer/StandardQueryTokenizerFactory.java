@@ -31,7 +31,7 @@ import org.apache.solr.core.SolrResourceLoader;
  * {@code
  * <fieldType name="text_ko" class="solr.TextField" positionIncrementGap="100">
  *   <analyzer type="query">
- *     <tokenizer class="com.github.bibreen.mecab_ko_lucene_analyzer.StandardIndexTokenizerFactory"
+ *     <tokenizer class="org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.StandardIndexTokenizerFactory"
  *                mecabDicDir="/usr/local/lib/mecab/dic/mecab-ko-dic"/>
  *   </analyzer>
  * </fieldType>

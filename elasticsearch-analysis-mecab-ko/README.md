@@ -1,5 +1,5 @@
 # mecab-ko analysis for ElasticSearch
-mecab-ko Analysis Plugin은 [mecab-ko-lucene-analyzer](https://github.com/bibreen/mecab-ko-lucene-analyzer)를 elasticsearch에서 사용하는 플러그인 입니다.
+mecab-ko Analysis Plugin은 [mecab-ko-lucene-analyzer](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer)를 elasticsearch에서 사용하는 플러그인 입니다.
 
   - 이 플러그인은 `mecab_ko_standard_tokenizer`를 포함하고 있습니다.
   - elasticsearch 0.90.3 버전 기준으로 작성되었습니다. (elasticsearch 1.0.0 검증 완료)
@@ -20,7 +20,7 @@ mecab-ko Analysis Plugin의 기본 tokenizer.
 
 ### mecab-ko(형태소 분석기 엔진)과 mecab-ko-dic(사전 파일) 설치
 
-mecab-ko와 mecab-ko-dic의 설치는 [mecab-ko-dic 설명](https://bitbucket.org/bibreen/mecab-ko-dic)을 참조하시기 바랍니다.
+mecab-ko와 mecab-ko-dic의 설치는 [mecab-ko-dic 설명](https://bitbucket.org/eunjeon/mecab-ko-dic)을 참조하시기 바랍니다.
 
 ### libMeCab.so 설치
 [mecab-java-XX.tar.gz](http://code.google.com/p/mecab/downloads/list) 를 다운받아 설치합니다.
@@ -35,7 +35,7 @@ mecab-ko와 mecab-ko-dic의 설치는 [mecab-ko-dic 설명](https://bitbucket.or
     $ sudo cp libMeCab.so /usr/local/lib
 
 ### ElasticSearch Plugin 설치
-    bin/plugin --install analysis-mecab-ko-0.14.0 --url https://bitbucket.org/bibreen/mecab-ko-dic/downloads/elasticsearch-analysis-mecab-ko-0.14.0.zip
+    bin/plugin --install analysis-mecab-ko-x.x.x --url https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/downloads/elasticsearch-analysis-mecab-ko-x.x.x.zip
 
 ### ElasticSearch 실행
     $ ./elasticsearch -f -Djava.library.path=/usr/local/lib
@@ -104,4 +104,4 @@ mecab-ko와 mecab-ko-dic의 설치는 [mecab-ko-dic 설명](https://bitbucket.or
 
 ## 라이센스
 Copyright 2013 Yongwoon Lee, Yungho Yu.
-`elasticsearch-analysis-mecab-ko`는 아파치 라이센스 2.0에 따라 소프트웨어를 사용, 재배포 할 수 있습니다. 더 자세한 사항은 [Apache License Version 2.0](https://github.com/bibreen/mecab-ko-lucene-analyzer/blob/master/LICENSE)을 참조하시기 바랍니다.
+`elasticsearch-analysis-mecab-ko`는 아파치 라이센스 2.0에 따라 소프트웨어를 사용, 재배포 할 수 있습니다. 더 자세한 사항은 [Apache License Version 2.0](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/raw/553e9677f01d4bf7a3543526e924a3e34bd5b8af/LICENSE)을 참조하시기 바랍니다.

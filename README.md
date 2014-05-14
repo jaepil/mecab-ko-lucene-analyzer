@@ -64,10 +64,10 @@ __주의 사항__
 | **0.15.x**               | mecab-ko-dic-1.6.0 or higher | Lucene/Solr 4.3.x or higher | 0.90.x or higher            |
 | **0.14.x**               | mecab-ko-dic-1.5.0 or higher | Lucene/Solr 4.3.x or higher | 0.90.x or higher            |
 | **0.13.x**               | mecab-ko-dic-1.4.0           | Lucene/Solr 4.3.x or higher | 0.90.x or higher            |
-| **0.12.x**               | mecab-ko-dic-1.4.0           | Lucene/Solr 4.3.x           | 0.90.x or higher            |
-| **0.11.x**               | mecab-ko-dic-1.3.0 - 1.4.0   | Lucene/Solr 4.3.x           | 0.90.x or higher            |
-| **0.10.x**               | mecab-ko-dic-1.3.0 - 1.4.0   | Lucene/Solr 4.1.x - 4.2.x   | 0.90.x or higher            |
-| **0.9.x**                | mecab-ko-dic-1.1.0 - 1.4.0   | Lucene/Solr 4.1.x - 4.2.x   | 0.90.x or higher            |
+| **0.12.x**               | mecab-ko-dic-1.4.0           | Lucene/Solr 4.3.x           |                             |
+| **0.11.x**               | mecab-ko-dic-1.3.0 - 1.4.0   | Lucene/Solr 4.3.x           |                             |
+| **0.10.x**               | mecab-ko-dic-1.3.0 - 1.4.0   | Lucene/Solr 4.1.x - 4.2.x   |                             |
+| **0.9.x**                | mecab-ko-dic-1.1.0 - 1.4.0   | Lucene/Solr 4.1.x - 4.2.x   |                             |
 
 ## 사용법
 

@@ -10,7 +10,7 @@
   - 복합명사 분해
   - 원어절 추출
 
-[ElasticSearch](http://www.elasticsearch.org/)용 형태소 분석기의 사용 설명서는 [mecab-ko analysis for ElasticSearch](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/src/553e9677f01d4bf7a3543526e924a3e34bd5b8af/elasticsearch-analysis-mecab-ko/?at=master)에서 보실 수 있습니다.
+[ElasticSearch](http://www.elasticsearch.org/)용 형태소 분석기의 사용 설명서는 [mecab-ko analysis for ElasticSearch](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/raw/master/elasticsearch-analysis-mecab-ko/)에서 보실 수 있습니다.
 
 ## 특징
 
@@ -111,8 +111,8 @@ __주의 사항__
     $ java -Djava.library.path="/usr/local/lib" -jar start.jar
 
 ### 분석 결과
-![Alt 박보영이 서울에 갔다.](eunjeon/mecab-ko-lucene-analyzer/solr_demo.png)
+![Alt 박보영이 서울에 갔다.](eunjeon/mecab-ko-lucene-analyzer/raw/master/solr_demo.png)
 
 ## 라이센스
 Copyright 2013 Yongwoon Lee, Yungho Yu.
-`mecab-ko-lucene-analyzer`는 아파치 라이센스 2.0에 따라 소프트웨어를 사용, 재배포 할 수 있습니다. 더 자세한 사항은 [Apache License Version 2.0](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/raw/553e9677f01d4bf7a3543526e924a3e34bd5b8af/LICENSE)을 참조하시기 바랍니다.
+`mecab-ko-lucene-analyzer`는 아파치 라이센스 2.0에 따라 소프트웨어를 사용, 재배포 할 수 있습니다. 더 자세한 사항은 [Apache License Version 2.0](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/raw/master/LICENSE)을 참조하시기 바랍니다.

@@ -111,7 +111,7 @@ __주의 사항__
     $ java -Djava.library.path="/usr/local/lib" -jar start.jar
 
 ### 분석 결과
-![Alt 박보영이 서울에 갔다.](eunjeon/mecab-ko-lucene-analyzer/raw/master/solr_demo.png)
+![Alt 박보영이 서울에 갔다.](raw/master/solr_demo.png)
 
 ## 라이센스
 Copyright 2013 Yongwoon Lee, Yungho Yu.

@@ -10,7 +10,7 @@
   - 복합명사 분해
   - 원어절 추출
 
-[ElasticSearch](http://www.elasticsearch.org/)용 형태소 분석기의 사용 설명서는 [mecab-ko analysis for ElasticSearch](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/src/553e9677f01d4bf7a3543526e924a3e34bd5b8af/elasticsearch-analysis-mecab-ko/?at=master)에서 보실 수 있습니다.
+[ElasticSearch](http://www.elasticsearch.org/)용 형태소 분석기의 사용 설명서는 [mecab-ko analysis for ElasticSearch](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/raw/master/elasticsearch-analysis-mecab-ko/)에서 보실 수 있습니다.
 
 ## 특징
 
@@ -22,7 +22,7 @@
   - 분석된 token의 형태소를 구체적으로 볼 수 있습니다.
 
         박보영이(NNP+JKS), 박보영(NNP), 서울에(NNP+JKB), 서울(NNP), 갔다(VV+EP+EF)
-  - Apache Lucene/Solr 4.3.X 버전 기준으로 작성되었습니다.
+  - Apache Lucene/Solr 4.3.X 버전 기준으로 작성되었습니다. (Apache Lucene/Solr 4.8.0에서 사용 가능)
 
 ## 설치
 
@@ -105,14 +105,19 @@ __주의 사항__
       </analyzer>
     </fieldType>
 
+__주의 사항__
+mecab-ko-lucene-analyzer 0.15 버전부터 패키지 이름이 변경되었습니다. 그 이전 버전에서는 `com.github.bibreen.mecab_ko_lucene_analyzer`로 패키지명을 사용하셔야 합니다.
+
+    <tokenizer class="com.github.bibreen.mecab_ko_lucene_analyzer.StandardIndexTokenizerFactory"/>
+
 ### solr 실행
 `libMeCab.so` 파일이 있는 라이브러리 경로를 지정해 주면서 solr를 실행합니다.
 
     $ java -Djava.library.path="/usr/local/lib" -jar start.jar
 
 ### 분석 결과
-![박보영이 서울에 갔다.](solr_demo.png)
+![Alt 박보영이 서울에 갔다.](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/raw/master/solr_demo.png)
 
 ## 라이센스
 Copyright 2013 Yongwoon Lee, Yungho Yu.
-`mecab-ko-lucene-analyzer`는 아파치 라이센스 2.0에 따라 소프트웨어를 사용, 재배포 할 수 있습니다. 더 자세한 사항은 [Apache License Version 2.0](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/raw/553e9677f01d4bf7a3543526e924a3e34bd5b8af/LICENSE)을 참조하시기 바랍니다.
+`mecab-ko-lucene-analyzer`는 아파치 라이센스 2.0에 따라 소프트웨어를 사용, 재배포 할 수 있습니다. 더 자세한 사항은 [Apache License Version 2.0](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/raw/master/LICENSE)을 참조하시기 바랍니다.

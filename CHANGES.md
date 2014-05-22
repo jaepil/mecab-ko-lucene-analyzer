@@ -1,8 +1,10 @@
 # mecab-ko-lucene-analyzer ChangeLog
 
 ## 0.15.0
-  - org.bitbucket.eunjeon 로 package 변경.
-  - SC(,·/:)태그 skipable에 추가.
+  - 새로운 기능
+    - org.bitbucket.eunjeon 로 package 변경.
+    - SC(,·/:)태그 skipable에 추가.
+    - SE(말줄임)태그 추가.
 
 ## 0.14.0
   - mecab-ko-dic-1.5.0 의 변경된 사전 포멧에 따른 변경.

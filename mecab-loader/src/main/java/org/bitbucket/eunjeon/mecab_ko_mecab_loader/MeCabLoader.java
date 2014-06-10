@@ -36,8 +36,8 @@ public final class MeCabLoader {
   public static MeCabLoader getInstance(String dicDir)
       throws NullPointerException, RuntimeException {
     // DCL(Double-checking Locking) Singleton. thread-safe
-    if (uniqueInstance == null) {
-      synchronized (MeCabLoader.class){
+    synchronized (MeCabLoader.class){
+      if (uniqueInstance == null) {
         uniqueInstance = new MeCabLoader(dicDir);
       }
     }

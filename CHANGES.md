@@ -1,5 +1,9 @@
 # mecab-ko-lucene-analyzer ChangeLog
 
+## 0.15.1
+  - 오류 수정
+    - mecab-loader 스레드 세이프(thread-safe)하지 않은 오류 수정
+
 ## 0.15.0
   - 새로운 기능
     - org.bitbucket.eunjeon 로 package 변경.

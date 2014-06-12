@@ -35,13 +35,18 @@ public final class MeCabLoader {
  
   public static MeCabLoader getInstance(String dicDir)
       throws NullPointerException, RuntimeException {
-    // DCL(Double-checking Locking) Singleton. thread-safe
-    synchronized (MeCabLoader.class){
-      if (uniqueInstance == null) {
-        uniqueInstance = new MeCabLoader(dicDir);
+    // DCL(Double-checking Locking) using Volatile Singleton. thread-safe
+    // http://en.wikipedia.org/wiki/Double-checked_locking#Usage_in_Java 참조
+    MeCabLoader result = uniqueInstance;
+    if (result == null) {
+      synchronized (MeCabLoader.class) {
+        result = uniqueInstance;
+        if (result == null) {
+          uniqueInstance = result = new MeCabLoader(dicDir);
+        }
       }
     }
-    return uniqueInstance;
+    return result;
   }
   
   private MeCabLoader(String dicDir) {

@@ -15,13 +15,20 @@
  ******************************************************************************/
 package org.bitbucket.eunjeon.mecab_ko_mecab_loader;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.chasen.mecab.Lattice;
 import org.chasen.mecab.Model;
 import org.chasen.mecab.Tagger;
 
 public final class MeCabLoader {
-  private volatile static MeCabLoader uniqueInstance;
-  private static Model model;
+  private Model model;
+
+  private volatile static Map<String, MeCabLoader> loaders = 
+          new HashMap<String, MeCabLoader>();
+
   static {
     try {
       System.loadLibrary("MeCab");
@@ -35,18 +42,18 @@ public final class MeCabLoader {
  
   public static MeCabLoader getInstance(String dicDir)
       throws NullPointerException, RuntimeException {
+
     // DCL(Double-checking Locking) using Volatile Singleton. thread-safe
     // http://en.wikipedia.org/wiki/Double-checked_locking#Usage_in_Java 참조
-    MeCabLoader result = uniqueInstance;
-    if (result == null) {
+    if (!loaders.containsKey(dicDir)) {
       synchronized (MeCabLoader.class) {
-        result = uniqueInstance;
-        if (result == null) {
-          uniqueInstance = result = new MeCabLoader(dicDir);
+        if (!loaders.containsKey(dicDir)) {
+          loaders.put(dicDir, new MeCabLoader(dicDir));
+          System.out.println("mecab analyzer is loaded from " + dicDir);
         }
       }
     }
-    return result;
+    return loaders.get(dicDir);
   }
   
   private MeCabLoader(String dicDir) {

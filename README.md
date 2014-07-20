@@ -105,6 +105,15 @@ __주의 사항__
       </analyzer>
     </fieldType>
 
+mecab-ko-dic을 디폴트 경로\(`/usr/local/lib/mecab/dic/mecab-ko-dic`\)에 설치하지 않은 경우에는 `mecabDicDir` 속성을 사용하여 사용자 경로를 지정해야 합니다.
+
+    <!-- Korean -->
+    <fieldType name="text_ko" class="solr.TextField" positionIncrementGap="100">
+      <analyzer>
+        <tokenizer class="org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.StandardIndexTokenizerFactory" compoundNounMinLength="3" mecabDicDir="/my/mecab-ko-dic/directory"/>
+      </analyzer>
+    </fieldType>
+
 __주의 사항__
 mecab-ko-lucene-analyzer 0.15 버전부터 패키지 이름이 변경되었습니다. 그 이전 버전에서는 `com.github.bibreen.mecab_ko_lucene_analyzer`로 패키지명을 사용하셔야 합니다.
 

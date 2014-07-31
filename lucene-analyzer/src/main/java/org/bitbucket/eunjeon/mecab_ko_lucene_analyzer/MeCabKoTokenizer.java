@@ -122,6 +122,7 @@ public final class MeCabKoTokenizer extends Tokenizer {
 
   @Override
   public boolean incrementToken() throws IOException {
+    clearAttributes();
     if (isBegin()) {
       document = getDocument();
       createTokenGenerator();
@@ -163,7 +164,8 @@ public final class MeCabKoTokenizer extends Tokenizer {
   }
   
   @Override
-  public final void end() {
+  public final void end() throws IOException {
+    super.end();
     // set final offset
     offsetAtt.setOffset(
         correctOffset(document.length()), correctOffset(document.length()));
@@ -178,7 +180,6 @@ public final class MeCabKoTokenizer extends Tokenizer {
   }
   
   private String getDocument() throws IOException {
-    this.reset();
     StringBuilder document = new StringBuilder();
     char[] tmp = new char[1024];
     int len;

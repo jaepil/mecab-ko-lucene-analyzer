@@ -47,6 +47,7 @@ public class MeCabKoStandardTokenizerTest {
         
 
     StringBuilder result = new StringBuilder();
+    tokenizer.reset();
     while (tokenizer.incrementToken() == true) {
       result.append(new String(term.buffer(), 0, term.length())).append(":");
       result.append(type.type()).append(":");
@@ -64,17 +65,19 @@ public class MeCabKoStandardTokenizerTest {
   
   private Tokenizer createTokenizer(
       StringReader reader, int decompoundMinLength) {
-    return new MeCabKoTokenizer(
+    Tokenizer tokenizer = new MeCabKoTokenizer(
         reader,
         "/usr/local/lib/mecab/dic/mecab-ko-dic",
         new StandardPosAppender(),
         decompoundMinLength);
+    return tokenizer;
   }
   
   @Test
   public void testEmptyQuery() throws Exception {
     Tokenizer tokenizer = createTokenizer(
         new StringReader(""), TokenGenerator.DEFAULT_COMPOUND_NOUN_MIN_LENGTH);
+    tokenizer.reset();
     assertEquals(false, tokenizer.incrementToken());
     tokenizer.close();
   }
@@ -84,6 +87,7 @@ public class MeCabKoStandardTokenizerTest {
     Tokenizer tokenizer = createTokenizer(
         new StringReader("!@#$%^&*"),
         TokenGenerator.DEFAULT_COMPOUND_NOUN_MIN_LENGTH);
+    tokenizer.reset();
     assertEquals(false, tokenizer.incrementToken());
     tokenizer.close();
   }

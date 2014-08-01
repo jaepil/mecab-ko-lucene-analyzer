@@ -15,18 +15,14 @@
  ******************************************************************************/
 package org.bitbucket.eunjeon.mecab_ko_lucene_analyzer;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
-
-import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.Pos;
-import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.StandardPosAppender;
-import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.TokenGenerator;
 import org.chasen.mecab.Node;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class TokenGeneratorWithStandardPosAppenderTest
     extends TokenGeneratorTestCase {

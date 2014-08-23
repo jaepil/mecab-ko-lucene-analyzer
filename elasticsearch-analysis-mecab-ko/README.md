@@ -2,7 +2,7 @@
 mecab-ko Analysis Plugin은 [mecab-ko-lucene-analyzer](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer)를 elasticsearch에서 사용하는 플러그인 입니다.
 
   - 이 플러그인은 `mecab_ko_standard_tokenizer`를 포함하고 있습니다.
-  - elasticsearch 0.90.3 버전 기준으로 작성되었습니다. (elasticsearch 1.0.0에서 사용 가능)
+  - elasticsearch 1.3.0 버전 기준으로 작성되었습니다. (elasticsearch 1.3.2에서 사용 가능)
 
 ## 설명
 
@@ -38,7 +38,7 @@ mecab-ko와 mecab-ko-dic의 설치는 [mecab-ko-dic 설명](https://bitbucket.or
     bin/plugin --install analysis-mecab-ko-x.x.x --url https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/downloads/elasticsearch-analysis-mecab-ko-x.x.x.zip
 
 ### ElasticSearch 실행
-    $ ./elasticsearch -f -Djava.library.path=/usr/local/lib
+    $ ./elasticsearch -Djava.library.path=/usr/local/lib
 
 ## 테스트 스크립트
 ### index, query 모두 복합명사 분해를 하는 경우

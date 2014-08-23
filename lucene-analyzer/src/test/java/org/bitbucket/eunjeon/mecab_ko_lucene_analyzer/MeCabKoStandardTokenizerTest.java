@@ -21,9 +21,6 @@ import java.io.StringReader;
 
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.*;
-import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.MeCabKoTokenizer;
-import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.StandardPosAppender;
-import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.TokenGenerator;
 import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.tokenattributes.PartOfSpeechAttribute;
 import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.tokenattributes.SemanticClassAttribute;
 import org.junit.Ignore;
@@ -36,17 +33,16 @@ public class MeCabKoStandardTokenizerTest {
         tokenizer.addAttribute(PositionIncrementAttribute.class);
     PositionLengthAttribute posLengthAtt = 
         tokenizer.addAttribute(PositionLengthAttribute.class);
-    CharTermAttribute term =
-        (CharTermAttribute)tokenizer.addAttribute(CharTermAttribute.class);
-    TypeAttribute type =
-        (TypeAttribute)tokenizer.addAttribute(TypeAttribute.class);
-    SemanticClassAttribute semanticClass = 
-        (SemanticClassAttribute)tokenizer.addAttribute(SemanticClassAttribute.class);
-    PartOfSpeechAttribute pos = 
-        (PartOfSpeechAttribute)tokenizer.addAttribute(PartOfSpeechAttribute.class);
+    CharTermAttribute term = tokenizer.addAttribute(CharTermAttribute.class);
+    TypeAttribute type = tokenizer.addAttribute(TypeAttribute.class);
+    SemanticClassAttribute semanticClass =
+        tokenizer.addAttribute(SemanticClassAttribute.class);
+    PartOfSpeechAttribute pos =
+        tokenizer.addAttribute(PartOfSpeechAttribute.class);
         
 
     StringBuilder result = new StringBuilder();
+    tokenizer.reset();
     while (tokenizer.incrementToken() == true) {
       result.append(new String(term.buffer(), 0, term.length())).append(":");
       result.append(type.type()).append(":");
@@ -64,17 +60,19 @@ public class MeCabKoStandardTokenizerTest {
   
   private Tokenizer createTokenizer(
       StringReader reader, int decompoundMinLength) {
-    return new MeCabKoTokenizer(
+    Tokenizer tokenizer = new MeCabKoTokenizer(
         reader,
         "/usr/local/lib/mecab/dic/mecab-ko-dic",
         new StandardPosAppender(),
         decompoundMinLength);
+    return tokenizer;
   }
   
   @Test
   public void testEmptyQuery() throws Exception {
     Tokenizer tokenizer = createTokenizer(
         new StringReader(""), TokenGenerator.DEFAULT_COMPOUND_NOUN_MIN_LENGTH);
+    tokenizer.reset();
     assertEquals(false, tokenizer.incrementToken());
     tokenizer.close();
   }
@@ -84,6 +82,7 @@ public class MeCabKoStandardTokenizerTest {
     Tokenizer tokenizer = createTokenizer(
         new StringReader("!@#$%^&*"),
         TokenGenerator.DEFAULT_COMPOUND_NOUN_MIN_LENGTH);
+    tokenizer.reset();
     assertEquals(false, tokenizer.incrementToken());
     tokenizer.close();
   }
@@ -128,13 +127,18 @@ public class MeCabKoStandardTokenizerTest {
             "아직도 그 말이 기억난다."),
         TokenGenerator.DEFAULT_COMPOUND_NOUN_MIN_LENGTH);
     assertEquals(
-        "지금보다:EOJEOL:1:1:0:4,지금:N:0:1:0:2,어리고:EOJEOL:1:1:5:8,"
-        + "민감하던:EOJEOL:1:1:9:13,민감:XR:0:1:9:11,시절:N:1:1:14:16,"
-        + "아버지가:EOJEOL:1:1:17:21,아버지:N:0:1:17:20,충고를:EOJEOL:1:1:22:25,"
-        + "충고:N:0:1:22:24,한:N:1:1:26:27,한마디:COMPOUND:0:2:26:29,"
-        + "마디:N:1:1:27:29,했는데:EOJEOL:1:1:30:33,아직도:EOJEOL:1:1:34:37,"
-        + "아직:MAG:0:1:34:36,그:MM:1:1:38:39,말이:EOJEOL:1:1:40:42,"
-        + "말:N:0:1:40:41,기억난다:INFLECT:1:1:43:47,",
+        "지금:MAG:MAG:성분부사/시간부사:1:1:0:2," +
+        "보다:MAG:MAG:성분부사/정도부사:1:1:2:4,어리고:EOJEOL:VA+EC:null:1:1:5:8," +
+        "민감하던:EOJEOL:XR+XSA+ETM:null:1:1:9:13,민감:XR:XR:null:0:1:9:11," +
+        "시절:N:NNG:null:1:1:14:16,아버지가:EOJEOL:NNG+JKS:null:1:1:17:21," +
+        "아버지:N:NNG:null:0:1:17:20,충고를:EOJEOL:NNG+JKO:null:1:1:22:25," +
+        "충고:N:NNG:null:0:1:22:24,한:N:NNG:null:1:1:26:27," +
+        "한마디:COMPOUND:Compound:null:0:2:26:29,마디:N:NNG:null:1:1:27:29," +
+        "했는데:EOJEOL:VV+EP+EC:null:1:1:30:33," +
+        "아직도:EOJEOL:MAG+JX:null:1:1:34:37," +
+        "아직:MAG:MAG:성분부사/시간부사:0:1:34:36,그:MM:MM:~명사:1:1:38:39," +
+        "말이:EOJEOL:NNG+JKS:null:1:1:40:42,말:N:NNG:null:0:1:40:41," +
+        "기억난다:INFLECT:VV+EF:null:1:1:43:47,",
         tokenizerToString(tokenizer));
     tokenizer.close();
   }

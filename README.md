@@ -18,11 +18,13 @@
   - Standard[Index|Query]Tokenizer의 경우, 명사뿐 아니라 품사가 결합된 어절도 Token으로 뽑아냅니다.
 
         철수가 학교에 간다. -> 철수가, 철수, 학교에, 학교, 간다
+
   - 문장의 끝에 문장의 끝을 알리는 기호 "`.!?`"가 있으면 더 자연스럽게 형태소 분석이 됩니다.
   - 분석된 token의 형태소를 구체적으로 볼 수 있습니다.
 
         박보영이(NNP+JKS), 박보영(NNP), 서울에(NNP+JKB), 서울(NNP), 갔다(VV+EP+EF)
-  - Apache Lucene/Solr 4.3.X 버전 기준으로 작성되었습니다. (Apache Lucene/Solr 4.8.0에서 사용 가능)
+
+  - Apache Lucene/Solr 4.9.X 버전 기준으로 작성되었습니다. (Apache Lucene/Solr 4.9.0에서 사용 가능)
 
 ## 설치
 
@@ -61,9 +63,10 @@ __주의 사항__
 
 | mecab-ko-lucene-analyzer | mecab-ko-dic                 | Lucene/Solr                 | elasticsearch               |
 | ------------------------ | ---------------------------- | --------------------------- | --------------------------- |
-| **0.15.x**               | mecab-ko-dic-1.6.0 or higher | Lucene/Solr 4.3.x or higher | 0.90.x or higher            |
-| **0.14.x**               | mecab-ko-dic-1.5.0 or higher | Lucene/Solr 4.3.x or higher | 0.90.x or higher            |
-| **0.13.x**               | mecab-ko-dic-1.4.0           | Lucene/Solr 4.3.x or higher | 0.90.x or higher            |
+| **0.16.x**               | mecab-ko-dic-1.6.0 or higher | Lucene/Solr 4.9.x or higher | 1.3.x or higher             |
+| **0.15.x**               | mecab-ko-dic-1.6.0 or higher | Lucene/Solr 4.3.x - 4.8.x   | 0.90.x - 1.2.x              |
+| **0.14.x**               | mecab-ko-dic-1.5.0 or higher | Lucene/Solr 4.3.x - 4.8.x   | 0.90.x - 1.2.x              |
+| **0.13.x**               | mecab-ko-dic-1.4.0           | Lucene/Solr 4.3.x - 4.8.x   | 0.90.x - 1.2.x              |
 | **0.12.x**               | mecab-ko-dic-1.4.0           | Lucene/Solr 4.3.x           |                             |
 | **0.11.x**               | mecab-ko-dic-1.3.0 - 1.4.0   | Lucene/Solr 4.3.x           |                             |
 | **0.10.x**               | mecab-ko-dic-1.3.0 - 1.4.0   | Lucene/Solr 4.1.x - 4.2.x   |                             |

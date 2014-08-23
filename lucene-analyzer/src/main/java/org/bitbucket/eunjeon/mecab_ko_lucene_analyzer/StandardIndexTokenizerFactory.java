@@ -18,10 +18,10 @@ package org.bitbucket.eunjeon.mecab_ko_lucene_analyzer;
 import java.io.Reader;
 import java.util.Map;
 
-import org.apache.solr.core.SolrResourceLoader;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.util.TokenizerFactory;
-import org.apache.lucene.util.AttributeSource.AttributeFactory;
+import org.apache.lucene.util.AttributeFactory;
+import org.apache.solr.core.SolrResourceLoader;
 
 /**
  * 표준 index용 tokenizer 팩토리 생성자. 다음과 같은 파라미터를 받는다.

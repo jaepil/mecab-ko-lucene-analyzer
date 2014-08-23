@@ -15,13 +15,12 @@
  ******************************************************************************/
 package org.bitbucket.eunjeon.mecab_ko_lucene_analyzer;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.Pos;
 import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.PosIdManager.PosId;
 import org.bitbucket.eunjeon.mecab_ko_mecab_loader.MeCabLoader;
 import org.chasen.mecab.Node;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class TokenGeneratorTestCase {
   MeCabLoader mecabLoader;

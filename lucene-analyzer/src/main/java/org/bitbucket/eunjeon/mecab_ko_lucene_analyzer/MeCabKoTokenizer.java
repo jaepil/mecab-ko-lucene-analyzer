@@ -25,6 +25,7 @@ import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionLengthAttribute;
 import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
+import org.apache.lucene.util.AttributeFactory;
 import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.tokenattributes.PartOfSpeechAttribute;
 import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.tokenattributes.SemanticClassAttribute;
 import org.bitbucket.eunjeon.mecab_ko_mecab_loader.MeCabLoader;
@@ -121,6 +122,7 @@ public final class MeCabKoTokenizer extends Tokenizer {
 
   @Override
   public boolean incrementToken() throws IOException {
+    clearAttributes();
     if (isBegin()) {
       document = getDocument();
       createTokenGenerator();
@@ -162,7 +164,8 @@ public final class MeCabKoTokenizer extends Tokenizer {
   }
   
   @Override
-  public final void end() {
+  public final void end() throws IOException {
+    super.end();
     // set final offset
     offsetAtt.setOffset(
         correctOffset(document.length()), correctOffset(document.length()));
@@ -177,7 +180,7 @@ public final class MeCabKoTokenizer extends Tokenizer {
   }
   
   private String getDocument() throws IOException {
-    StringBuffer document = new StringBuffer();
+    StringBuilder document = new StringBuilder();
     char[] tmp = new char[1024];
     int len;
     while ((len = input.read(tmp)) != -1) {

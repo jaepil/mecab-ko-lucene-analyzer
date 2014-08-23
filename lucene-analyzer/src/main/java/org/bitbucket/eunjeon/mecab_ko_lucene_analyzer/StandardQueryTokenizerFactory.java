@@ -20,7 +20,7 @@ import java.util.Map;
 
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.util.TokenizerFactory;
-import org.apache.lucene.util.AttributeSource.AttributeFactory;
+import org.apache.lucene.util.AttributeFactory;
 import org.apache.solr.core.SolrResourceLoader;
 
 /**
@@ -41,8 +41,6 @@ import org.apache.solr.core.SolrResourceLoader;
  * @author bibreen <bibreen@gmail.com>
  */
 public class StandardQueryTokenizerFactory extends TokenizerFactory {
-  public static final String DEFAULT_MECAB_DIC_DIR =
-      "/usr/local/lib/mecab/dic/mecab-ko-dic";
   private String mecabDicDir;
   
   public StandardQueryTokenizerFactory(Map<String,String> args) {

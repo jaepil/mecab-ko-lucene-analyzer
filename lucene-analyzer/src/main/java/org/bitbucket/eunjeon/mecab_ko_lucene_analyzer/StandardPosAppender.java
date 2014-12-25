@@ -113,6 +113,13 @@ public class StandardPosAppender extends PosAppender {
         pos.setPositionIncr(0);
         output.add(pos);
       }
+      if (pos.isPosIdOf(PosId.INFLECT)) {
+        Pos firstPos = extractFirstPos(pos);
+        if (isAbsolutePos(firstPos) &&
+            firstPos.getSurfaceLength() <= pos.getSurfaceLength()) {
+          output.add(firstPos);
+        }
+      }
     }
     return output;
   }
@@ -130,8 +137,31 @@ public class StandardPosAppender extends PosAppender {
         pos.isPosIdOf(PosId.SH) ||
         pos.isPosIdOf(PosId.SL) ||
         pos.isPosIdOf(PosId.UNKNOWN) ||
+        pos.isPosIdOf(PosId.VA) ||
+        pos.isPosIdOf(PosId.VV) ||
         pos.isPosIdOf(PosId.XPN) ||
         pos.isPosIdOf(PosId.XSN)
     );
+  }
+
+  /**
+   * Infelct Pos에서 첫번째 pos를 가져온다.
+   *
+   * @param inflectPos
+   * @return pos 형태소 품사
+   */
+  private Pos extractFirstPos(Pos inflectPos) {
+    if (!inflectPos.isPosIdOf(PosId.INFLECT)) {
+      return null;
+    }
+    String first = inflectPos.getExpression().split("\\+")[0];
+    String[] datas = first.split("/");
+    if (datas.length != 2) {
+      return null;
+    }
+    String surface = datas[0];
+    PosId posId = PosId.convertFrom(datas[1]);
+    int startOffset = inflectPos.getStartOffset();
+    return new Pos(surface, posId, startOffset, 0, 1);
   }
 }

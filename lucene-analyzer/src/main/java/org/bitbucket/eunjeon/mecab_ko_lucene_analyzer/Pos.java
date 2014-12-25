@@ -33,6 +33,7 @@ public class Pos {
   private int startOffset;
   private int positionIncr;
   private int positionLength;
+  private String expression;
   private String indexExpression;
   private Node node;
   
@@ -53,6 +54,7 @@ public class Pos {
     // when Inflect
     final static int START_POS = 5;
     final static int END_POS = 6;
+    final static int EXPRESSION = 7;
     // when Compound
     final static int INDEX_EXPRESSION = 8;
   }
@@ -121,6 +123,7 @@ public class Pos {
     if (posId == PosId.INFLECT || posId == PosId.PREANALYSIS) {
       this.startPosId = PosId.convertFrom(items[NodeIndex.START_POS].toUpperCase());
       this.endPosId = PosId.convertFrom(items[NodeIndex.END_POS].toUpperCase());
+      expression = items[NodeIndex.EXPRESSION];
       indexExpression = items[NodeIndex.INDEX_EXPRESSION];
     } else if (posId == PosId.COMPOUND){
       this.startPosId = PosId.N;
@@ -158,6 +161,16 @@ public class Pos {
   public String getSurface() {
     return surface;
   }
+
+  public String getTokenString() {
+    switch (posId) {
+      case VV:
+      case VA:
+        return surface + '/' + posId.toString();
+      default:
+        return surface;
+    }
+  }
   
   public int getSurfaceLength() {
     return surface.length();
@@ -170,7 +183,11 @@ public class Pos {
   public String getSemanticClass() {
     return semanticClass;
   }
-  
+
+  public String getExpression() {
+    return expression;
+  }
+
   public String getIndexExpression() {
     return indexExpression;
   }

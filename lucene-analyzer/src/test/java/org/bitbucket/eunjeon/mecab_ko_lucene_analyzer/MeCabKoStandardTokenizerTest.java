@@ -114,7 +114,7 @@ public class MeCabKoStandardTokenizerTest {
         "소설:N:NNG:null:1:1:0:2,무궁:N:NNG:null:1:1:3:5,"
         + "무궁화:COMPOUND:Compound:null:0:2:3:6,화:N:NNG:null:1:1:5:6,"
         + "꽃이:EOJEOL:NNG+JKS:null:1:1:6:8,꽃:N:NNG:null:0:1:6:7,"
-        + "피었습니다:EOJEOL:VV+EP+EF:null:1:1:9:14,",
+        + "피었습니다:EOJEOL:VV+EP+EF:null:1:1:9:14,피:VV:VV:null:0:1:9:10,",
         tokenizerToString(tokenizer));
     tokenizer.close();
   }
@@ -210,7 +210,7 @@ public class MeCabKoStandardTokenizerTest {
         TokenGenerator.DEFAULT_COMPOUND_NOUN_MIN_LENGTH);
     assertEquals(
         "걀꿀:UNKNOWN:UNKNOWN:null:1:1:0:2,없는:EOJEOL:VA+ETM:null:1:1:3:5,"
-        + "단어:N:NNG:null:1:1:6:8,",
+        + "없:VA:VA:null:0:1:3:4,단어:N:NNG:null:1:1:6:8,",
         tokenizerToString(tokenizer));
     tokenizer.close();
   }

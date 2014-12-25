@@ -190,6 +190,9 @@ public class TokenGenerator {
         if (eojeolTokens.isEmpty()) {
           eojeolTokens.add(posList.getFirst());
         }
+        if (eojeolTokens.getFirst() != posList.getFirst()) {
+          eojeolTokens.addFirst(posList.getFirst());
+        }
         eojeolPos = eojeolTokens.getFirst();
         eojeolPos.setPositionIncr(1);
       } else {

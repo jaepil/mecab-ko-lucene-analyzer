@@ -157,7 +157,7 @@ public final class MeCabKoTokenizer extends Tokenizer {
         correctOffset(token.getStartOffset()),
         correctOffset(token.getEndOffset()));
     charTermAtt.copyBuffer(
-        token.getSurface().toCharArray(), 0, token.getSurfaceLength());
+        token.getTokenString().toCharArray(), 0, token.getSurfaceLength());
     typeAtt.setType(token.getPosId().toString());
     posAtt.setPartOfSpeech(token.getMophemes());
     semanticClassAtt.setSemanticClass(token.getSemanticClass());

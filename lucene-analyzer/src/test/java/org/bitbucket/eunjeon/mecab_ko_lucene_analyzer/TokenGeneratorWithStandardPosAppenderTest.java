@@ -62,7 +62,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testDecompound() {
     Node node = mockNodeListFactory(new String[] {
-        "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성+전자,삼성/NNG/*/1/1+삼성전자/Compound/*/0/2+전자/NNG/*/1/1",
+        "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성+전자,삼성/NNG/*+전자/NNG/*",
     });
     TokenGenerator generator =
         new TokenGenerator(new StandardPosAppender(), 1, node);
@@ -80,7 +80,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
   public void testComplexDecompound() {
     Node node = mockNodeListFactory(new String[] {
         "아질산나트륨\tNNG,*,T,아질산나트륨,Compound,*,*,아질산+나트륨," +
-        "아/NNG/*/1/1+아질산나트륨/Compound/*/0/3+아질산/NNG/*/0/2+질산/NNG/*/1/1+나트륨/NNG/*/1/1"
+        "아/NNG/*+질산/NNG/*+나트륨/NNG/*"
     });
     TokenGenerator generator =
         new TokenGenerator(new StandardPosAppender(), 1, node);
@@ -88,7 +88,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
     assertEquals(
-        "[아/N/null/1/1/0/1, 아질산나트륨/COMPOUND/null/0/3/0/6, 아질산/N/null/0/2/0/3, 질산/N/null/1/1/1/3, 나트륨/N/null/1/1/3/6]",
+        "[아/N/null/1/1/0/1, 아질산나트륨/COMPOUND/null/0/3/0/6, 아질산/COMPOUND/null/0/2/0/3, 질산/N/null/1/1/1/3, 나트륨/N/null/1/1/3/6]",
         tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(null, tokens);
@@ -97,7 +97,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testNoDecompound() {
     Node node = mockNodeListFactory(new String[] {
-        "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성+전자,삼성/NNG/*/1/1+삼성전자/Compound/*/0/2+전자/NNG/*/1/1",
+        "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성+전자,삼성/NNG/*+전자/NNG/*",
     });
     TokenGenerator generator =
         new TokenGenerator(
@@ -113,7 +113,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testCompoundNounMinLength4() {
     Node node = mockNodeListFactory(new String[] {
-        "무궁화\tNNG,*,F,무궁화,Compound,*,*,무궁+화,무궁/NNG/*/1/1+무궁화/Compound/*/0/2+화/NNG/*/1/1"
+        "무궁화\tNNG,*,F,무궁화,Compound,*,*,무궁+화,무궁/NNG/*+화/NNG/*"
     });
     TokenGenerator generator =
         new TokenGenerator(
@@ -126,7 +126,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     assertEquals(null, tokens);
     
     node = mockNodeListFactory(new String[] {
-        "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성+전자,삼성/NNG/*/1/1+삼성전자/Compound/*/0/2+전자/NNG/*/1/1"
+        "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성+전자,삼성/NNG/*+전자/NNG/*"
     });
     generator = new TokenGenerator(new StandardPosAppender(), 4, node);
     
@@ -141,7 +141,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testSentenceWithDecompoundAll() {
     Node node = mockNodeListFactory(new String[] {
-        "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성+전자,삼성/NNG/*/1/1+삼성전자/Compound/*/0/2+전자/NNG/*/1/1",
+        "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성+전자,삼성/NNG/*+전자/NNG/*",
         "는\tJX,*,T,는,*,*,*,*,*",
         " 대표\tNNG,*,F,대표,*,*,*,*,*",
         "적\tXSN,*,T,적,*,*,*,*,*",
@@ -184,7 +184,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testSentenceWithDecompoundComplexCompoundNoun() {
     Node node = mockNodeListFactory(new String[] {
-        "아질산나트륨\tNNG,*,T,아질산나트륨,Compound,*,*,아질산+나트륨,아/NNG/*/1/1+아질산나트륨/Compound/*/0/3+아질산/NNG/*/0/2+질산/NNG/*/1/1+나트륨/NNG/*/1/1",
+        "아질산나트륨\tNNG,*,T,아질산나트륨,Compound,*,*,아+질산+나트륨,아/NNG/*+질산/NNG/*+나트륨/NNG/*",
         "이란\tJX,*,T,이란,*,*,*,*,*",
         "무엇\tNP,*,T,무엇,*,*,*,*,*",
         "인가요\tVCP+EF,*,F,인가요,Inflect,VCP,EF,이/VCP+ㄴ가요/EF,*",
@@ -197,7 +197,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
     assertEquals(
-        "[아/N/null/1/1/0/1, 아질산나트륨이란/EOJEOL/null/0/3/0/8, 아질산나트륨/COMPOUND/null/0/3/0/6, 아질산/N/null/0/2/0/3, 질산/N/null/1/1/1/3, 나트륨/N/null/1/1/3/6]",
+        "[아/N/null/1/1/0/1, 아질산나트륨이란/EOJEOL/null/0/3/0/8, 아질산나트륨/COMPOUND/null/0/3/0/6, 아질산/COMPOUND/null/0/2/0/3, 질산/N/null/1/1/1/3, 나트륨/N/null/1/1/3/6]",
         tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(
@@ -212,7 +212,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     Node node = mockNodeListFactory(new String[] {
         "나\tNP,*,F,나,*,*,*,*,*",
         "의\tJKG,*,F,의,*,*,*,*,*",
-        "무궁화\tNNG,*,F,무궁화,Compound,*,*,무궁+화,무궁/NNG/*/1/1+무궁화/Compound/*/0/2+화/NNG/*/1/1",
+        "무궁화\tNNG,*,F,무궁화,Compound,*,*,무궁+화,무궁/NNG/*+화/NNG/*",
         "꽃\tNNG,*,T,꽃,*,*,*,*,*",
         "을\tJKO,*,T,을,*,*,*,*,*",
         "보\tVV,*,F,보,*,*,*,*,*",

@@ -138,6 +138,7 @@ public class TokenGenerator {
   static private class Eojeol {
     private PosAppender appender;
     private int compoundNounMinLength;
+    private boolean hasCompoundNoun;
     
     private LinkedList<Pos> posList = new LinkedList<Pos>();
     private String term = "";
@@ -145,11 +146,21 @@ public class TokenGenerator {
     Eojeol(PosAppender appender, int compoundNounMinLength) {
       this.appender = appender;
       this.compoundNounMinLength = compoundNounMinLength;
+      this.hasCompoundNoun = false;
     }
     
     public boolean append(Pos pos) {
       if (isAppendable(pos)) {
-        posList.add(pos);
+        if (pos.isPosIdOf(PosId.COMPOUND) &&
+                pos.getSurfaceLength() >= compoundNounMinLength) {
+          this.hasCompoundNoun = true;
+          posList.addAll(TokenGenerator.getAnalyzedPoses(pos));
+//          for (Pos p: posList) {
+//            System.out.println(p);
+//          }
+        } else {
+          posList.add(pos);
+        }
         term += pos.getSurface();
         return true;
       } else {
@@ -170,18 +181,56 @@ public class TokenGenerator {
       if (isSkippable()) {
         return null;
       }
-      LinkedList<Pos> output = appender.extractAdditionalPoses(posList);
-      Pos eojeolPos = addEojeolPos(output);
-      addDecompoundedNoun(output);
-      if (output.size() > 1) {
-        eojeolPos.setPositionLength(recalcEojeolPositionLength(output));
-      }
+      // TODO: extractAdditionalPoses 네이밍 변경 필요
+      LinkedList<Pos> output = appender.extractAdditionalPoses(posList, hasCompoundNoun);
+//      if (!hasCompoundNoun) {
+//        Pos eojeolPos = addEojeolPos(output);
+//        if (output.size() > 1) {
+//          eojeolPos.setPositionLength(recalcEojeolPositionLength(output));
+//        }
+//      }
+//      addDecompoundedNoun(output);
+//      if (output.size() > 1) {
+//        eojeolPos.setPositionLength(recalcEojeolPositionLength(output));
+//      }
+      insertEojeolPosTo(output);
       return output;
     }
 
     public boolean isSkippable() {
       return posList.isEmpty() ||
               (posList.size() == 1 && appender.isSkippablePos(posList.get(0)));
+    }
+
+    private Pos insertEojeolPosTo(LinkedList<Pos> eojeolTokens) {
+      // TODO: PosAppender 아래로...
+      Pos eojeolPos;
+      if (posList.size() == 1) {
+        if (eojeolTokens.isEmpty()) {
+          eojeolTokens.add(posList.getFirst());
+        }
+        if (eojeolTokens.getFirst() != posList.getFirst()) {
+          eojeolTokens.addFirst(posList.getFirst());
+        }
+        eojeolPos = eojeolTokens.getFirst();
+        eojeolPos.setPositionIncr(1);
+      } else {
+        if (hasCompoundNoun) {
+          int postionLength = recalcEojeolPositionLength(eojeolTokens);
+          eojeolPos = new Pos(getTerm(), PosId.EOJEOL, getStartOffset(), 0, postionLength);
+          eojeolPos.setPos(concatMophemes(posList));
+          // TODO 아래 표현식 메서드로 구현 eojeolPos.equalOffset(eojeolTokens.get(1))
+          if (!(eojeolPos.getStartOffset() == eojeolTokens.get(1).getStartOffset() &&
+              eojeolPos.getEndOffset() == eojeolTokens.get(1).getEndOffset())) {
+            eojeolTokens.add(1, eojeolPos);
+          }
+        } else {
+          eojeolPos = new Pos(getTerm(), PosId.EOJEOL, getStartOffset(), 1, 1);
+          eojeolPos.setPos(concatMophemes(posList));
+          eojeolTokens.addFirst(eojeolPos);
+        }
+      }
+      return eojeolPos;
     }
 
     private Pos addEojeolPos(LinkedList<Pos> eojeolTokens) {

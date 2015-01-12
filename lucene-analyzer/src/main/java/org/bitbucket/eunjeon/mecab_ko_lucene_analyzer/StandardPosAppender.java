@@ -106,22 +106,44 @@ public class StandardPosAppender extends PosAppender {
   }
 
   @Override
-  public LinkedList<Pos> extractAdditionalPoses(LinkedList<Pos> poses) {
-    LinkedList<Pos> output = new LinkedList<Pos>();
-    for (Pos pos: poses) {
-      if (isAbsolutePos(pos)) {
-        pos.setPositionIncr(0);
-        output.add(pos);
-      }
-      if (pos.isPosIdOf(PosId.INFLECT)) {
-        Pos firstPos = extractFirstPos(pos);
-        if (isAbsolutePos(firstPos) &&
-            firstPos.getSurfaceLength() <= pos.getSurfaceLength()) {
-          output.add(firstPos);
+  public LinkedList<Pos> extractAdditionalPoses(LinkedList<Pos> poses, boolean hasCompoundNoun) {
+    if (hasCompoundNoun) {
+      LinkedList<Pos> output = new LinkedList<Pos>();
+      // TODO: 알아보기 어려운 코드 리팩토링 해보자
+      Pos prevPos = null;
+      for (Pos pos: poses) {
+        if (pos.isPosIdOf(PosId.N)) {
+          output.add(pos);
+
+          if (prevPos == null) {
+            prevPos = pos;
+          } else {
+            Pos compound = prevPos.append(pos, PosId.COMPOUND, 0);
+            output.add(1, compound);
+            prevPos = compound;
+          }
+        } else {
+          break;
         }
       }
+      return output;
+    } else {
+      LinkedList<Pos> output = new LinkedList<Pos>();
+      for (Pos pos: poses) {
+        if (isAbsolutePos(pos)) {
+          pos.setPositionIncr(0);
+          output.add(pos);
+        }
+        if (pos.isPosIdOf(PosId.INFLECT)) {
+          Pos firstPos = extractFirstPos(pos);
+          if (isAbsolutePos(firstPos) &&
+                  firstPos.getSurfaceLength() <= pos.getSurfaceLength()) {
+            output.add(firstPos);
+          }
+        }
+      }
+      return output;
     }
-    return output;
   }
 
   /**

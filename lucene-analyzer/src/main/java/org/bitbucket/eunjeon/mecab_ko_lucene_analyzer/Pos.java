@@ -42,8 +42,8 @@ public class Pos {
     final static int TERM = 0;
     final static int TAG = 1;
     final static int SEMANTIC_CLASS = 2;
-    final static int POSITION_INCR = 3;
-    final static int POSITION_LENGTH = 4;
+//    final static int POSITION_INCR = 3;
+//    final static int POSITION_LENGTH = 4;
   }
   
   // feature
@@ -106,10 +106,13 @@ public class Pos {
     startPosId = posId;
     endPosId = posId;
     this.startOffset = startOffset;
-    this.positionIncr =
-        Integer.parseInt(datas[ExpressionIndex.POSITION_INCR]);
-    this.positionLength =
-        Integer.parseInt(datas[ExpressionIndex.POSITION_LENGTH]);
+//    this.positionIncr =
+//        Integer.parseInt(datas[ExpressionIndex.POSITION_INCR]);
+//    this.positionLength =
+//        Integer.parseInt(datas[ExpressionIndex.POSITION_LENGTH]);
+    // TODO: 아래의 디폴트 값이 맞나?
+    this.positionIncr = 1;
+    this.positionLength = 1;
   }
   
   private void parseFeatureString() {
@@ -138,8 +141,17 @@ public class Pos {
   }
   
   private int getCompoundNounPositionLength(String indexExpression) {
-    String firstToken = indexExpression.split("\\+")[1];
-    return Integer.parseInt(firstToken.split("/")[ExpressionIndex.POSITION_LENGTH]);
+//    String firstToken = indexExpression.split("\\+")[1];
+//    return Integer.parseInt(firstToken.split("/")[ExpressionIndex.POSITION_LENGTH]);
+    String[] tokens = indexExpression.split("\\+");
+    return tokens.length;
+  }
+
+  public Pos append(Pos pos, PosId posId, int positionIncr) {
+    return new Pos(
+            this.getSurface() + pos.getSurface(),
+            posId, this.getStartOffset(),
+            positionIncr, this.getPositionLength() + pos.getPositionLength());
   }
   
   public Node getNode() {

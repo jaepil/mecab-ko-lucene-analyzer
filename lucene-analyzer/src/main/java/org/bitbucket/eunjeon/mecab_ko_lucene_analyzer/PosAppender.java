@@ -38,5 +38,5 @@ public abstract class PosAppender {
    *
    * @param poses 어절을 구성하는 POS 리스트
    */
-  public abstract LinkedList<Pos> extractAdditionalPoses(LinkedList<Pos> poses);
+  public abstract LinkedList<Pos> extractAdditionalPoses(LinkedList<Pos> poses, boolean hasCompoundNoun);
 }

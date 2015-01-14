@@ -217,11 +217,11 @@ public class TokenGenerator {
       } else {
         if (hasCompoundNoun) {
           int postionLength = recalcEojeolPositionLength(eojeolTokens);
-          eojeolPos = new Pos(getTerm(), PosId.EOJEOL, getStartOffset(), 0, postionLength);
+          eojeolPos = new Pos(
+              getTerm(), PosId.EOJEOL, getStartOffset(), 0, postionLength);
           eojeolPos.setPos(concatMophemes(posList));
-          // TODO 아래 표현식 메서드로 구현 eojeolPos.equalOffset(eojeolTokens.get(1))
-          if (!(eojeolPos.getStartOffset() == eojeolTokens.get(1).getStartOffset() &&
-              eojeolPos.getEndOffset() == eojeolTokens.get(1).getEndOffset())) {
+          if (eojeolTokens.size() < 2 ||
+              !eojeolPos.equalsOffset(eojeolTokens.get(1))) {
             eojeolTokens.add(1, eojeolPos);
           }
         } else {

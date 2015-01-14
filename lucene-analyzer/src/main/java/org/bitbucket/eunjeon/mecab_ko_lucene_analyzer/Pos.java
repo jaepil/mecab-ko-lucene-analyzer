@@ -42,8 +42,6 @@ public class Pos {
     final static int TERM = 0;
     final static int TAG = 1;
     final static int SEMANTIC_CLASS = 2;
-//    final static int POSITION_INCR = 3;
-//    final static int POSITION_LENGTH = 4;
   }
   
   // feature
@@ -94,8 +92,8 @@ public class Pos {
   /**
    * Pos를 표현하는 문자열을 받는 Pos 생성자.
    * expression은 다음과 같이 구성된다.
-   * '<surface>/<tag>/<position_incr>/<position_length>'
-   * ex) 명사/NN/1/1
+   * '<surface>/<tag>/<semantic_class>'
+   * ex) 판교/NNP/지명
    */
   public Pos(String expression, int startOffset) {
     String[] datas = expression.split("/");
@@ -106,11 +104,6 @@ public class Pos {
     startPosId = posId;
     endPosId = posId;
     this.startOffset = startOffset;
-//    this.positionIncr =
-//        Integer.parseInt(datas[ExpressionIndex.POSITION_INCR]);
-//    this.positionLength =
-//        Integer.parseInt(datas[ExpressionIndex.POSITION_LENGTH]);
-    // TODO: 아래의 디폴트 값이 맞나?
     this.positionIncr = 1;
     this.positionLength = 1;
   }
@@ -141,8 +134,6 @@ public class Pos {
   }
   
   private int getCompoundNounPositionLength(String indexExpression) {
-//    String firstToken = indexExpression.split("\\+")[1];
-//    return Integer.parseInt(firstToken.split("/")[ExpressionIndex.POSITION_LENGTH]);
     String[] tokens = indexExpression.split("\\+");
     return tokens.length;
   }
@@ -152,6 +143,11 @@ public class Pos {
             this.getSurface() + pos.getSurface(),
             posId, this.getStartOffset(),
             positionIncr, this.getPositionLength() + pos.getPositionLength());
+  }
+
+  public boolean equalsOffset(Pos pos) {
+    return (this.getStartOffset() == pos.getStartOffset() &&
+        this.getEndOffset() == pos.getEndOffset());
   }
   
   public Node getNode() {

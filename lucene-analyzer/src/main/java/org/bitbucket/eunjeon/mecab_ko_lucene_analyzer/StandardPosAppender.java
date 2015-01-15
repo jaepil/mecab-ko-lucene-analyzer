@@ -17,6 +17,7 @@ package org.bitbucket.eunjeon.mecab_ko_lucene_analyzer;
 
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.PosIdManager.PosId;
@@ -106,24 +107,30 @@ public class StandardPosAppender extends PosAppender {
   }
 
   @Override
-  public LinkedList<Pos> extractAdditionalPoses(LinkedList<Pos> poses, boolean hasCompoundNoun) {
-    if (hasCompoundNoun) {
+  public LinkedList<Pos> getTokensFrom(Eojeol eojeol) {
+    LinkedList<Pos> output = getAdditionalPosesFrom(eojeol);
+    insertEojeolPosTo(eojeol, output);
+    return output;
+  }
+
+  private LinkedList<Pos> getAdditionalPosesFrom(Eojeol eojeol) {
+    LinkedList<Pos> poses = eojeol.getPosList();
+    if (eojeol.hasCompoundNoun()) {
       LinkedList<Pos> output = new LinkedList<Pos>();
-      // TODO: 알아보기 어려운 코드 리팩토링 해보자
+      // TODO: 이해하기 어려운 코드 리팩토링 해보자
       Pos prevPos = null;
       for (Pos pos: poses) {
-        if (pos.isPosIdOf(PosId.N)) {
-          output.add(pos);
-
-          if (prevPos == null) {
-            prevPos = pos;
-          } else {
-            Pos compound = prevPos.append(pos, PosId.COMPOUND, 0);
-            output.add(1, compound);
-            prevPos = compound;
-          }
-        } else {
+        if (!isAbsolutePos(pos)) {
           break;
+        }
+
+        output.add(pos);
+        if (prevPos == null) {
+          prevPos = pos;
+        } else {
+          Pos compound = prevPos.append(pos, PosId.COMPOUND, 0);
+          output.add(1, compound);
+          prevPos = compound;
         }
       }
       return output;
@@ -146,6 +153,58 @@ public class StandardPosAppender extends PosAppender {
     }
   }
 
+  private Pos insertEojeolPosTo(Eojeol eojeol, LinkedList<Pos> eojeolTokens) {
+    Pos eojeolPos;
+    LinkedList<Pos> posList = eojeol.getPosList();
+    if (posList.size() == 1) {
+      if (eojeolTokens.isEmpty()) {
+        eojeolTokens.add(posList.getFirst());
+      }
+      if (eojeolTokens.getFirst() != posList.getFirst()) {
+        eojeolTokens.addFirst(posList.getFirst());
+      }
+      eojeolPos = eojeolTokens.getFirst();
+      eojeolPos.setPositionIncr(1);
+    } else {
+      if (eojeol.hasCompoundNoun()) {
+        int positionLength = recalcEojeolPositionLength(eojeolTokens);
+        eojeolPos = new Pos(
+            eojeol.getTerm(), PosId.EOJEOL,
+            eojeol.getStartOffset(), 0, positionLength);
+        eojeolPos.setPos(concatMophemes(posList));
+        if (eojeolTokens.size() < 2 ||
+            !eojeolPos.equalsOffset(eojeolTokens.get(1))) {
+          eojeolTokens.add(1, eojeolPos);
+        }
+      } else {
+        eojeolPos = new Pos(
+            eojeol.getTerm(), PosId.EOJEOL, eojeol.getStartOffset(), 1, 1);
+        eojeolPos.setPos(concatMophemes(posList));
+        eojeolTokens.addFirst(eojeolPos);
+      }
+    }
+    return eojeolPos;
+  }
+
+  private String concatMophemes(List<Pos> poses) {
+    StringBuilder buff = new StringBuilder();
+    for (int i = 0; i < poses.size(); i++) {
+      if (i != 0) {
+        buff.append("+");
+      }
+      buff.append(poses.get(i).getMophemes());
+    }
+    return buff.toString();
+  }
+
+  private int recalcEojeolPositionLength(LinkedList<Pos> eojeolTokens) {
+    int positionLength = 0;
+    for (Pos pos: eojeolTokens) {
+      positionLength += pos.getPositionIncr();
+    }
+    return positionLength;
+  }
+
   /**
    * 단독으로 쓰일 수 있는 형태소인지를 판단한다.
    *
@@ -158,6 +217,7 @@ public class StandardPosAppender extends PosAppender {
         pos.isPosIdOf(PosId.XR) ||
         pos.isPosIdOf(PosId.SH) ||
         pos.isPosIdOf(PosId.SL) ||
+        pos.isPosIdOf(PosId.SN) ||
         pos.isPosIdOf(PosId.UNKNOWN) ||
         pos.isPosIdOf(PosId.VA) ||
         pos.isPosIdOf(PosId.VV) ||

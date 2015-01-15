@@ -93,7 +93,27 @@ public class TokenGeneratorWithStandardPosAppenderTest
     tokens = generator.getNextEojeolTokens();
     assertEquals(null, tokens);
   }
-  
+
+  @Test
+  public void testComplexWithNumberDecompound() {
+    Node node = mockNodeListFactory(new String[] {
+        "을지로3가역\tNNG,*,T,을지로3가역,Compound,*,*,을지로+3+가+역," +
+            "을지로/NNP/*+3/SN/*+가/NNG/*+역/NNG/*"
+    });
+    TokenGenerator generator =
+        new TokenGenerator(new StandardPosAppender(), 1, node);
+
+    List<Pos> tokens;
+    tokens = generator.getNextEojeolTokens();
+    assertEquals(
+        "[을지로/N/null/1/1/0/3, 을지로3가역/COMPOUND/null/0/4/0/6, " +
+        "을지로3가/COMPOUND/null/0/3/0/5, 을지로3/COMPOUND/null/0/2/0/4, " +
+        "3/SN/null/1/1/3/4, 가/N/null/1/1/4/5, 역/N/null/1/1/5/6]",
+        tokens.toString());
+    tokens = generator.getNextEojeolTokens();
+    assertEquals(null, tokens);
+  }
+
   @Test
   public void testNoDecompound() {
     Node node = mockNodeListFactory(new String[] {

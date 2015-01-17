@@ -70,6 +70,8 @@ public class StandardPosAppender extends PosAppender {
     appendableSet.add(new Appendable(PosId.N, PosId.J));
     appendableSet.add(new Appendable(PosId.COMPOUND, PosId.J));
     appendableSet.add(new Appendable(PosId.UNKNOWN, PosId.J));
+    // 체언 접두사(XPN) + 체언(N*)
+    appendableSet.add(new Appendable(PosId.XPN, PosId.N));
     // 명사 파생 접미사(XSN) + 조사(J)
     appendableSet.add(new Appendable(PosId.XSN, PosId.J));
     // 어미(E) + 조사(J) - 어미가 명사형 전성 어미인 경우
@@ -108,13 +110,34 @@ public class StandardPosAppender extends PosAppender {
 
   @Override
   public LinkedList<Pos> getTokensFrom(Eojeol eojeol) {
+    preprocessXpn(eojeol.getPosList());
     LinkedList<Pos> output = getAdditionalPosesFrom(eojeol);
     insertEojeolPosTo(eojeol, output);
     return output;
   }
 
+  /**
+   * 체언 접두사로 시작하는 경우, 뒤의 명사와 합쳐서 새로운 명사를 만들어 넣는다.
+   * 비/XPN+정상/N -> 비정상/N
+   *
+   * @param eojeolPosList Eojeol 클래스의 posList
+   */
+  private void preprocessXpn(LinkedList<Pos> eojeolPosList) {
+    if (eojeolPosList.size() > 1) {
+      if (eojeolPosList.get(0).isPosIdOf(PosId.XPN) &&
+          eojeolPosList.get(1).isPosIdOf(PosId.N)) {
+        Pos xpn = eojeolPosList.poll();
+        Pos noun = eojeolPosList.poll();
+        Pos newNoun = xpn.append(noun, PosId.N, 1);
+        newNoun.setPositionLength(1);
+        eojeolPosList.addFirst(newNoun);
+      }
+    }
+  }
+
   private LinkedList<Pos> getAdditionalPosesFrom(Eojeol eojeol) {
     LinkedList<Pos> poses = eojeol.getPosList();
+
     if (eojeol.hasCompoundNoun()) {
       LinkedList<Pos> output = new LinkedList<Pos>();
       // TODO: 이해하기 어려운 코드 리팩토링 해보자
@@ -221,7 +244,6 @@ public class StandardPosAppender extends PosAppender {
         pos.isPosIdOf(PosId.UNKNOWN) ||
         pos.isPosIdOf(PosId.VA) ||
         pos.isPosIdOf(PosId.VV) ||
-        pos.isPosIdOf(PosId.XPN) ||
         pos.isPosIdOf(PosId.XSN)
     );
   }

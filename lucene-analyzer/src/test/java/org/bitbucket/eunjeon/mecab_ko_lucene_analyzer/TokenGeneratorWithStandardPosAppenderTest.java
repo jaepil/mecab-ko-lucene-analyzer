@@ -434,8 +434,9 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testXpn() {
     Node node = mockNodeListFactory(new String[] {
-        "왕\tXPN,*,T,왕,*,*,*,*,*",
-        "게임\tNNG,*,T,게임,*,*,*,*,*",
+        "비\tXPN,*,F,비,*,*,*,*,*",
+        "정상\tNNG,*,T,정상,*,*,*,*,*",
+        "회담\tNNG,*,T,회담,*,*,*,*,*",
     });
 
     TokenGenerator generator =
@@ -443,9 +444,29 @@ public class TokenGeneratorWithStandardPosAppenderTest
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[왕/XPN/null/1/1/0/1]", tokens.toString());
+    assertEquals("[비정상/N/null/1/1/0/3]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[게임/N/null/1/1/1/3]", tokens.toString());
+    assertEquals("[회담/N/null/1/1/3/5]", tokens.toString());
+    tokens = generator.getNextEojeolTokens();
+    assertEquals(null, tokens);
+  }
+
+  @Test
+  public void testXpnWithCompoundNoun() {
+    // 실제로는 아래와 같이 분석되지 않는다.
+    Node node = mockNodeListFactory(new String[] {
+        "비\tXPN,*,F,비,*,*,*,*,*",
+        "정상회담\tNNG,*,F,정상회담,Compound,*,*,정상+회담,정상/NNG/*+회담/NNG/*",
+    });
+
+    TokenGenerator generator =
+        new TokenGenerator(new StandardPosAppender(), 4, node);
+
+    List<Pos> tokens;
+    tokens = generator.getNextEojeolTokens();
+    assertEquals(
+        "[비정상/N/null/1/1/0/3, 비정상회담/COMPOUND/null/0/2/0/5, 회담/N/null/1/1/3/5]",
+        tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(null, tokens);
   }

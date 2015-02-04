@@ -107,7 +107,7 @@ public final class MeCabKoTokenizer extends Tokenizer {
   private void setMeCab() {
     mecabLoader = MeCabLoader.getInstance(mecabDicDir);
     lattice = mecabLoader.createLattice();
-    tagger = mecabLoader.createTagger();
+    tagger = mecabLoader.getTagger();
   }
   
   private void setAttributes() {

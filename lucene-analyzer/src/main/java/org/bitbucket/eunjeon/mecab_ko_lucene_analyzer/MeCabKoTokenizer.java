@@ -170,6 +170,7 @@ public final class MeCabKoTokenizer extends Tokenizer {
     offsetAtt.setOffset(
         correctOffset(document.length()), correctOffset(document.length()));
     document = null;
+    lattice.clear();
   }
   
   @Override

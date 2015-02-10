@@ -107,7 +107,7 @@ public final class MeCabKoTokenizer extends Tokenizer {
   private void setMeCab() {
     mecabLoader = MeCabLoader.getInstance(mecabDicDir);
     lattice = mecabLoader.createLattice();
-    tagger = mecabLoader.getTagger();
+    tagger = mecabLoader.createTagger();
   }
   
   private void setAttributes() {
@@ -179,7 +179,7 @@ public final class MeCabKoTokenizer extends Tokenizer {
     generator = null;
     tokensQueue = null;
   }
-  
+
   private String getDocument() throws IOException {
     StringBuilder document = new StringBuilder();
     char[] tmp = new char[1024];

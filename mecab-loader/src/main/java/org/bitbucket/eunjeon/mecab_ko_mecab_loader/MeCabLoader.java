@@ -22,7 +22,6 @@ import org.chasen.mecab.Tagger;
 public final class MeCabLoader {
   private volatile static MeCabLoader uniqueInstance;
   private static Model model;
-  private static Tagger tagger;
   static {
     try {
       System.loadLibrary("MeCab");
@@ -52,11 +51,10 @@ public final class MeCabLoader {
   
   private MeCabLoader(String dicDir) {
     model = new Model("-d " + dicDir);
-    tagger = model.createTagger();
   }
 
-  public Tagger getTagger() {
-    return tagger;
+  public Tagger createTagger() {
+    return model.createTagger();
   }
   
   public Lattice createLattice() {

@@ -44,6 +44,14 @@ public class SimilarityMeasurePosAppender extends PosAppender {
     appendableSet.add(new Appendable(PosId.N, PosId.XSN));
     appendableSet.add(new Appendable(PosId.COMPOUND, PosId.XSN));
     appendableSet.add(new Appendable(PosId.UNKNOWN, PosId.XSN));
+
+    // 외국어(SL), 숫자(SN), 기호(SY)는 모두 연결
+    appendableSet.add(new Appendable(PosId.SL, PosId.SN));
+    appendableSet.add(new Appendable(PosId.SL, PosId.SY));
+    appendableSet.add(new Appendable(PosId.SN, PosId.SL));
+    appendableSet.add(new Appendable(PosId.SN, PosId.SY));
+    appendableSet.add(new Appendable(PosId.SY, PosId.SL));
+    appendableSet.add(new Appendable(PosId.SY, PosId.SN));
   }
 
   @Override
@@ -65,11 +73,7 @@ public class SimilarityMeasurePosAppender extends PosAppender {
       case SN:
         return false;
       case N:
-        if (pos.getMophemes().equals("NNB") || pos.getMophemes().equals("NP")) {
-          return true;
-        } else {
-          return false;
-        }
+        return pos.getMophemes().equals("NNB") || pos.getMophemes().equals("NP");
       default:
         return true;
     }

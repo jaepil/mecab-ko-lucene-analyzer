@@ -129,6 +129,53 @@ public class TokenGeneratorWithSimilarityMeasurePosAppenderTest
   }
 
   @Test
+  public void testSentenceWithEnglishAndNumbersAndSymbols() {
+    Node node = mockNodeListFactory(new String[] {
+        "아이폰\tNNP,*,T,아이폰,*,*,*,*,*",
+        "5\tSN,*,*,*,*,*,*,*,*",
+        "s\tSL,*,*,*,*,*,*,*,*",
+        "를\tJKO,*,T,를,*,*,*,*,*",
+        "32\tSN,*,*,*,*,*,*,*,*",
+        "GB\tSL,*,*,*,*,*,*,*,*",
+        "로\tJKB,*,F,로,*,*,*,*,*",
+        "구입\tNNG,*,T,구입,*,*,*,*,*",
+        "했\tXSV+EP,*,T,했,Inflect,XSV,EP,하/XSV+았/EP,*",
+        "다\tEF,*,F,다,*,*,*,*,*",
+        ".\tSF,*,*,*,*,*,*,*,*",
+        "elasticsearch\tSL,*,*,*,*,*,*,*,*",
+        "1\tSN,*,*,*,*,*,*,*,*",
+        ".\tSY,*,*,*,*,*,*,*,*",
+        "4\tSN,*,*,*,*,*,*,*,*",
+        ".\tSY,*,*,*,*,*,*,*,*",
+        "3\tSN,*,*,*,*,*,*,*,*",
+        "릴리스\tNNG,*,F,릴리스,*,*,*,*,*",
+        "되\tVV,*,F,되,*,*,*,*,*",
+        "었\tEP,*,T,었,*,*,*,*,*",
+        "다\tEF,*,F,다,*,*,*,*,*",
+        ".\tSF,*,*,*,*,*,*,*,*",
+    });
+
+    TokenGenerator generator = new TokenGenerator(
+        new SimilarityMeasurePosAppender(), TokenGenerator.NO_DECOMPOUND, node);
+
+    List<Pos> tokens;
+    tokens = generator.getNextEojeolTokens();
+    assertEquals("[아이폰/N/null/1/1/0/3]", tokens.toString());
+    tokens = generator.getNextEojeolTokens();
+    assertEquals("[5s/EOJEOL/null/1/1/3/5]", tokens.toString());
+    tokens = generator.getNextEojeolTokens();
+    assertEquals("[32GB/EOJEOL/null/1/1/6/10]", tokens.toString());
+    tokens = generator.getNextEojeolTokens();
+    assertEquals("[구입/N/null/1/1/11/13]", tokens.toString());
+    tokens = generator.getNextEojeolTokens();
+    assertEquals("[elasticsearch1.4.3/EOJEOL/null/1/1/16/34]", tokens.toString());
+    tokens = generator.getNextEojeolTokens();
+    assertEquals("[릴리스/N/null/1/1/34/37]", tokens.toString());
+    tokens = generator.getNextEojeolTokens();
+    assertEquals(null, tokens);
+  }
+
+  @Test
   public void testLongSentence() {
     Node node = mockNodeListFactory(new String[] {
         "이\tMM,~명사,F,이,*,*,*,*,*",

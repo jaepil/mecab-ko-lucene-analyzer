@@ -19,7 +19,7 @@
   <repositories>
     <repository>
       <id>mecab-java repo</id>
-      <url>https://bitbucket.org/eunjeon/mecab-java/downloads</url>
+      <url>https://raw.github.com/buggycode/repo/master/releases</url>
     </repository>
   </repositories>
 

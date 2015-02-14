@@ -42,33 +42,9 @@ import org.apache.solr.core.SolrResourceLoader;
  *
  * @author bibreen <bibreen@gmail.com>
  */
-public class SimilarityMeasureTokenizerFactory extends TokenizerFactory {
-  public static final String DEFAULT_MECAB_DIC_DIR =
-      "/usr/local/lib/mecab/dic/mecab-ko-dic";
-  private String mecabDicDir;
-  private int compoundNounMinLength;
-
+public class SimilarityMeasureTokenizerFactory extends StandardIndexTokenizerFactory{
   public SimilarityMeasureTokenizerFactory(Map<String,String> args) {
     super(args);
-    setMeCabDicDir(args);
-    setCompoundNounMinLength(args);
-    if (!args.isEmpty()) {
-      throw new IllegalArgumentException("Unknown parameters: " + args);
-    }
-  }
-
-  private void setMeCabDicDir(Map<String,String> args) {
-    String path = get(
-        args,
-        "mecabDicDir",
-        SimilarityMeasureTokenizerFactory.DEFAULT_MECAB_DIC_DIR);
-    if (path != null) {
-      if (path.startsWith("/")) {
-        mecabDicDir = path;
-      } else {
-        mecabDicDir = SolrResourceLoader.locateSolrHome() + path;
-      }
-    }
   }
 
   private void setCompoundNounMinLength(Map<String,String> args) {
@@ -83,7 +59,7 @@ public class SimilarityMeasureTokenizerFactory extends TokenizerFactory {
     return new MeCabKoTokenizer(
         factory,
         input,
-        mecabDicDir,
+        mecabArgs,
         new SimilarityMeasurePosAppender(),
         compoundNounMinLength);
   }

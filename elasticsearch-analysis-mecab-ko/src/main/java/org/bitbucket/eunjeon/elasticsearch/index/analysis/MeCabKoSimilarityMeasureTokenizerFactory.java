@@ -30,42 +30,21 @@ import java.io.Reader;
 
 /**
  * 문서 유사도 측적용 tokenizer 팩토리 생성자. 다음과 같은 파라미터를 받는다. (실험적인)
- *   - mecab_dic_dir: mecab-ko-dic 사전 경로. 디폴트 경로는 /usr/local/lib/mecab/dic/mecab-ko-dic 이다.
+ *   - mecab_args: mecab 옵션
  *   - compound_noun_min_length: 분해를 해야하는 복합명사의 최소 길이. 디폴트 값은 9999이다. (복합명사 분해 안함)
  *
  * @author bibreen <bibreen@gmail.com>
  */
-public class MeCabKoSimilarityMeasureTokenizerFactory extends AbstractTokenizerFactory {
-  private static final String DEFAULT_MECAB_DIC_DIR =
-      "/usr/local/lib/mecab/dic/mecab-ko-dic";
-  private String mecabDicDir;
-  private int compoundNounMinLength;
+public class MeCabKoSimilarityMeasureTokenizerFactory extends MeCabKoStandardTokenizerFactory {
 
   @Inject
   public MeCabKoSimilarityMeasureTokenizerFactory(
       Index index,
       @IndexSettings Settings indexSettings,
-      Environment env,
       @Assisted String name,
       @Assisted Settings settings) {
     super(index, indexSettings, name, settings);
-    setMeCabDicDir(env, settings);
     setCompoundNounMinLength(settings);
-  }
-
-  private void setMeCabDicDir(Environment env, Settings settings) {
-    String path = settings.get(
-        "mecab_dic_dir",
-        MeCabKoSimilarityMeasureTokenizerFactory.DEFAULT_MECAB_DIC_DIR);
-    if (path.startsWith("/")) {
-      mecabDicDir = path;
-    } else {
-      try {
-        mecabDicDir = env.homeFile().getCanonicalPath() + "/" + path;
-      } catch (IOException e) {
-        mecabDicDir = path;
-      }
-    }
   }
 
   private void setCompoundNounMinLength(Settings settings) {
@@ -78,8 +57,9 @@ public class MeCabKoSimilarityMeasureTokenizerFactory extends AbstractTokenizerF
   public Tokenizer create(Reader reader) {
     return new MeCabKoTokenizer(
         reader,
-        mecabDicDir,
+        mecabArgs,
         new SimilarityMeasurePosAppender(),
         compoundNounMinLength);
   }
+
 }

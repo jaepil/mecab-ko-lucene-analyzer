@@ -15,13 +15,15 @@
  ******************************************************************************/
 package org.bitbucket.eunjeon.mecab_ko_mecab_loader;
 
-import org.chasen.mecab.Lattice;
 import org.chasen.mecab.Model;
-import org.chasen.mecab.Tagger;
+
+import java.util.Collections;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 public final class MeCabLoader {
-  private volatile static MeCabLoader uniqueInstance;
-  private static Model model;
+  private static Map<String, Model> models =
+      Collections.synchronizedMap(new WeakHashMap<String, Model>());
   static {
     try {
       System.loadLibrary("MeCab");
@@ -32,32 +34,15 @@ public final class MeCabLoader {
       System.exit(1);
     }
   }
- 
-  public static MeCabLoader getInstance(String dicDir)
-      throws NullPointerException, RuntimeException {
-    // DCL(Double-checking Locking) using Volatile Singleton. thread-safe
-    // http://en.wikipedia.org/wiki/Double-checked_locking#Usage_in_Java 참조
-    MeCabLoader result = uniqueInstance;
-    if (result == null) {
-      synchronized (MeCabLoader.class) {
-        result = uniqueInstance;
-        if (result == null) {
-          uniqueInstance = result = new MeCabLoader(dicDir);
-        }
-      }
-    }
-    return result;
-  }
-  
-  private MeCabLoader(String dicDir) {
-    model = new Model("-d " + dicDir);
-  }
+  public static Model getModel(String args) throws RuntimeException {
+    System.out.println("# model count: " + models.size());
+    System.out.println(args);
 
-  public Tagger createTagger() {
-    return model.createTagger();
-  }
-  
-  public Lattice createLattice() {
-    return model.createLattice();
+    Model model = models.get(args);
+    if (model == null) {
+      model = new Model(args);
+      models.put(args, model);
+    }
+    return model;
   }
 }

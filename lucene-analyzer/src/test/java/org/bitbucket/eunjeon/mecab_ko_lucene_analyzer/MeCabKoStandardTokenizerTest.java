@@ -62,7 +62,7 @@ public class MeCabKoStandardTokenizerTest {
       StringReader reader, int decompoundMinLength) {
     Tokenizer tokenizer = new MeCabKoTokenizer(
         reader,
-        "/usr/local/lib/mecab/dic/mecab-ko-dic",
+        "-d /usr/local/lib/mecab/dic/mecab-ko-dic",
         new StandardPosAppender(),
         decompoundMinLength);
     return tokenizer;

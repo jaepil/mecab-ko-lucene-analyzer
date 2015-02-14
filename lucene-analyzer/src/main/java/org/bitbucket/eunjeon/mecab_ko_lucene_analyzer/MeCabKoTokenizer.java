@@ -30,6 +30,7 @@ import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.tokenattributes.PartOfSpee
 import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.tokenattributes.SemanticClassAttribute;
 import org.bitbucket.eunjeon.mecab_ko_mecab_loader.MeCabLoader;
 import org.chasen.mecab.Lattice;
+import org.chasen.mecab.Model;
 import org.chasen.mecab.Tagger;
 
 /**
@@ -48,8 +49,8 @@ public final class MeCabKoTokenizer extends Tokenizer {
   private SemanticClassAttribute semanticClassAtt;
  
   private String document;
-  private String mecabDicDir;
-  private MeCabLoader mecabLoader;
+  private String mecabArgs;
+  private Model model;
   private Lattice lattice;
   private Tagger tagger;
   private PosAppender posAppender;
@@ -62,20 +63,20 @@ public final class MeCabKoTokenizer extends Tokenizer {
    * Default AttributeFactory 사용.
    * 
    * @param input
-   * @param dicDir mecab 사전 디렉터리 경로
+   * @param args mecab 실행옵션(ex: -d /usr/local/lib/mecab/dic/mecab-ko-dic/)
    * @param appender PosAppender
    * @param compoundNounMinLength 분해를 해야하는 복합명사의 최소 길이.
    * 복합명사 분해가 필요없는 경우, TokenGenerator.NO_DECOMPOUND를 입력한다.
    */
   public MeCabKoTokenizer(
       Reader input,
-      String dicDir,
+      String args,
       PosAppender appender,
       int compoundNounMinLength) {
     this(
         AttributeFactory.DEFAULT_ATTRIBUTE_FACTORY,
         input,
-        dicDir,
+        args,
         appender,
         compoundNounMinLength);
   }
@@ -85,7 +86,7 @@ public final class MeCabKoTokenizer extends Tokenizer {
    * 
    * @param factory the AttributeFactory to use
    * @param input
-   * @param dicDir mecab 사전 디렉터리 경로
+   * @param args mecab 실행옵션(ex: -d /usr/local/lib/mecab/dic/mecab-ko-dic/)
    * @param appender PosAppender
    * @param compoundNounMinLength 분해를 해야하는 복합명사의 최소 길이.
    * 복합명사 분해가 필요없는 경우, TokenGenerator.NO_DECOMPOUND를 입력한다.
@@ -93,21 +94,21 @@ public final class MeCabKoTokenizer extends Tokenizer {
   public MeCabKoTokenizer(
       AttributeFactory factory,
       Reader input,
-      String dicDir,
+      String args,
       PosAppender appender,
       int compoundNounMinLength) {
     super(factory, input);
     posAppender = appender;
-    mecabDicDir = dicDir;
+    mecabArgs = args;
     this.compoundNounMinLength = compoundNounMinLength;
     setMeCab();
     setAttributes();
   }
 
   private void setMeCab() {
-    mecabLoader = MeCabLoader.getInstance(mecabDicDir);
-    lattice = mecabLoader.createLattice();
-    tagger = mecabLoader.createTagger();
+    model = MeCabLoader.getModel(mecabArgs);
+    lattice = model.createLattice();
+    tagger = model.createTagger();
   }
   
   private void setAttributes() {

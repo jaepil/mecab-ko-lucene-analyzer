@@ -45,8 +45,8 @@ import org.apache.solr.core.SolrResourceLoader;
 public class StandardIndexTokenizerFactory extends TokenizerFactory {
   public static final String DEFAULT_MECAB_DIC_DIR =
       "/usr/local/lib/mecab/dic/mecab-ko-dic";
-  private String mecabDicDir;
-  private int compoundNounMinLength;
+  protected String mecabArgs;
+  protected int compoundNounMinLength;
   
   public StandardIndexTokenizerFactory(Map<String,String> args) {
     super(args);
@@ -58,17 +58,10 @@ public class StandardIndexTokenizerFactory extends TokenizerFactory {
   }
 
   private void setMeCabDicDir(Map<String,String> args) {
-    String path = get(
+    mecabArgs = get(
         args,
-        "mecabDicDir",
-        StandardIndexTokenizerFactory.DEFAULT_MECAB_DIC_DIR);
-    if (path != null) {
-      if (path.startsWith("/")) {
-        mecabDicDir = path;
-      } else {
-        mecabDicDir = SolrResourceLoader.locateSolrHome() + path;
-      }
-    }
+        "mecabArgs",
+        "-d " + StandardIndexTokenizerFactory.DEFAULT_MECAB_DIC_DIR);
   }
   
   private void setCompoundNounMinLength(Map<String,String> args) {
@@ -83,7 +76,7 @@ public class StandardIndexTokenizerFactory extends TokenizerFactory {
     return new MeCabKoTokenizer(
         factory,
         input,
-        mecabDicDir,
+        mecabArgs,
         new StandardPosAppender(),
         compoundNounMinLength);
   }

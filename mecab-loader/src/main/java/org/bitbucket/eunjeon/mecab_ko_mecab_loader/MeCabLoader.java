@@ -16,14 +16,15 @@
 package org.bitbucket.eunjeon.mecab_ko_mecab_loader;
 
 import org.chasen.mecab.Model;
+import org.elasticsearch.common.logging.ESLogger;
+import org.elasticsearch.common.logging.Loggers;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
 
 public final class MeCabLoader {
-  private static Map<String, Model> models =
-      Collections.synchronizedMap(new WeakHashMap<String, Model>());
+  private static ESLogger logger = Loggers.getLogger(MeCabLoader.class, "mecab-ko");
+  private static Map<String, Model> models = new WeakHashMap<>();
   static {
     try {
       System.loadLibrary("MeCab");
@@ -34,15 +35,16 @@ public final class MeCabLoader {
       System.exit(1);
     }
   }
-  public static Model getModel(String args) throws RuntimeException {
-    System.out.println("# model count: " + models.size());
-    System.out.println(args);
+
+  public static synchronized Model getModel(String args) throws RuntimeException {
+    logger.debug("get model from " + args);
 
     Model model = models.get(args);
     if (model == null) {
       model = new Model(args);
       models.put(args, model);
     }
+    logger.debug("allocated model's count is #" + models.size());
     return model;
   }
 }

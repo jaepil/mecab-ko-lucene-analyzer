@@ -54,16 +54,13 @@ public class MeCabKoStandardTokenizerFactory extends AbstractTokenizerFactory {
   
   private void setMeCabArgs(Settings settings) {
     mecabArgs = settings.get(
-        "mecab_args", "-r " + MeCabKoStandardTokenizerFactory.DEFAULT_MECAB_RC_FILE);
-
-    System.out.println("setMeCabArgs(): " + mecabArgs);
+        "mecab_args", "-d " + MeCabKoStandardTokenizerFactory.DEFAULT_MECAB_DIC_DIR);
   }
   
   private void setCompoundNounMinLength(Settings settings) {
     compoundNounMinLength = settings.getAsInt(
         "compound_noun_min_length",
         TokenGenerator.DEFAULT_COMPOUND_NOUN_MIN_LENGTH);
-      System.out.println("setCompoundNounMinLength(): " + compoundNounMinLength);
   }
 
   @Override

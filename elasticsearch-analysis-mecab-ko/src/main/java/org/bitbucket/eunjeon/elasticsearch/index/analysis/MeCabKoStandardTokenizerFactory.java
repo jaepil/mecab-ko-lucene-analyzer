@@ -17,6 +17,9 @@ package org.bitbucket.eunjeon.elasticsearch.index.analysis;
 
 import org.apache.lucene.analysis.Tokenizer;
 import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.*;
+import org.bitbucket.eunjeon.mecab_ko_mecab_loader.MeCabLoader;
+import org.elasticsearch.common.logging.ESLogger;
+import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.index.analysis.AbstractTokenizerFactory;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.inject.assistedinject.Assisted;
@@ -40,6 +43,8 @@ public class MeCabKoStandardTokenizerFactory extends AbstractTokenizerFactory {
       "/usr/local/etc/mecabrc";
   protected String mecabArgs;
   protected int compoundNounMinLength;
+
+  private ESLogger logger = Loggers.getLogger(MeCabKoStandardTokenizerFactory.class, "mecab-ko");
 
   @Inject
   public MeCabKoStandardTokenizerFactory(
@@ -65,6 +70,8 @@ public class MeCabKoStandardTokenizerFactory extends AbstractTokenizerFactory {
 
   @Override
   public Tokenizer create(Reader reader) {
+    logger.debug("already allocated model's count is #" + MeCabLoader.getModelCount());
+    logger.debug("creating tokenizer from model " + mecabArgs);
     return new MeCabKoTokenizer(
         reader,
         mecabArgs,

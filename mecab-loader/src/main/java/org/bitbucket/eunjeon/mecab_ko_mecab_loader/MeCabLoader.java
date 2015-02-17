@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 public final class MeCabLoader {
-  private static ESLogger logger = Loggers.getLogger(MeCabLoader.class, "mecab-ko");
   private static Map<String, Model> models = new WeakHashMap<>();
   static {
     try {
@@ -37,14 +36,15 @@ public final class MeCabLoader {
   }
 
   public static synchronized Model getModel(String args) throws RuntimeException {
-    logger.debug("get model from " + args);
-
     Model model = models.get(args);
     if (model == null) {
       model = new Model(args);
       models.put(args, model);
     }
-    logger.debug("allocated model's count is #" + models.size());
     return model;
+  }
+
+  public static int getModelCount() {
+    return models.size();
   }
 }

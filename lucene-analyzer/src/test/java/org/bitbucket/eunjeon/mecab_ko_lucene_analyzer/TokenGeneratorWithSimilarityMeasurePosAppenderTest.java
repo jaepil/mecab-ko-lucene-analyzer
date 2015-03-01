@@ -60,7 +60,7 @@ public class TokenGeneratorWithSimilarityMeasurePosAppenderTest
   @Test
   public void testSentenceWithCompound() {
     Node node = mockNodeListFactory(new String[] {
-        "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성+전자,삼성/NNG/*/1/1+삼성전자/Compound/*/0/2+전자/NNG/*/1/1",
+        "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성+전자,삼성/NNG/*+전자/NNG/*",
         "는\tJX,*,T,는,*,*,*,*,*",
         " 대표\tNNG,*,F,대표,*,*,*,*,*",
         "적\tXSN,*,T,적,*,*,*,*,*",
@@ -179,7 +179,7 @@ public class TokenGeneratorWithSimilarityMeasurePosAppenderTest
   public void testLongSentence() {
     Node node = mockNodeListFactory(new String[] {
         "이\tMM,~명사,F,이,*,*,*,*,*",
-        "위원장\tNNG,*,T,위원장,Compound,*,*,위원+장,위원/NNG/*/1/1+위원장/Compound/*/0/2+장/NNG/*/1/1",
+        "위원장\tNNG,*,T,위원장,Compound,*,*,위원+장,위원/NNG/*+장/NNG/*",
         "은\tJX,*,T,은,*,*,*,*,*",
         "\"\tSY,*,*,*,*,*,*,*,*",
         "세계\tNNG,*,F,세계,*,*,*,*,*",

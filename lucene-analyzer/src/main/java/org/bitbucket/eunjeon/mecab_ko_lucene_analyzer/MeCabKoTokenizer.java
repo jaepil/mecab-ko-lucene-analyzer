@@ -170,6 +170,7 @@ public final class MeCabKoTokenizer extends Tokenizer {
     offsetAtt.setOffset(
         correctOffset(document.length()), correctOffset(document.length()));
     document = null;
+    lattice.clear();
   }
   
   @Override
@@ -178,7 +179,7 @@ public final class MeCabKoTokenizer extends Tokenizer {
     generator = null;
     tokensQueue = null;
   }
-  
+
   private String getDocument() throws IOException {
     StringBuilder document = new StringBuilder();
     char[] tmp = new char[1024];

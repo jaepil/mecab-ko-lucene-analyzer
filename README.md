@@ -35,10 +35,10 @@ mecab-ko와 mecab-ko-dic의 설치는 [mecab-ko-dic 설명](https://bitbucket.or
 ### MeCab.jar와 libMeCab.so 설치
 Solr example(Solr with Jetty)의 사용을 기준으로 설명합니다.
 
-[mecab-java-XX.tar.gz](http://code.google.com/p/mecab/downloads/list) 를 다운받아 설치합니다.
+[mecab-java-0.996.tar.gz](https://bitbucket.org/eunjeon/mecab-java/downloads/mecab-java-0.996.tar.gz) 를 다운받아 설치합니다.
 
-    $ tar zxvf mecab-java-XX.tar.gz
-    $ cd mecab-java-XX
+    $ tar zxvf mecab-java-0.996.tar.gz
+    $ cd mecab-java-0.996
     $ vi Makefile
         # java path 설정.               ; INCLUDE=/usr/local/jdk1.6.0_41/include 
         # OpenJDK 사용시 "-O1" 로 변경. ; $(CXX) -O1 -c -fpic $(TARGET)_wrap.cxx  $(INC)
@@ -49,7 +49,7 @@ Solr example(Solr with Jetty)의 사용을 기준으로 설명합니다.
 
 __주의 사항__
 
-  - mecab-ko의 버전에 맞는 mecab-java-XX.tar.gz를 선택해야 합니다. mecab-0.996-ko.0.9.0 버전에서는 mecab-java-0.996을 사용해야 합니다.
+  - mecab-ko의 버전에 맞는 mecab-java-0.996.tar.gz를 선택해야 합니다. mecab-0.996-ko.0.9.0 버전에서는 mecab-java-0.996을 사용해야 합니다.
   - Makefile에서 INCLUDE 값을 자신의 환경에 맞게 변경해야 합니다.
   - OpenJDK를 사용하시는 경우, 최적화 옵션을 -O나 -O1로 고쳐야 합니다. [mecab-ko-lucene-analyzer OpenJDK에서 사용하기](http://eunjeon.blogspot.kr/2013/04/mecab-ko-lucene-analyzer-openjdk.html) 참조
 

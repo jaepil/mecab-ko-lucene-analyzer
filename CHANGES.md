@@ -1,5 +1,21 @@
 # mecab-ko-lucene-analyzer ChangeLog
 
+## 0.16.2
+
+  - 새로운 기능
+    - KeywordSearchTokenizer (실험적인 토크나이저)
+
+## 0.16.1
+
+  - 새로운 기능
+    - SimilarityMeasureTokenizer (실험적인 토크나이저)
+  - 오류 수정
+    - elasticsearch 에서 tagger와 lexicon이 해제되지 않아 메모리 사용이 계속적으로 증가하는 문제.
+
+## 0.16.0
+  - 새로운 기능
+    - Lucene/Solr 4.9.0, Elasticsearch 1.3.0 지원
+
 ## 0.16.0
   - 새로운 기능
     - Lucene/Solr 4.9.0, Elasticsearch 1.3.0 지원

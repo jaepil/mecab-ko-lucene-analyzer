@@ -36,12 +36,22 @@ public class SimilarityMeasurePosAppender extends PosAppender {
     // 사전에 없는 단어(UNKNOWN)은 체언이라고 가정한다.
 
     // 체언 접두사(XPN) + 체언(N*)
-    appendableSet.add(new Appendable(PosId.XPN, PosId.N));
+    appendableSet.add(new Appendable(PosId.XPN, PosId.NNG));
+    appendableSet.add(new Appendable(PosId.XPN, PosId.NNP));
+    appendableSet.add(new Appendable(PosId.XPN, PosId.NNB));
+    appendableSet.add(new Appendable(PosId.XPN, PosId.NNBC));
+    appendableSet.add(new Appendable(PosId.XPN, PosId.NP));
+    appendableSet.add(new Appendable(PosId.XPN, PosId.NR));
     appendableSet.add(new Appendable(PosId.XPN, PosId.COMPOUND));
     appendableSet.add(new Appendable(PosId.XPN, PosId.UNKNOWN));
 
     // 체언(N*) + 명사 파생 접미사(XSN)
-    appendableSet.add(new Appendable(PosId.N, PosId.XSN));
+    appendableSet.add(new Appendable(PosId.NNG, PosId.XSN));
+    appendableSet.add(new Appendable(PosId.NNP, PosId.XSN));
+    appendableSet.add(new Appendable(PosId.NNB, PosId.XSN));
+    appendableSet.add(new Appendable(PosId.NNBC, PosId.XSN));
+    appendableSet.add(new Appendable(PosId.NP, PosId.XSN));
+    appendableSet.add(new Appendable(PosId.NR, PosId.XSN));
     appendableSet.add(new Appendable(PosId.COMPOUND, PosId.XSN));
     appendableSet.add(new Appendable(PosId.UNKNOWN, PosId.XSN));
 
@@ -72,9 +82,11 @@ public class SimilarityMeasurePosAppender extends PosAppender {
       case SH:
       case SN:
       case XR:
+      case NNG:
+      case NNP:
+      case NNBC:
+      case NR:
         return false;
-      case N:
-        return pos.getMophemes().equals("NNB") || pos.getMophemes().equals("NP");
       default:
         return true;
     }

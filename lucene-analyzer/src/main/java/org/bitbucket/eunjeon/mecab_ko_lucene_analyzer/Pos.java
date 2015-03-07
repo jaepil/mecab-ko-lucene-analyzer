@@ -122,8 +122,8 @@ public class Pos {
       expression = items[NodeIndex.EXPRESSION];
       indexExpression = items[NodeIndex.INDEX_EXPRESSION];
     } else if (posId == PosId.COMPOUND){
-      this.startPosId = PosId.N;
-      this.endPosId = PosId.N;
+      this.startPosId = PosId.NNG;
+      this.endPosId = PosId.NNG;
       this.positionLength =
           getCompoundNounPositionLength(items[NodeIndex.INDEX_EXPRESSION]);
       indexExpression = items[NodeIndex.INDEX_EXPRESSION];

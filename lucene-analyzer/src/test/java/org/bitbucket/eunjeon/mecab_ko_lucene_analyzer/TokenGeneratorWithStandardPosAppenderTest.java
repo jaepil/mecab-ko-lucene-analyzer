@@ -50,9 +50,9 @@ public class TokenGeneratorWithStandardPosAppenderTest
         new StandardPosAppender(), TokenGenerator.NO_DECOMPOUND, node);
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[진달래/N/null/1/1/0/3]", tokens.toString());
+    assertEquals("[진달래/NNG/null/1/1/0/3]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[꽃이/EOJEOL/null/1/1/4/6, 꽃/N/null/0/1/4/5]", tokens.toString());
+    assertEquals("[꽃이/EOJEOL/null/1/1/4/6, 꽃/NNG/null/0/1/4/5]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals("[피었습니다/EOJEOL/null/1/1/7/12, 피/VV/null/0/1/7/8]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
@@ -70,7 +70,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
     assertEquals(
-        "[삼성/N/null/1/1/0/2, 삼성전자/COMPOUND/null/0/2/0/4, 전자/N/null/1/1/2/4]",
+        "[삼성/NNG/null/1/1/0/2, 삼성전자/COMPOUND/null/0/2/0/4, 전자/NNG/null/1/1/2/4]",
         tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(null, tokens);
@@ -88,7 +88,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
     assertEquals(
-        "[아/N/null/1/1/0/1, 아질산나트륨/COMPOUND/null/0/3/0/6, 아질산/COMPOUND/null/0/2/0/3, 질산/N/null/1/1/1/3, 나트륨/N/null/1/1/3/6]",
+        "[아/NNG/null/1/1/0/1, 아질산나트륨/COMPOUND/null/0/3/0/6, 아질산/COMPOUND/null/0/2/0/3, 질산/NNG/null/1/1/1/3, 나트륨/NNG/null/1/1/3/6]",
         tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(null, tokens);
@@ -106,9 +106,9 @@ public class TokenGeneratorWithStandardPosAppenderTest
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
     assertEquals(
-        "[을지로/N/null/1/1/0/3, 을지로3가역/COMPOUND/null/0/4/0/6, " +
+        "[을지로/NNP/null/1/1/0/3, 을지로3가역/COMPOUND/null/0/4/0/6, " +
         "을지로3가/COMPOUND/null/0/3/0/5, 을지로3/COMPOUND/null/0/2/0/4, " +
-        "3/SN/null/1/1/3/4, 가/N/null/1/1/4/5, 역/N/null/1/1/5/6]",
+        "3/SN/null/1/1/3/4, 가/NNG/null/1/1/4/5, 역/NNG/null/1/1/5/6]",
         tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(null, tokens);
@@ -152,7 +152,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     
     tokens = generator.getNextEojeolTokens();
     assertEquals(
-        "[삼성/N/null/1/1/0/2, 삼성전자/COMPOUND/null/0/2/0/4, 전자/N/null/1/1/2/4]",
+        "[삼성/NNG/null/1/1/0/2, 삼성전자/COMPOUND/null/0/2/0/4, 전자/NNG/null/1/1/2/4]",
         tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(null, tokens);
@@ -179,11 +179,11 @@ public class TokenGeneratorWithStandardPosAppenderTest
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
     assertEquals(
-        "[삼성/N/null/1/1/0/2, 삼성전자는/EOJEOL/null/0/2/0/5, 삼성전자/COMPOUND/null/0/2/0/4, 전자/N/null/1/1/2/4]",
+        "[삼성/NNG/null/1/1/0/2, 삼성전자는/EOJEOL/null/0/2/0/5, 삼성전자/COMPOUND/null/0/2/0/4, 전자/NNG/null/1/1/2/4]",
         tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(
-        "[대표/N/null/1/1/6/8]",
+        "[대표/NNG/null/1/1/6/8]",
         tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(
@@ -191,11 +191,11 @@ public class TokenGeneratorWithStandardPosAppenderTest
         tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(
-        "[복합/N/null/1/1/11/13]",
+        "[복합/NNG/null/1/1/11/13]",
         tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(
-        "[명사이다/EOJEOL/null/1/1/13/17, 명사/N/null/0/1/13/15]",
+        "[명사이다/EOJEOL/null/1/1/13/17, 명사/NNG/null/0/1/13/15]",
         tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(null, tokens);
@@ -217,11 +217,11 @@ public class TokenGeneratorWithStandardPosAppenderTest
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
     assertEquals(
-        "[아/N/null/1/1/0/1, 아질산나트륨이란/EOJEOL/null/0/3/0/8, 아질산나트륨/COMPOUND/null/0/3/0/6, 아질산/COMPOUND/null/0/2/0/3, 질산/N/null/1/1/1/3, 나트륨/N/null/1/1/3/6]",
+        "[아/NNG/null/1/1/0/1, 아질산나트륨이란/EOJEOL/null/0/3/0/8, 아질산나트륨/COMPOUND/null/0/3/0/6, 아질산/COMPOUND/null/0/2/0/3, 질산/NNG/null/1/1/1/3, 나트륨/NNG/null/1/1/3/6]",
         tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(
-        "[무엇인가요/EOJEOL/null/1/1/8/13, 무엇/N/null/0/1/8/10]",
+        "[무엇인가요/EOJEOL/null/1/1/8/13, 무엇/NP/null/0/1/8/10]",
         tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(null, tokens);
@@ -246,12 +246,12 @@ public class TokenGeneratorWithStandardPosAppenderTest
     
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[나의/EOJEOL/null/1/1/0/2, 나/N/null/0/1/0/1]", tokens.toString());
+    assertEquals("[나의/EOJEOL/null/1/1/0/2, 나/NP/null/0/1/0/1]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(
         "[무궁화/COMPOUND/null/1/2/2/5]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[꽃을/EOJEOL/null/1/1/5/7, 꽃/N/null/0/1/5/6]", tokens.toString());
+    assertEquals("[꽃을/EOJEOL/null/1/1/5/7, 꽃/NNG/null/0/1/5/6]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals("[보아라/EOJEOL/null/1/1/7/10, 보/VV/null/0/1/7/8]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
@@ -281,7 +281,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[영어/N/null/1/1/0/2]", tokens.toString());
+    assertEquals("[영어/NNG/null/1/1/0/2]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals("[english/SL/null/1/1/3/10]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
@@ -291,7 +291,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     tokens = generator.getNextEojeolTokens();
     assertEquals("[하는/EOJEOL/null/1/1/17/19]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[것은/EOJEOL/null/1/1/19/21, 것/N/null/0/1/19/20]", tokens.toString());
+    assertEquals("[것은/EOJEOL/null/1/1/19/21, 것/NNB/null/0/1/19/20]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals("[어렵다/EOJEOL/null/1/1/21/24, 어렵/VA/null/0/1/21/23]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
@@ -309,11 +309,11 @@ public class TokenGeneratorWithStandardPosAppenderTest
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[은전/N/null/1/1/0/2]", tokens.toString());
+    assertEquals("[은전/NNG/null/1/1/0/2]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[한/N/null/1/1/2/3]", tokens.toString());
+    assertEquals("[한/NR/null/1/1/2/3]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[닢/N/null/1/1/3/4]", tokens.toString());
+    assertEquals("[닢/NNG/null/1/1/3/4]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(null, tokens);
   }
@@ -334,15 +334,15 @@ public class TokenGeneratorWithStandardPosAppenderTest
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[은전/N/null/1/1/0/2]", tokens.toString());
+    assertEquals("[은전/NNG/null/1/1/0/2]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[한/N/null/1/1/2/3]", tokens.toString());
+    assertEquals("[한/NR/null/1/1/2/3]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[닢은/EOJEOL/null/1/1/3/5, 닢/N/null/0/1/3/4]", tokens.toString());
+    assertEquals("[닢은/EOJEOL/null/1/1/3/5, 닢/NNG/null/0/1/3/4]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[오픈/N/null/1/1/5/7]", tokens.toString());
+    assertEquals("[오픈/NNG/null/1/1/5/7]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[소스이다/EOJEOL/null/1/1/7/11, 소스/N/null/0/1/7/9]", tokens.toString());
+    assertEquals("[소스이다/EOJEOL/null/1/1/7/11, 소스/NNG/null/0/1/7/9]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(null, tokens);
   }
@@ -365,7 +365,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     tokens = generator.getNextEojeolTokens();
     assertEquals("[없는/EOJEOL/null/1/1/3/5, 없/VA/null/0/1/3/4]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[단어/N/null/1/1/6/8]", tokens.toString());
+    assertEquals("[단어/NNG/null/1/1/6/8]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(null, tokens);
   }
@@ -400,7 +400,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[의대/N/null/1/1/0/2]", tokens.toString());
+    assertEquals("[의대/NNG/null/1/1/0/2]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals("[생/XSN/null/1/1/2/3]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
@@ -422,7 +422,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[공대/N/null/1/1/0/2]", tokens.toString());
+    assertEquals("[공대/NNG/null/1/1/0/2]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals("[생은/EOJEOL/null/1/1/2/4, 생/XSN/null/0/1/2/3]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
@@ -445,7 +445,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     tokens = generator.getNextEojeolTokens();
     assertEquals("[왕/XPN/null/1/1/0/1]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[게임/N/null/1/1/1/3]", tokens.toString());
+    assertEquals("[게임/NNG/null/1/1/1/3]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(null, tokens);
   }
@@ -466,11 +466,11 @@ public class TokenGeneratorWithStandardPosAppenderTest
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[그것은/EOJEOL/null/1/1/0/3, 그것/N/null/0/1/0/2]", tokens.toString());
+    assertEquals("[그것은/EOJEOL/null/1/1/0/3, 그것/NP/null/0/1/0/2]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals("[어려운/INFLECT/null/1/1/3/6, 어렵/VA/null/0/1/3/5]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[문제다/EOJEOL/null/1/1/6/9, 문제/N/null/0/1/6/8]", tokens.toString());
+    assertEquals("[문제다/EOJEOL/null/1/1/6/9, 문제/NNG/null/0/1/6/8]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(null, tokens);
   }
@@ -492,11 +492,11 @@ public class TokenGeneratorWithStandardPosAppenderTest
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[그것은/EOJEOL/null/1/1/0/3, 그것/N/null/0/1/0/2]", tokens.toString());
+    assertEquals("[그것은/EOJEOL/null/1/1/0/3, 그것/NP/null/0/1/0/2]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals("[어려워란/EOJEOL/null/1/1/3/7, 어렵/VA/null/0/1/3/5]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[문제다/EOJEOL/null/1/1/7/10, 문제/N/null/0/1/7/9]", tokens.toString());
+    assertEquals("[문제다/EOJEOL/null/1/1/7/10, 문제/NNG/null/0/1/7/9]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(null, tokens);
   }
@@ -514,11 +514,11 @@ public class TokenGeneratorWithStandardPosAppenderTest
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[오빤/INFLECT/null/1/1/0/2, 오빠/N/null/0/1/0/2]", tokens.toString());
+    assertEquals("[오빤/INFLECT/null/1/1/0/2, 오빠/NNG/null/0/1/0/2]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[강남/N/지명/1/1/2/4]", tokens.toString());
+    assertEquals("[강남/NNP/지명/1/1/2/4]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[스타일/N/null/1/1/4/7]", tokens.toString());
+    assertEquals("[스타일/NNG/null/1/1/4/7]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(null, tokens);
   }
@@ -540,11 +540,11 @@ public class TokenGeneratorWithStandardPosAppenderTest
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[남희석은/EOJEOL/null/1/1/0/4, 남희석/N/인명/0/1/0/3]", tokens.toString());
+    assertEquals("[남희석은/EOJEOL/null/1/1/0/4, 남희석/NNP/인명/0/1/0/3]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[충남/N/지명/1/1/5/7]", tokens.toString());
+    assertEquals("[충남/NNP/지명/1/1/5/7]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[사람이다/EOJEOL/null/1/1/7/11, 사람/N/null/0/1/7/9]", tokens.toString());
+    assertEquals("[사람이다/EOJEOL/null/1/1/7/11, 사람/NNG/null/0/1/7/9]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(null, tokens);
     

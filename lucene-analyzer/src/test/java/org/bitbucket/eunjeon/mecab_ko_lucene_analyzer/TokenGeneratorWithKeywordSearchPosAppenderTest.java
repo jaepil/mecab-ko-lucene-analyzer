@@ -37,7 +37,7 @@ public class TokenGeneratorWithKeywordSearchPosAppenderTest
   @Test
   public void testBasicHangulSentence() {
     Node node = mockNodeListFactory(new String[] {
-        "파란\tVA+ETM,*,T,파란,Inflect,VA,ETM,파랗/VA+ᆫ/ETM,*",
+        "파란\tVA+ETM,*,T,파란,Inflect,VA,ETM,파랗/VA/*+ᆫ/ETM/*,*",
         "진달래\tNNG,*,F,진달래,*,*,*,*,*",
         " 꽃\tNNG,*,T,꽃,*,*,*,*,*",
         "이\tJKS,*,F,이,*,*,*,*,*",
@@ -65,11 +65,11 @@ public class TokenGeneratorWithKeywordSearchPosAppenderTest
   @Test
   public void testBasicHangulSentence1() {
     Node node = mockNodeListFactory(new String[] {
-        "훈민정음\tNNP,*,T,훈민정음,Compound,*,*,훈민+정음,훈민/NNG/*/1/1+훈민정음/Compound/*/0/2+정음/NNG/*/1/1",
+        "훈민정음\tNNP,*,T,훈민정음,Compound,*,*,훈민+정음,훈민/NNG/*+정음/NNG/*",
         "은\tJX,*,T,은,*,*,*,*,*",
         "경건\tXR,*,T,경건,*,*,*,*,*",
         "한\tXSA+ETM,*,T,한,Inflect,XSA,ETM,하/XSA+ᆫ/ETM,*",
-        "글자\tNNG,*,F,글자,Compound,*,*,글+자,글/NNG/*/1/1+글자/Compound/*/0/2+자/NNG/*/1/1",
+        "글자\tNNG,*,F,글자,Compound,*,*,글+자,글/NNG/*자/NNG/*",
         "이\tVCP,*,F,이,*,*,*,*,*",
         "다\tEF,*,F,다,*,*,*,*,*",
         ".\tSF,*,*,*,*,*,*,*,*"
@@ -83,7 +83,7 @@ public class TokenGeneratorWithKeywordSearchPosAppenderTest
     tokens = generator.getNextEojeolTokens();
     assertEquals("[경건/XR/null/1/1/5/7]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[글자/COMPOUND/null/1/2/8/10]", tokens.toString());
+    assertEquals("[글자/COMPOUND/null/1/1/8/10]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(null, tokens);
   }
@@ -91,7 +91,7 @@ public class TokenGeneratorWithKeywordSearchPosAppenderTest
   @Test
   public void testSentenceWithCompound() {
     Node node = mockNodeListFactory(new String[] {
-        "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성+전자,삼성/NNG/*/1/1+삼성전자/Compound/*/0/2+전자/NNG/*/1/1",
+        "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성+전자,삼성/NNG/*+전자/NNG/*",
         "는\tJX,*,T,는,*,*,*,*,*",
         " 대표\tNNG,*,F,대표,*,*,*,*,*",
         "적\tXSN,*,T,적,*,*,*,*,*",

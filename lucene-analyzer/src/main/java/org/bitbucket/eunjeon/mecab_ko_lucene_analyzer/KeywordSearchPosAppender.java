@@ -87,13 +87,15 @@ public class KeywordSearchPosAppender extends PosAppender {
   }
 
   @Override
-  public LinkedList<Pos> extractAdditionalPoses(LinkedList<Pos> poses) {
+  public LinkedList<Pos> getTokensFrom(Eojeol eojeol) {
     LinkedList<Pos> output = new LinkedList<Pos>();
-    for (Pos pos: poses) {
-      if (isAbsolutePos(pos)) {
-        pos.setPositionIncr(0);
-        output.add(pos);
-      }
+    LinkedList<Pos> poses = eojeol.getPosList();
+    if (poses.size() == 1) {
+      output.add(poses.getFirst());
+    } else {
+      Pos eojeolPos = new Pos(
+          eojeol.getTerm(), PosId.EOJEOL, eojeol.getStartOffset(), 1, 1);
+      output.add(eojeolPos);
     }
     return output;
   }

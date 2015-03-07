@@ -8,6 +8,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
   MeCabKoStandardTokenizerTest.class,
   PosIdManagerTest.class,
-  TokenGeneratorWithStandardPosAppenderTest.class})
+  TokenGeneratorWithStandardPosAppenderTest.class,
+  TokenGeneratorWithSimilarityMeasurePosAppenderTest.class,
+  TokenGeneratorWithKeywordSearchPosAppenderTest.class})
 public class AllTests {
 }

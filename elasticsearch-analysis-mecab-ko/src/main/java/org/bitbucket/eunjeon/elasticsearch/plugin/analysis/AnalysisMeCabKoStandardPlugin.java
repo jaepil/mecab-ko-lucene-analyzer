@@ -36,5 +36,8 @@ public class AnalysisMeCabKoStandardPlugin extends AbstractPlugin {
     module.addTokenizer(
         "mecab_ko_similarity_measure_tokenizer",
         MeCabKoSimilarityMeasureTokenizerFactory.class);
+    module.addTokenizer(
+        "mecab_ko_keyword_search_tokenizer",
+        MeCabKoKeywordSearchTokenizerFactory.class);
   }
 }

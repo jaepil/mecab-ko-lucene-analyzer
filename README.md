@@ -63,9 +63,9 @@ __주의 사항__
 
 | mecab-ko-lucene-analyzer | mecab-ko-dic                 | Lucene/Solr                 | elasticsearch               |
 | ------------------------ | ---------------------------- | --------------------------- | --------------------------- |
-| **0.16.x**               | mecab-ko-dic-1.6.0 or higher | Lucene/Solr 4.9.x or higher | 1.3.x or higher             |
-| **0.15.x**               | mecab-ko-dic-1.6.0 or higher | Lucene/Solr 4.3.x - 4.8.x   | 0.90.x - 1.2.x              |
-| **0.14.x**               | mecab-ko-dic-1.5.0 or higher | Lucene/Solr 4.3.x - 4.8.x   | 0.90.x - 1.2.x              |
+| **0.16.x**               | mecab-ko-dic-1.6.0 - 1.6.1   | Lucene/Solr 4.9.x or higher | 1.3.x or higher             |
+| **0.15.x**               | mecab-ko-dic-1.6.0 - 1.6.1   | Lucene/Solr 4.3.x - 4.8.x   | 0.90.x - 1.2.x              |
+| **0.14.x**               | mecab-ko-dic-1.5.0 - 1.6.1   | Lucene/Solr 4.3.x - 4.8.x   | 0.90.x - 1.2.x              |
 | **0.13.x**               | mecab-ko-dic-1.4.0           | Lucene/Solr 4.3.x - 4.8.x   | 0.90.x - 1.2.x              |
 | **0.12.x**               | mecab-ko-dic-1.4.0           | Lucene/Solr 4.3.x           |                             |
 | **0.11.x**               | mecab-ko-dic-1.3.0 - 1.4.0   | Lucene/Solr 4.3.x           |                             |

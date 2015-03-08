@@ -16,8 +16,6 @@
 package org.bitbucket.eunjeon.mecab_ko_mecab_loader;
 
 import org.chasen.mecab.Model;
-import org.elasticsearch.common.logging.ESLogger;
-import org.elasticsearch.common.logging.Loggers;
 
 import java.util.Map;
 import java.util.WeakHashMap;

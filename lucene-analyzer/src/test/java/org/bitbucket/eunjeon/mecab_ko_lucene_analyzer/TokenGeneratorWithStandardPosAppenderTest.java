@@ -37,13 +37,13 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testBasicHangulSentence() {
     Node node = mockNodeListFactory(new String[] {
-        "진달래\tNNG,*,F,진달래,*,*,*,*,*",
-        " 꽃\tNNG,*,T,꽃,*,*,*,*,*",
-        "이\tJKS,*,F,이,*,*,*,*,*",
-        " 피\tVV,*,F,피,*,*,*,*,*",
-        "었\tEP,*,T,었,*,*,*,*,*",
-        "습니다\tEF,F,습니다,*,*,*,*,*",
-        ".\t SF,*,*,*,*,*,*,*,*"
+        "진달래\tNNG,*,F,진달래,*,*,*,*",
+        " 꽃\tNNG,*,T,꽃,*,*,*,*",
+        "이\tJKS,*,F,이,*,*,*,*",
+        " 피\tVV,*,F,피,*,*,*,*",
+        "었\tEP,*,T,었,*,*,*,*",
+        "습니다\tEF,F,습니다,*,*,*,*",
+        ".\t SF,*,*,*,*,*,*,*"
     });
   
     TokenGenerator generator = new TokenGenerator(
@@ -62,7 +62,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testDecompound() {
     Node node = mockNodeListFactory(new String[] {
-        "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성+전자,삼성/NNG/*+전자/NNG/*",
+        "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성/NNG/*+전자/NNG/*",
     });
     TokenGenerator generator =
         new TokenGenerator(new StandardPosAppender(), 1, node);
@@ -79,7 +79,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testComplexDecompound() {
     Node node = mockNodeListFactory(new String[] {
-        "아질산나트륨\tNNG,*,T,아질산나트륨,Compound,*,*,아질산+나트륨," +
+        "아질산나트륨\tNNG,*,T,아질산나트륨,Compound,*,*," +
         "아/NNG/*+질산/NNG/*+나트륨/NNG/*"
     });
     TokenGenerator generator =
@@ -97,7 +97,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testComplexWithNumberDecompound() {
     Node node = mockNodeListFactory(new String[] {
-        "을지로3가역\tNNG,*,T,을지로3가역,Compound,*,*,을지로+3+가+역," +
+        "을지로3가역\tNNG,*,T,을지로3가역,Compound,*,*," +
             "을지로/NNP/*+3/SN/*+가/NNG/*+역/NNG/*"
     });
     TokenGenerator generator =
@@ -117,7 +117,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testNoDecompound() {
     Node node = mockNodeListFactory(new String[] {
-        "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성+전자,삼성/NNG/*+전자/NNG/*",
+        "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성/NNG/*+전자/NNG/*",
     });
     TokenGenerator generator =
         new TokenGenerator(
@@ -133,7 +133,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testCompoundNounMinLength4() {
     Node node = mockNodeListFactory(new String[] {
-        "무궁화\tNNG,*,F,무궁화,Compound,*,*,무궁+화,무궁/NNG/*+화/NNG/*"
+        "무궁화\tNNG,*,F,무궁화,Compound,*,*,무궁/NNG/*+화/NNG/*"
     });
     TokenGenerator generator =
         new TokenGenerator(
@@ -146,7 +146,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     assertEquals(null, tokens);
     
     node = mockNodeListFactory(new String[] {
-        "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성+전자,삼성/NNG/*+전자/NNG/*"
+        "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성/NNG/*+전자/NNG/*"
     });
     generator = new TokenGenerator(new StandardPosAppender(), 4, node);
     
@@ -161,16 +161,16 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testSentenceWithDecompoundAll() {
     Node node = mockNodeListFactory(new String[] {
-        "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성+전자,삼성/NNG/*+전자/NNG/*",
-        "는\tJX,*,T,는,*,*,*,*,*",
-        " 대표\tNNG,*,F,대표,*,*,*,*,*",
-        "적\tXSN,*,T,적,*,*,*,*,*",
-        "인\tVCP+ETM,*,T,인,Inflect,VCP,ETM,이/VCP+ㄴ/ETM,*",
-        " 복합\tNNG,*,T,복합,*,*,*,*,*",
-        "명사\tNNG,*,F,명사,*,*,*,*,*",
-        "이\tVCP,*,F,이,*,*,*,*,*",
-        "다\tEF,*,F,다,*,*,*,*,*",
-        ".\tSF,*,*,*,*,*,*,*,*",
+        "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성/NNG/*+전자/NNG/*",
+        "는\tJX,*,T,는,*,*,*,*",
+        " 대표\tNNG,*,F,대표,*,*,*,*",
+        "적\tXSN,*,T,적,*,*,*,*",
+        "인\tVCP+ETM,*,T,인,Inflect,VCP,ETM,이/VCP/*+ㄴ/ETM/*",
+        " 복합\tNNG,*,T,복합,*,*,*,*",
+        "명사\tNNG,*,F,명사,*,*,*,*",
+        "이\tVCP,*,F,이,*,*,*,*",
+        "다\tEF,*,F,다,*,*,*,*",
+        ".\tSF,*,*,*,*,*,*,*",
     });
   	
     TokenGenerator generator =
@@ -204,11 +204,11 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testSentenceWithDecompoundComplexCompoundNoun() {
     Node node = mockNodeListFactory(new String[] {
-        "아질산나트륨\tNNG,*,T,아질산나트륨,Compound,*,*,아+질산+나트륨,아/NNG/*+질산/NNG/*+나트륨/NNG/*",
-        "이란\tJX,*,T,이란,*,*,*,*,*",
-        "무엇\tNP,*,T,무엇,*,*,*,*,*",
-        "인가요\tVCP+EF,*,F,인가요,Inflect,VCP,EF,이/VCP+ㄴ가요/EF,*",
-        "?\tSF,*,*,*,*,*,*,*,*",
+        "아질산나트륨\tNNG,*,T,아질산나트륨,Compound,*,*,아/NNG/*+질산/NNG/*+나트륨/NNG/*",
+        "이란\tJX,*,T,이란,*,*,*,*",
+        "무엇\tNP,*,T,무엇,*,*,*,*",
+        "인가요\tVCP+EF,*,F,인가요,Inflect,VCP,EF,이/VCP/*+ㄴ가요/EF/*",
+        "?\tSF,*,*,*,*,*,*,*",
     });
     
     TokenGenerator generator =
@@ -230,15 +230,14 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testSentenceWithCompoundNounMinLength4() {
     Node node = mockNodeListFactory(new String[] {
-        "나\tNP,*,F,나,*,*,*,*,*",
-        "의\tJKG,*,F,의,*,*,*,*,*",
-        "무궁화\tNNG,*,F,무궁화,Compound,*,*,무궁+화,무궁/NNG/*+화/NNG/*",
-        "꽃\tNNG,*,T,꽃,*,*,*,*,*",
-        "을\tJKO,*,T,을,*,*,*,*,*",
-        "보\tVV,*,F,보,*,*,*,*,*",
-        "아라\tEF,*,F,아라,*,*,*,*,*",
-        ".\tSF,*,*,*,*,*,*,*,*",
-
+        "나\tNP,*,F,나,*,*,*,*",
+        "의\tJKG,*,F,의,*,*,*,*",
+        "무궁화\tNNG,*,F,무궁화,Compound,*,*,무궁/NNG/*+화/NNG/*",
+        "꽃\tNNG,*,T,꽃,*,*,*,*",
+        "을\tJKO,*,T,을,*,*,*,*",
+        "보\tVV,*,F,보,*,*,*,*",
+        "아라\tEF,*,F,아라,*,*,*,*",
+        ".\tSF,*,*,*,*,*,*,*",
     });
   	
     TokenGenerator generator =
@@ -261,19 +260,19 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testSentenceWithEnglishAndSymbols() {
     Node node = mockNodeListFactory(new String[] {
-        "영어\tNNG,*,F,영어,*,*,*,*,*",
-        "(\tSSO,*,*,*,*,*,*,*,*",
-        "english\tSL,*,*,*,*,*,*,*,*",
-        ")\tSSC,*,*,*,*,*,*,*,*",
-        "를\tJKO,*,T,를,*,*,*,*,*",
-        "study\tSL,*,*,*,*,*,*,*,*",
-        "하\tXSV,*,F,하,*,*,*,*,*",
-        "는\tETM,*,T,는,*,*,*,*,*",
-        "것\tNNB,*,T,것,*,*,*,*,*",
-        "은\tJX,*,T,은,*,*,*,*,*",
-        "어렵\tVA,*,T,어렵,*,*,*,*,*",
-        "다\tEF,*,F,다,*,*,*,*,*",
-        ".\tSF,*,*,*,*,*,*,*,*",
+        "영어\tNNG,*,F,영어,*,*,*,*",
+        "(\tSSO,*,*,*,*,*,*,*",
+        "english\tSL,*,*,*,*,*,*,*",
+        ")\tSSC,*,*,*,*,*,*,*",
+        "를\tJKO,*,T,를,*,*,*,*",
+        "study\tSL,*,*,*,*,*,*,*",
+        "하\tXSV,*,F,하,*,*,*,*",
+        "는\tETM,*,T,는,*,*,*,*",
+        "것\tNNB,*,T,것,*,*,*,*",
+        "은\tJX,*,T,은,*,*,*,*",
+        "어렵\tVA,*,T,어렵,*,*,*,*",
+        "다\tEF,*,F,다,*,*,*,*",
+        ".\tSF,*,*,*,*,*,*,*",
     });
   	
     TokenGenerator generator =
@@ -301,7 +300,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testPreanaysis() {
     Node node = mockNodeListFactory(new String[] {
-        "은전한닢\tNNG+NR+NNG,*,T,은전한닢,Preanalysis,NNG,NR,은전+한+닢,은전/NNG/*/1/1+한/NR/*/1/1+닢/NNG/*/1/1",
+        "은전한닢\tNNG+NR+NNG,*,T,은전한닢,Preanalysis,NNG,NR,은전/NNG/*+한/NR/*+닢/NNG/*",
     });
 
     TokenGenerator generator =
@@ -321,12 +320,12 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testPreanaysisSentence() {
     Node node = mockNodeListFactory(new String[] {
-        "은전한닢\tNNG+NR+NNG,*,T,은전한닢,Preanalysis,NNG,NR,은전+한+닢,은전/NNG/*/1/1+한/NR/*/1/1+닢/NNG/*/1/1",
-        "은\tJX,*,T,은,*,*,*,*,*",
-        "오픈\tNNG,*,T,오픈,*,*,*,*,*",
-        "소스\tNNG,*,F,소스,*,*,*,*,*",
-        "이\tVCP,*,F,이,*,*,*,*,*",
-        "다\tEF,*,F,다,*,*,*,*,*",
+        "은전한닢\tNNG+NR+NNG,*,T,은전한닢,Preanalysis,NNG,NR,은전/NNG/*+한/NR/*+닢/NNG/*",
+        "은\tJX,*,T,은,*,*,*,*",
+        "오픈\tNNG,*,T,오픈,*,*,*,*",
+        "소스\tNNG,*,F,소스,*,*,*,*",
+        "이\tVCP,*,F,이,*,*,*,*",
+        "다\tEF,*,F,다,*,*,*,*",
     });
 
     TokenGenerator generator =
@@ -350,10 +349,10 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testUnknownSurface() {
     Node node = mockNodeListFactory(new String[] {
-        "걀꿀\tUNKNOWN,*,*,*,*,*,*,*,*",
-        " 없\tVA,*,T,없,*,*,*,*,*",
-        "는\tETM,*,T,는,*,*,*,*,*",
-        " 단어\tNNG,*,F,단어,*,*,*,*,*",
+        "걀꿀\tUNKNOWN,*,*,*,*,*,*,*",
+        " 없\tVA,*,T,없,*,*,*,*",
+        "는\tETM,*,T,는,*,*,*,*",
+        " 단어\tNNG,*,F,단어,*,*,*,*",
     });
 
     TokenGenerator generator =
@@ -373,7 +372,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testSymbolOnlySentence() {
     Node node = mockNodeListFactory(new String[] {
-        "!@#$%^&*()\tSY,*,*,*,*,*,*,*"
+        "!@#$%^&*()\tSY,*,*,*,*,*,*"
     });
   	
     TokenGenerator generator =
@@ -390,8 +389,8 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testXsn() {
     Node node = mockNodeListFactory(new String[] {
-        "의대\tNNG,*,F,의대,*,*,*,*,*",
-        "생\tXSN,*,T,생,*,*,*,*,*",
+        "의대\tNNG,*,F,의대,*,*,*,*",
+        "생\tXSN,*,T,생,*,*,*,*",
 
     });
 
@@ -410,11 +409,11 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testSentenceWithXsn() {
     Node node = mockNodeListFactory(new String[] {
-        "공대\tNNG,*,F,공대,*,*,*,*,*",
-        "생\tXSN,*,T,생,*,*,*,*,*",
-        "은\tJX,*,T,은,*,*,*,*,*",
-        " 바쁘\tVA,*,F,바쁘,*,*,*,*,*",
-        "다\tEF,*,F,다,*,*,*,*,*",
+        "공대\tNNG,*,F,공대,*,*,*,*",
+        "생\tXSN,*,T,생,*,*,*,*",
+        "은\tJX,*,T,은,*,*,*,*",
+        " 바쁘\tVA,*,F,바쁘,*,*,*,*",
+        "다\tEF,*,F,다,*,*,*,*",
     });
 
     TokenGenerator generator =
@@ -434,8 +433,8 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testXpn() {
     Node node = mockNodeListFactory(new String[] {
-        "왕\tXPN,*,T,왕,*,*,*,*,*",
-        "게임\tNNG,*,T,게임,*,*,*,*,*",
+        "왕\tXPN,*,T,왕,*,*,*,*",
+        "게임\tNNG,*,T,게임,*,*,*,*",
     });
 
     TokenGenerator generator =
@@ -453,12 +452,12 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testInflect1() {
     Node node = mockNodeListFactory(new String[]{
-        "그것\tNP,*,T,그것,*,*,*,*,*",
-        "은\tJX,*,T,은,*,*,*,*,*",
-        "어려운\tVA+ETM,*,T,어려운,Inflect,VA,ETM,어렵/VA+ᆫ/ETM,*",
-        "문제\tNNG,*,F,문제,*,*,*,*,*",
-        "다\tVCP+EF,*,F,다,Inflect,VCP,EF,이/VCP+다/EF,*",
-        ".\tSF,*,*,*,*,*,*,*,*"
+        "그것\tNP,*,T,그것,*,*,*,*",
+        "은\tJX,*,T,은,*,*,*,*",
+        "어려운\tVA+ETM,*,T,어려운,Inflect,VA,ETM,어렵/VA/*+ᆫ/ETM/*",
+        "문제\tNNG,*,F,문제,*,*,*,*",
+        "다\tVCP+EF,*,F,다,Inflect,VCP,EF,이/VCP/*+다/EF/*",
+        ".\tSF,*,*,*,*,*,*,*"
     });
 
     TokenGenerator generator =
@@ -478,13 +477,13 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testInflect2() {
     Node node = mockNodeListFactory(new String[]{
-        "그것\tNP,*,T,그것,*,*,*,*,*",
-        "은\tJX,*,T,은,*,*,*,*,*",
-        "어려워\tVA+EF,*,F,어려워,Inflect,VA,EF,어렵/VA+어/EF,*",
-        "란\tETM,*,T,란,*,*,*,*,*",
-        "문제\tNNG,*,F,문제,*,*,*,*,*",
-        "다\tVCP+EF,*,F,다,Inflect,VCP,EF,이/VCP+다/EF,*",
-        ".\tSF,*,*,*,*,*,*,*,*"
+        "그것\tNP,*,T,그것,*,*,*,*",
+        "은\tJX,*,T,은,*,*,*,*",
+        "어려워\tVA+EF,*,F,어려워,Inflect,VA,EF,어렵/VA/*+어/EF/*",
+        "란\tETM,*,T,란,*,*,*,*",
+        "문제\tNNG,*,F,문제,*,*,*,*",
+        "다\tVCP+EF,*,F,다,Inflect,VCP,EF,이/VCP/*+다/EF/*",
+        ".\tSF,*,*,*,*,*,*,*"
     });
 
     TokenGenerator generator =
@@ -504,9 +503,9 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testInflect3() {
     Node node = mockNodeListFactory(new String[]{
-        "오빤\tNNG+VCP+JX,*,T,오빤,Inflect,NNG,JX,오빠/NNG+이/VCP+ㄴ/JX,*",
-        "강남\tNNP,지명,T,강남,*,*,*,*,*",
-        "스타일\tNNG,*,T,스타일,*,*,*,*,*"
+        "오빤\tNNG+VCP+JX,*,T,오빤,Inflect,NNG,JX,오빠/NNG/*+이/VCP/*+ㄴ/JX/*",
+        "강남\tNNP,지명,T,강남,*,*,*,*",
+        "스타일\tNNG,*,T,스타일,*,*,*,*"
     });
 
     TokenGenerator generator =
@@ -526,13 +525,13 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testSemanticClass() {
     Node node = mockNodeListFactory(new String[] {
-        "남희석\tNNP,인명,T,남희석,*,*,*,*,*",
-        "은\tJX,*,T,은,*,*,*,*,*",
-        " 충남\tNNP,지명,T,충남,*,*,*,*,*",
-        "사람\tNNG,*,T,사람,*,*,*,*,*",
-        "이\tVCP,*,F,이,*,*,*,*,*",
-        "다\tEF,*,F,다,*,*,*,*,*",
-        ".\tSF,*,*,*,*,*,*,*,*",
+        "남희석\tNNP,인명,T,남희석,*,*,*,*",
+        "은\tJX,*,T,은,*,*,*,*",
+        " 충남\tNNP,지명,T,충남,*,*,*,*",
+        "사람\tNNG,*,T,사람,*,*,*,*",
+        "이\tVCP,*,F,이,*,*,*,*",
+        "다\tEF,*,F,다,*,*,*,*",
+        ".\tSF,*,*,*,*,*,*,*",
     });
 
     TokenGenerator generator =

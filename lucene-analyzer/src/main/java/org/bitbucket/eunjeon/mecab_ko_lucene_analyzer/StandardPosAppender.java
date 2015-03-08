@@ -263,7 +263,7 @@ public class StandardPosAppender extends PosAppender {
     }
     String first = inflectPos.getExpression().split("\\+")[0];
     String[] datas = first.split("/");
-    if (datas.length != 2) {
+    if (datas.length != 3) {
       return null;
     }
     String surface = datas[0];

@@ -15,7 +15,7 @@
  ******************************************************************************/
 package org.bitbucket.eunjeon.elasticsearch.plugin.analysis;
 
-import org.bitbucket.eunjeon.elasticsearch.index.analysis.MeCabKoStandardTokenizerFactory;
+import org.bitbucket.eunjeon.elasticsearch.index.analysis.*;
 import org.elasticsearch.index.analysis.AnalysisModule;
 import org.elasticsearch.plugins.AbstractPlugin;
 
@@ -33,5 +33,11 @@ public class AnalysisMeCabKoStandardPlugin extends AbstractPlugin {
   public void onModule(AnalysisModule module) {
     module.addTokenizer(
         "mecab_ko_standard_tokenizer", MeCabKoStandardTokenizerFactory.class);
+    module.addTokenizer(
+        "mecab_ko_similarity_measure_tokenizer",
+        MeCabKoSimilarityMeasureTokenizerFactory.class);
+    module.addTokenizer(
+        "mecab_ko_keyword_search_tokenizer",
+        MeCabKoKeywordSearchTokenizerFactory.class);
   }
 }

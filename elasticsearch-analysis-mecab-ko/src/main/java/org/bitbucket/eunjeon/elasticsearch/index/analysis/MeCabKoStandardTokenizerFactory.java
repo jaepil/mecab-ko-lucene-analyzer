@@ -17,20 +17,21 @@ package org.bitbucket.eunjeon.elasticsearch.index.analysis;
 
 import org.apache.lucene.analysis.Tokenizer;
 import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.*;
+import org.bitbucket.eunjeon.mecab_ko_mecab_loader.MeCabLoader;
+import org.elasticsearch.common.logging.ESLogger;
+import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.index.analysis.AbstractTokenizerFactory;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.inject.assistedinject.Assisted;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.env.Environment;
 import org.elasticsearch.index.Index;
 import org.elasticsearch.index.settings.IndexSettings;
 
-import java.io.IOException;
 import java.io.Reader;
 
 /**
  * 표준 index용 tokenizer 팩토리 생성자. 다음과 같은 파라미터를 받는다.
- *   - mecab_dic_dir: mecab-ko-dic 사전 경로. 디폴트 경로는 /usr/local/lib/mecab/dic/mecab-ko-dic 이다.
+ *   - mecab_args: mecab 실행옵션
  *   - compound_noun_min_length: 분해를 해야하는 복합명사의 최소 길이. 디폴트 값은 3이다.
  * 
  * @author bibreen <bibreen@gmail.com>
@@ -38,34 +39,27 @@ import java.io.Reader;
 public class MeCabKoStandardTokenizerFactory extends AbstractTokenizerFactory {
   private static final String DEFAULT_MECAB_DIC_DIR =
       "/usr/local/lib/mecab/dic/mecab-ko-dic";
-  private String mecabDicDir;
-  private int compoundNounMinLength;
+  private static final String DEFAULT_MECAB_RC_FILE =
+      "/usr/local/etc/mecabrc";
+  protected String mecabArgs;
+  protected int compoundNounMinLength;
+
+  private ESLogger logger = Loggers.getLogger(MeCabKoStandardTokenizerFactory.class, "mecab-ko");
 
   @Inject
   public MeCabKoStandardTokenizerFactory(
       Index index,
       @IndexSettings Settings indexSettings,
-      Environment env,
       @Assisted String name,
       @Assisted Settings settings) {
     super(index, indexSettings, name, settings);
-    setMeCabDicDir(env, settings);
+    setMeCabArgs(settings);
     setCompoundNounMinLength(settings);
   }
   
-  private void setMeCabDicDir(Environment env, Settings settings) {
-    String path = settings.get(
-        "mecab_dic_dir",
-        MeCabKoStandardTokenizerFactory.DEFAULT_MECAB_DIC_DIR);
-    if (path.startsWith("/")) {
-      mecabDicDir = path;
-    } else {
-      try {
-        mecabDicDir = env.homeFile().getCanonicalPath() + "/" + path;
-      } catch (IOException e) {
-        mecabDicDir = path;
-      }
-    }
+  private void setMeCabArgs(Settings settings) {
+    mecabArgs = settings.get(
+        "mecab_args", "-d " + MeCabKoStandardTokenizerFactory.DEFAULT_MECAB_DIC_DIR);
   }
   
   private void setCompoundNounMinLength(Settings settings) {
@@ -76,9 +70,11 @@ public class MeCabKoStandardTokenizerFactory extends AbstractTokenizerFactory {
 
   @Override
   public Tokenizer create(Reader reader) {
+    logger.debug("already allocated model's count is #" + MeCabLoader.getModelCount());
+    logger.debug("creating tokenizer from model " + mecabArgs);
     return new MeCabKoTokenizer(
         reader,
-        mecabDicDir,
+        mecabArgs,
         new StandardPosAppender(),
         compoundNounMinLength);
   }

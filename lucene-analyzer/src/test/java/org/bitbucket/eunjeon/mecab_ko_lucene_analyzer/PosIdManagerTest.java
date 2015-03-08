@@ -23,8 +23,8 @@ import org.junit.Test;
 public class PosIdManagerTest {
   @Test
   public void testConvertFromTagString() {
-    PosId posId = PosId.convertFrom("NN");
-    assertEquals(PosId.N, posId);
+    PosId posId = PosId.convertFrom("NNG");
+    assertEquals(PosId.NNG, posId);
     
     posId = PosId.convertFrom("InvalidTagString");
     assertEquals(PosId.UNKNOWN, posId);

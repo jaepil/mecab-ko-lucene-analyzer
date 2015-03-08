@@ -43,12 +43,22 @@ public class KeywordSearchPosAppender extends PosAppender {
     appendableSet.add(new Appendable(PosId.VX, PosId.E));
 
     // 체언(N*) + 명사 파생 접미사(XSN)
-    appendableSet.add(new Appendable(PosId.N, PosId.XSN));
+    appendableSet.add(new Appendable(PosId.NNG, PosId.XSN));
+    appendableSet.add(new Appendable(PosId.NNP, PosId.XSN));
+    appendableSet.add(new Appendable(PosId.NNB, PosId.XSN));
+    appendableSet.add(new Appendable(PosId.NNBC, PosId.XSN));
+    appendableSet.add(new Appendable(PosId.NP, PosId.XSN));
+    appendableSet.add(new Appendable(PosId.NR, PosId.XSN));
     appendableSet.add(new Appendable(PosId.COMPOUND, PosId.XSN));
     appendableSet.add(new Appendable(PosId.UNKNOWN, PosId.XSN));
 
     // 체언 접두사(XPN) + 체언(N*)
-    appendableSet.add(new Appendable(PosId.XPN, PosId.N));
+    appendableSet.add(new Appendable(PosId.XPN, PosId.NNG));
+    appendableSet.add(new Appendable(PosId.XPN, PosId.NNP));
+    appendableSet.add(new Appendable(PosId.XPN, PosId.NNB));
+    appendableSet.add(new Appendable(PosId.XPN, PosId.NNBC));
+    appendableSet.add(new Appendable(PosId.XPN, PosId.NP));
+    appendableSet.add(new Appendable(PosId.XPN, PosId.NR));
     appendableSet.add(new Appendable(PosId.XPN, PosId.COMPOUND));
     appendableSet.add(new Appendable(PosId.XPN, PosId.UNKNOWN));
   }
@@ -72,7 +82,12 @@ public class KeywordSearchPosAppender extends PosAppender {
     PosId posId = pos.getPosId();
     switch (posId) {
       case COMPOUND:
-      case N:
+      case NNG:
+      case NNP:
+      case NNB:
+      case NNBC:
+      case NP:
+      case NR:
       case SL:
       case SH:
       case SN:
@@ -87,13 +102,15 @@ public class KeywordSearchPosAppender extends PosAppender {
   }
 
   @Override
-  public LinkedList<Pos> extractAdditionalPoses(LinkedList<Pos> poses) {
+  public LinkedList<Pos> getTokensFrom(Eojeol eojeol) {
     LinkedList<Pos> output = new LinkedList<Pos>();
-    for (Pos pos: poses) {
-      if (isAbsolutePos(pos)) {
-        pos.setPositionIncr(0);
-        output.add(pos);
-      }
+    LinkedList<Pos> poses = eojeol.getPosList();
+    if (poses.size() == 1) {
+      output.add(poses.getFirst());
+    } else {
+      Pos eojeolPos = new Pos(
+          eojeol.getTerm(), PosId.EOJEOL, eojeol.getStartOffset(), 1, 1);
+      output.add(eojeolPos);
     }
     return output;
   }

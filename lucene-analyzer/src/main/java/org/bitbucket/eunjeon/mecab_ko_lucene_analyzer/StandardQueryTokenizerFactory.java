@@ -15,17 +15,13 @@
  ******************************************************************************/
 package org.bitbucket.eunjeon.mecab_ko_lucene_analyzer;
 
-import java.io.Reader;
 import java.util.Map;
 
-import org.apache.lucene.analysis.Tokenizer;
-import org.apache.lucene.analysis.util.TokenizerFactory;
-import org.apache.lucene.util.AttributeFactory;
-import org.apache.solr.core.SolrResourceLoader;
-
 /**
- * 표준 query용 tokenizer 팩토리 생성자. 다음과 같은 파라미터를 받는다.
- *   - mecabDicDir: mecab-ko-dic 사전 경로. 디폴트 경로는 /usr/local/lib/mecab/dic/mecab-ko-dic 이다.
+ * 표준 tokenizer 팩토리 생성자. 다음과 같은 파라미터를 받는다.
+ *   - mecabArgs: mecab 실행옵션. 디폴트 값은 "-d /usr/local/lib/mecab/dic/mecab-ko-dic/" 이다.
+ *     mecab 실행 옵션은 다음의 URL을 참조. http://mecab.googlecode.com/svn/trunk/mecab/doc/mecab.html
+ *   - compoundNounMinLength:
  * 
  * <pre>
  * {@code
@@ -40,38 +36,14 @@ import org.apache.solr.core.SolrResourceLoader;
  * 
  * @author bibreen <bibreen@gmail.com>
  */
-public class StandardQueryTokenizerFactory extends TokenizerFactory {
-  private String mecabDicDir;
-  
+public class StandardQueryTokenizerFactory extends TokenizerFactoryBase {
   public StandardQueryTokenizerFactory(Map<String,String> args) {
     super(args);
-    setMeCabDicDir(args);
-    if (!args.isEmpty()) {
-      throw new IllegalArgumentException("Unknown parameters: " + args);
-    }
   }
 
-  private void setMeCabDicDir(Map<String,String> args) {
-    String path = get(
-        args,
-        "mecabDicDir",
-        StandardIndexTokenizerFactory.DEFAULT_MECAB_DIC_DIR);
-    if (path != null) {
-      if (path.startsWith("/")) {
-        mecabDicDir = path;
-      } else {
-        mecabDicDir = SolrResourceLoader.locateSolrHome() + path;
-      }
-    }
-  }
-  
   @Override
-  public Tokenizer create(AttributeFactory factory, Reader input) {
-    return new MeCabKoTokenizer(
-        factory,
-        input,
-        mecabDicDir,
-        new StandardPosAppender(),
-        TokenGenerator.NO_DECOMPOUND);
+  protected void setPosAppender() {
+    posAppender = new StandardPosAppender();
+
   }
 }

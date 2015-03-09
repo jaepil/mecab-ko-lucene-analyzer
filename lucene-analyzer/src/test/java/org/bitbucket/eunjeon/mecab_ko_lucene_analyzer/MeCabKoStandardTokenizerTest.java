@@ -23,10 +23,14 @@ import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.*;
 import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.tokenattributes.PartOfSpeechAttribute;
 import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.tokenattributes.SemanticClassAttribute;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 public class MeCabKoStandardTokenizerTest {
+  private TokenizerOption tokenizerOption;
+
   private String tokenizerToString(Tokenizer tokenizer) throws Exception {
     OffsetAttribute extOffset = tokenizer.addAttribute(OffsetAttribute.class);
     PositionIncrementAttribute posIncrAtt = 
@@ -57,14 +61,23 @@ public class MeCabKoStandardTokenizerTest {
     tokenizer.end();
     return result.toString();
   }
-  
+
+  @Before
+  public void setUp() throws Exception {
+    tokenizerOption = new TokenizerOption();
+  }
+
+  @After
+  public void tearDown() throws Exception {
+  }
+
   private Tokenizer createTokenizer(
-      StringReader reader, int decompoundMinLength) {
+      StringReader reader, int compoundNounMinLength) {
+    tokenizerOption.compoundNounMinLength = compoundNounMinLength;
     Tokenizer tokenizer = new MeCabKoTokenizer(
         reader,
-        "-d /usr/local/lib/mecab/dic/mecab-ko-dic",
-        new StandardPosAppender(),
-        decompoundMinLength);
+        tokenizerOption,
+        new StandardPosAppender());
     return tokenizer;
   }
   

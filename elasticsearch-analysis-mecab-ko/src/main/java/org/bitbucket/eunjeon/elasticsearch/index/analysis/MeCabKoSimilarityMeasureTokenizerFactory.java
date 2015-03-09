@@ -15,27 +15,23 @@
  ******************************************************************************/
 package org.bitbucket.eunjeon.elasticsearch.index.analysis;
 
-import org.apache.lucene.analysis.Tokenizer;
 import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.*;
-import org.elasticsearch.index.analysis.AbstractTokenizerFactory;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.inject.assistedinject.Assisted;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.env.Environment;
 import org.elasticsearch.index.Index;
 import org.elasticsearch.index.settings.IndexSettings;
 
-import java.io.IOException;
-import java.io.Reader;
-
 /**
  * 문서 유사도 측적용 tokenizer 팩토리 생성자. 다음과 같은 파라미터를 받는다. (실험적인)
- *   - mecab_args: mecab 옵션
+ *   - mecab_args: mecab 실행옵션. 디폴트 값은 "-d /usr/local/lib/mecab/dic/mecab-ko-dic/" 이다.
+ *     mecab 실행 옵션은 다음의 URL을 참조. http://mecab.googlecode.com/svn/trunk/mecab/doc/mecab.html
  *   - compound_noun_min_length: 분해를 해야하는 복합명사의 최소 길이. 디폴트 값은 9999이다. (복합명사 분해 안함)
  *
  * @author bibreen <bibreen@gmail.com>
  */
-public class MeCabKoSimilarityMeasureTokenizerFactory extends MeCabKoStandardTokenizerFactory {
+public class MeCabKoSimilarityMeasureTokenizerFactory
+    extends MeCabKoTokenizerFactoryBase {
 
   @Inject
   public MeCabKoSimilarityMeasureTokenizerFactory(
@@ -44,22 +40,15 @@ public class MeCabKoSimilarityMeasureTokenizerFactory extends MeCabKoStandardTok
       @Assisted String name,
       @Assisted Settings settings) {
     super(index, indexSettings, name, settings);
-    setCompoundNounMinLength(settings);
   }
 
-  private void setCompoundNounMinLength(Settings settings) {
-    compoundNounMinLength = settings.getAsInt(
-        "compound_noun_min_length",
-        TokenGenerator.NO_DECOMPOUND);
+  protected void setDefaultOption() {
+    option.compoundNounMinLength = TokenizerOption.NO_DECOMPOUND;
+    option.useAdjectiveAndVerbOriginalForm = false;
   }
 
   @Override
-  public Tokenizer create(Reader reader) {
-    return new MeCabKoTokenizer(
-        reader,
-        mecabArgs,
-        new SimilarityMeasurePosAppender(),
-        compoundNounMinLength);
+  protected void setPosAppender() {
+    posAppender = new SimilarityMeasurePosAppender();
   }
-
 }

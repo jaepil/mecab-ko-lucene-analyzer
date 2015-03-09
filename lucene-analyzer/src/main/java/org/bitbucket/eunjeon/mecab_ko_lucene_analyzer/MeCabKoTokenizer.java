@@ -49,12 +49,11 @@ public final class MeCabKoTokenizer extends Tokenizer {
   private SemanticClassAttribute semanticClassAtt;
  
   private String document;
-  private String mecabArgs;
+  private TokenizerOption option;
   private Model model;
   private Lattice lattice;
   private Tagger tagger;
   private PosAppender posAppender;
-  private int compoundNounMinLength;
   private TokenGenerator generator;
   private Queue<Pos> tokensQueue;
   
@@ -63,22 +62,19 @@ public final class MeCabKoTokenizer extends Tokenizer {
    * Default AttributeFactory 사용.
    * 
    * @param input
-   * @param args mecab 실행옵션(ex: -d /usr/local/lib/mecab/dic/mecab-ko-dic/)
+   * @param option Tokenizer 옵션
    * @param appender PosAppender
-   * @param compoundNounMinLength 분해를 해야하는 복합명사의 최소 길이.
    * 복합명사 분해가 필요없는 경우, TokenGenerator.NO_DECOMPOUND를 입력한다.
    */
   public MeCabKoTokenizer(
       Reader input,
-      String args,
-      PosAppender appender,
-      int compoundNounMinLength) {
+      TokenizerOption option,
+      PosAppender appender) {
     this(
         AttributeFactory.DEFAULT_ATTRIBUTE_FACTORY,
         input,
-        args,
-        appender,
-        compoundNounMinLength);
+        option,
+        appender);
   }
 
   /**
@@ -86,27 +82,24 @@ public final class MeCabKoTokenizer extends Tokenizer {
    * 
    * @param factory the AttributeFactory to use
    * @param input
-   * @param args mecab 실행옵션(ex: -d /usr/local/lib/mecab/dic/mecab-ko-dic/)
+   * @param option MeCabTokenizer 옵션
    * @param appender PosAppender
-   * @param compoundNounMinLength 분해를 해야하는 복합명사의 최소 길이.
    * 복합명사 분해가 필요없는 경우, TokenGenerator.NO_DECOMPOUND를 입력한다.
    */
   public MeCabKoTokenizer(
       AttributeFactory factory,
       Reader input,
-      String args,
-      PosAppender appender,
-      int compoundNounMinLength) {
+      TokenizerOption option,
+      PosAppender appender) {
     super(factory, input);
     posAppender = appender;
-    mecabArgs = args;
-    this.compoundNounMinLength = compoundNounMinLength;
+    this.option = option;
     setMeCab();
     setAttributes();
   }
 
   private void setMeCab() {
-    model = MeCabLoader.getModel(mecabArgs);
+    model = MeCabLoader.getModel(option.mecabArgs);
     lattice = model.createLattice();
     tagger = model.createTagger();
   }
@@ -148,7 +141,7 @@ public final class MeCabKoTokenizer extends Tokenizer {
     lattice.set_sentence(document);
     tagger.parse(lattice);
     this.generator = new TokenGenerator(
-        posAppender, compoundNounMinLength, lattice.bos_node());
+        posAppender, option.compoundNounMinLength, lattice.bos_node());
   }
   
   private void setAttributes(Pos token) {

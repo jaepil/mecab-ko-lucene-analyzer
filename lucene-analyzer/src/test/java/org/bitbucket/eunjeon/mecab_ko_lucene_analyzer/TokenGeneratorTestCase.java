@@ -17,19 +17,19 @@ package org.bitbucket.eunjeon.mecab_ko_lucene_analyzer;
 
 import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.PosIdManager.PosId;
 import org.bitbucket.eunjeon.mecab_ko_mecab_loader.MeCabLoader;
+import org.chasen.mecab.Model;
 import org.chasen.mecab.Node;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class TokenGeneratorTestCase {
-  MeCabLoader mecabLoader;
+  Model model;
   public TokenGeneratorTestCase() {
     /* TokenGenerator에서 MeCab의 JNI를 사용하는 부분이 있기때문에, MeCab를 미리
      * 적재한다.
      */
-    mecabLoader =
-        MeCabLoader.getInstance("/usr/local/lib/mecab/dic/mecab-ko-dic");
+    model = MeCabLoader.getModel("-d /usr/local/lib/mecab/dic/mecab-ko-dic");
   }
   
   public static Node mockNodeListFactory(String[] posStrings) {

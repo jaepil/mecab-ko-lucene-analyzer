@@ -18,7 +18,7 @@ package org.bitbucket.eunjeon.mecab_ko_lucene_analyzer;
 import java.util.Map;
 
 /**
- * 표준 index용 tokenizer 팩토리 생성자. 다음과 같은 파라미터를 받는다.
+ * 표준 tokenizer 팩토리 생성자. 다음과 같은 파라미터를 받는다.
  *   - mecabArgs: mecab 실행옵션. 디폴트 값은 "-d /usr/local/lib/mecab/dic/mecab-ko-dic/" 이다.
  *     mecab 실행 옵션은 다음의 URL을 참조. http://mecab.googlecode.com/svn/trunk/mecab/doc/mecab.html
  *   - compoundNounMinLength: 분해를 해야하는 복합명사의 최소 길이. 디폴트 값은 3이다.
@@ -28,7 +28,7 @@ import java.util.Map;
  * {@code
  * <fieldType name="text_ko" class="solr.TextField" positionIncrementGap="100">
  *   <analyzer type="index">
- *     <tokenizer class="org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.StandardIndexTokenizerFactory"
+ *     <tokenizer class="org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.StandardTokenizerFactory"
  *                mecabArgs="-d /usr/local/lib/mecab/dic/mecab-ko-dic"
  *                compoundNounMinLength="3"
  *                useAdjectiveAndVerbOriginalForm="true"/>
@@ -39,8 +39,8 @@ import java.util.Map;
  * 
  * @author bibreen <bibreen@gmail.com>
  */
-public class StandardIndexTokenizerFactory extends TokenizerFactoryBase {
-  public StandardIndexTokenizerFactory(Map<String,String> args) {
+public class StandardTokenizerFactory extends TokenizerFactoryBase {
+  public StandardTokenizerFactory(Map<String, String> args) {
     super(args);
   }
 

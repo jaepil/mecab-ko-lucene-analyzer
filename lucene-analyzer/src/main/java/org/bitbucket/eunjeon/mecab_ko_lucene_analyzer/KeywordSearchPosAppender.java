@@ -63,6 +63,10 @@ public class KeywordSearchPosAppender extends PosAppender {
     appendableSet.add(new Appendable(PosId.XPN, PosId.UNKNOWN));
   }
 
+  public KeywordSearchPosAppender(TokenizerOption option) {
+    super(option);
+  }
+
   @Override
   public boolean isAppendable(Pos left, Pos right) {
     if (right.getNode() != null && right.hasSpace()) {

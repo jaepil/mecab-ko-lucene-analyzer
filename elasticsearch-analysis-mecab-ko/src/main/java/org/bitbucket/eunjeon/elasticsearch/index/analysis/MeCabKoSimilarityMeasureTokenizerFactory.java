@@ -49,6 +49,6 @@ public class MeCabKoSimilarityMeasureTokenizerFactory
 
   @Override
   protected void setPosAppender() {
-    posAppender = new SimilarityMeasurePosAppender();
+    posAppender = new SimilarityMeasurePosAppender(option);
   }
 }

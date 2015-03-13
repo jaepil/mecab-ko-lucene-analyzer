@@ -26,8 +26,11 @@ import static org.junit.Assert.assertEquals;
 
 public class TokenGeneratorWithKeywordSearchPosAppenderTest
   extends TokenGeneratorTestCase {
+  private TokenizerOption option;
+
   @Before
   public void setUp() throws Exception {
+    option = new TokenizerOption();
   }
 
   @After
@@ -48,7 +51,8 @@ public class TokenGeneratorWithKeywordSearchPosAppenderTest
     });
 
     TokenGenerator generator = new TokenGenerator(
-        new KeywordSearchPosAppender(), TokenGenerator.NO_DECOMPOUND, node);
+        new KeywordSearchPosAppender(option),
+        TokenGenerator.NO_DECOMPOUND, node);
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
     assertEquals("[파란/INFLECT/null/1/1/0/2]", tokens.toString());
@@ -76,7 +80,8 @@ public class TokenGeneratorWithKeywordSearchPosAppenderTest
     });
 
     TokenGenerator generator = new TokenGenerator(
-        new KeywordSearchPosAppender(), TokenGenerator.NO_DECOMPOUND, node);
+        new KeywordSearchPosAppender(option),
+        TokenGenerator.NO_DECOMPOUND, node);
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
     assertEquals("[훈민정음/COMPOUND/null/1/2/0/4]", tokens.toString());
@@ -104,7 +109,8 @@ public class TokenGeneratorWithKeywordSearchPosAppenderTest
     });
 
     TokenGenerator generator = new TokenGenerator(
-        new KeywordSearchPosAppender(), TokenGenerator.NO_DECOMPOUND, node);
+        new KeywordSearchPosAppender(option),
+        TokenGenerator.NO_DECOMPOUND, node);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -146,7 +152,8 @@ public class TokenGeneratorWithKeywordSearchPosAppenderTest
     });
 
     TokenGenerator generator = new TokenGenerator(
-        new KeywordSearchPosAppender(), TokenGenerator.NO_DECOMPOUND, node);
+        new KeywordSearchPosAppender(option),
+        TokenGenerator.NO_DECOMPOUND, node);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -191,7 +198,8 @@ public class TokenGeneratorWithKeywordSearchPosAppenderTest
     });
 
     TokenGenerator generator = new TokenGenerator(
-        new KeywordSearchPosAppender(), TokenGenerator.NO_DECOMPOUND, node);
+        new KeywordSearchPosAppender(option),
+        TokenGenerator.NO_DECOMPOUND, node);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();

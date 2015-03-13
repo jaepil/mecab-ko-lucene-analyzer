@@ -50,6 +50,6 @@ public class MeCabKoKeywordSearchTokenizerFactory
 
   @Override
   protected void setPosAppender() {
-    posAppender = new KeywordSearchPosAppender();
+    posAppender = new KeywordSearchPosAppender(option);
   }
 }

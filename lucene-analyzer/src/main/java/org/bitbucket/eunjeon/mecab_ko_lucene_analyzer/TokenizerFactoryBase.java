@@ -70,6 +70,6 @@ public abstract class TokenizerFactoryBase extends TokenizerFactory {
         factory,
         input,
         option,
-        new StandardPosAppender());
+        new StandardPosAppender(option));
   }
 }

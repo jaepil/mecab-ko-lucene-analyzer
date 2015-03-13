@@ -29,7 +29,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 public class MeCabKoStandardTokenizerTest {
-  private TokenizerOption tokenizerOption;
+  private TokenizerOption option;
 
   private String tokenizerToString(Tokenizer tokenizer) throws Exception {
     OffsetAttribute extOffset = tokenizer.addAttribute(OffsetAttribute.class);
@@ -64,7 +64,7 @@ public class MeCabKoStandardTokenizerTest {
 
   @Before
   public void setUp() throws Exception {
-    tokenizerOption = new TokenizerOption();
+    option = new TokenizerOption();
   }
 
   @After
@@ -73,11 +73,11 @@ public class MeCabKoStandardTokenizerTest {
 
   private Tokenizer createTokenizer(
       StringReader reader, int compoundNounMinLength) {
-    tokenizerOption.compoundNounMinLength = compoundNounMinLength;
+    option.compoundNounMinLength = compoundNounMinLength;
     Tokenizer tokenizer = new MeCabKoTokenizer(
         reader,
-        tokenizerOption,
-        new StandardPosAppender());
+        option,
+        new StandardPosAppender(option));
     return tokenizer;
   }
   

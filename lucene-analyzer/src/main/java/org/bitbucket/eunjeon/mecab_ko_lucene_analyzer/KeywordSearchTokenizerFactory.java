@@ -49,6 +49,6 @@ public class KeywordSearchTokenizerFactory extends TokenizerFactoryBase {
 
   @Override
   protected void setPosAppender() {
-    posAppender = new KeywordSearchPosAppender();
+    posAppender = new KeywordSearchPosAppender(option);
   }
 }

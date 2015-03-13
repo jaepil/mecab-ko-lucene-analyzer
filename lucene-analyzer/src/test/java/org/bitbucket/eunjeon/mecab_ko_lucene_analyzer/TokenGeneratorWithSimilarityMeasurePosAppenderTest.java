@@ -26,8 +26,11 @@ import static org.junit.Assert.assertEquals;
 
 public class TokenGeneratorWithSimilarityMeasurePosAppenderTest
   extends TokenGeneratorTestCase {
+  private TokenizerOption option;
+
   @Before
   public void setUp() throws Exception {
+    option = new TokenizerOption();
   }
 
   @After
@@ -47,7 +50,7 @@ public class TokenGeneratorWithSimilarityMeasurePosAppenderTest
     });
 
     TokenGenerator generator = new TokenGenerator(
-        new SimilarityMeasurePosAppender(), TokenGenerator.NO_DECOMPOUND, node);
+        new SimilarityMeasurePosAppender(option), TokenGenerator.NO_DECOMPOUND, node);
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
     assertEquals("[진달래/NNG/null/1/1/0/3]", tokens.toString());
@@ -73,7 +76,7 @@ public class TokenGeneratorWithSimilarityMeasurePosAppenderTest
     });
 
     TokenGenerator generator = new TokenGenerator(
-        new SimilarityMeasurePosAppender(), TokenGenerator.NO_DECOMPOUND, node);
+        new SimilarityMeasurePosAppender(option), TokenGenerator.NO_DECOMPOUND, node);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -115,7 +118,7 @@ public class TokenGeneratorWithSimilarityMeasurePosAppenderTest
     });
 
     TokenGenerator generator = new TokenGenerator(
-        new SimilarityMeasurePosAppender(), TokenGenerator.NO_DECOMPOUND, node);
+        new SimilarityMeasurePosAppender(option), TokenGenerator.NO_DECOMPOUND, node);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -156,7 +159,7 @@ public class TokenGeneratorWithSimilarityMeasurePosAppenderTest
     });
 
     TokenGenerator generator = new TokenGenerator(
-        new SimilarityMeasurePosAppender(), TokenGenerator.NO_DECOMPOUND, node);
+        new SimilarityMeasurePosAppender(option), TokenGenerator.NO_DECOMPOUND, node);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -238,7 +241,8 @@ public class TokenGeneratorWithSimilarityMeasurePosAppenderTest
     });
 
     TokenGenerator generator = new TokenGenerator(
-        new SimilarityMeasurePosAppender(), TokenGenerator.NO_DECOMPOUND, node);
+        new SimilarityMeasurePosAppender(option),
+        TokenGenerator.NO_DECOMPOUND, node);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();

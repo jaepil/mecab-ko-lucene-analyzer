@@ -109,6 +109,10 @@ public class StandardPosAppender extends PosAppender {
     appendableSet.add(new Appendable(PosId.SH, PosId.J));
   }
 
+  public StandardPosAppender(TokenizerOption option) {
+    super(option);
+  }
+
   @Override
   public boolean isAppendable(Pos left, Pos right) {
     if (right.getNode() != null && right.hasSpace()) {
@@ -231,24 +235,33 @@ public class StandardPosAppender extends PosAppender {
    * @param pos 형태소 품사.
    */
   private boolean isAbsolutePos(Pos pos) {
-    return (pos.isPosIdOf(PosId.COMPOUND) ||
-        pos.isPosIdOf(PosId.MAG) ||
-        pos.isPosIdOf(PosId.NNG) ||
-        pos.isPosIdOf(PosId.NNP) ||
-        pos.isPosIdOf(PosId.NNB) ||
-        pos.isPosIdOf(PosId.NNBC) ||
-        pos.isPosIdOf(PosId.NP) ||
-        pos.isPosIdOf(PosId.NR) ||
-        pos.isPosIdOf(PosId.XR) ||
-        pos.isPosIdOf(PosId.SH) ||
-        pos.isPosIdOf(PosId.SL) ||
-        pos.isPosIdOf(PosId.SN) ||
-        pos.isPosIdOf(PosId.UNKNOWN) ||
-        pos.isPosIdOf(PosId.VA) ||
-        pos.isPosIdOf(PosId.VV) ||
-        pos.isPosIdOf(PosId.XPN) ||
-        pos.isPosIdOf(PosId.XSN)
-    );
+    if (option.useAdjectiveAndVerbOriginalForm) {
+      return (pos.getPosId().in(PosId.NNG, PosId.NR) ||
+          pos.isPosIdOf(PosId.COMPOUND) ||
+          pos.isPosIdOf(PosId.MAG) ||
+          pos.isPosIdOf(PosId.XR) ||
+          pos.isPosIdOf(PosId.SH) ||
+          pos.isPosIdOf(PosId.SL) ||
+          pos.isPosIdOf(PosId.SN) ||
+          pos.isPosIdOf(PosId.UNKNOWN) ||
+          pos.isPosIdOf(PosId.VA) ||
+          pos.isPosIdOf(PosId.VV) ||
+          pos.isPosIdOf(PosId.XPN) ||
+          pos.isPosIdOf(PosId.XSN)
+      );
+    } else {
+      return (pos.getPosId().in(PosId.NNG, PosId.NR) ||
+          pos.isPosIdOf(PosId.COMPOUND) ||
+          pos.isPosIdOf(PosId.MAG) ||
+          pos.isPosIdOf(PosId.XR) ||
+          pos.isPosIdOf(PosId.SH) ||
+          pos.isPosIdOf(PosId.SL) ||
+          pos.isPosIdOf(PosId.SN) ||
+          pos.isPosIdOf(PosId.UNKNOWN) ||
+          pos.isPosIdOf(PosId.XPN) ||
+          pos.isPosIdOf(PosId.XSN)
+      );
+    }
   }
 
   /**

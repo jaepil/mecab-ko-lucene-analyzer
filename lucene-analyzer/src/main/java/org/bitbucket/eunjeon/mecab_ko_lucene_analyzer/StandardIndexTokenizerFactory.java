@@ -46,6 +46,6 @@ public class StandardIndexTokenizerFactory extends TokenizerFactoryBase {
 
   @Override
   protected void setPosAppender() {
-    posAppender = new StandardPosAppender();
+    posAppender = new StandardPosAppender(option);
   }
 }

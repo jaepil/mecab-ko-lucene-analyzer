@@ -64,6 +64,10 @@ public class SimilarityMeasurePosAppender extends PosAppender {
     appendableSet.add(new Appendable(PosId.SY, PosId.SN));
   }
 
+  public SimilarityMeasurePosAppender(TokenizerOption option) {
+    super(option);
+  }
+
   @Override
   public boolean isAppendable(Pos left, Pos right) {
     if (right.getNode() != null && right.hasSpace()) {

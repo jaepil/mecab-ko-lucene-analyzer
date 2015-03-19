@@ -72,6 +72,7 @@ public class SimilarityMeasurePosAppender extends PosAppender {
       case SH:
       case SN:
       case XR:
+      case UNKNOWN:
         return false;
       case N:
         return pos.getMophemes().equals("NNB") || pos.getMophemes().equals("NP");

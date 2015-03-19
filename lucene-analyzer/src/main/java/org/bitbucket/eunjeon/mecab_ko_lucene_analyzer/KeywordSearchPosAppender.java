@@ -72,11 +72,14 @@ public class KeywordSearchPosAppender extends PosAppender {
     PosId posId = pos.getPosId();
     switch (posId) {
       case COMPOUND:
+      case MAG:
       case N:
       case SL:
       case SH:
       case SN:
       case XR:
+      case IC: // 오분석일 경우, IC가 엮이는 경우가 많아서 일단 토큰으로 생성하도록
+      case UNKNOWN:
         return false;
       case INFLECT:
         return !(pos.getStartPosId() == PosId.VA ||

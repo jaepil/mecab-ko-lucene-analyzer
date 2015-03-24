@@ -449,11 +449,11 @@ public class TokenGeneratorWithStandardPosAppenderTest
   @Test
   public void testSentenceWithXsn() {
     Node node = mockNodeListFactory(new String[] {
-        "공대\tNNG,*,F,공대,*,*,*,*",
-        "생\tXSN,*,T,생,*,*,*,*",
-        "은\tJX,*,T,은,*,*,*,*",
-        " 바쁘\tVA,*,F,바쁘,*,*,*,*",
-        "다\tEF,*,F,다,*,*,*,*",
+        "공대\tNNG,*,F,공대,*,*,*,*,*",
+        "생\tXSN,*,T,생,*,*,*,*,*",
+        "에게\tJKB,*,F,에게,*,*,*,*,*",
+        "는\tJX,*,T,는,*,*,*,*,*",
+        "어울린다\tVV+EC,*,F,어울린다,Inflect,VV,EC,어울리/VV+ᆫ다/EC,*"
     });
 
     TokenGenerator generator =
@@ -602,4 +602,5 @@ public class TokenGeneratorWithStandardPosAppenderTest
     tokens = generator.getNextEojeolTokens();
     assertEquals(null, tokens);
   }
+
 }

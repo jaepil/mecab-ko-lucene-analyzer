@@ -81,6 +81,15 @@ public class StandardPosAppender extends PosAppender {
     appendableSet.add(new Appendable(PosId.COMPOUND, PosId.VCP));
     appendableSet.add(new Appendable(PosId.XSN, PosId.VCP));
     appendableSet.add(new Appendable(PosId.UNKNOWN, PosId.VCP));
+    // 체언(N*) + 접미사
+    appendableSet.add(new Appendable(PosId.NNG, PosId.XSN));
+    appendableSet.add(new Appendable(PosId.NNP, PosId.XSN));
+    appendableSet.add(new Appendable(PosId.NNB, PosId.XSN));
+    appendableSet.add(new Appendable(PosId.NNBC, PosId.XSN));
+    appendableSet.add(new Appendable(PosId.NP, PosId.XSN));
+    appendableSet.add(new Appendable(PosId.NR, PosId.XSN));
+    appendableSet.add(new Appendable(PosId.COMPOUND, PosId.XSN));
+    appendableSet.add(new Appendable(PosId.UNKNOWN, PosId.XSN));
     // 체언(N*) + 조사 [+ 조사]*
     appendableSet.add(new Appendable(PosId.NNG, PosId.J));
     appendableSet.add(new Appendable(PosId.NNP, PosId.J));
@@ -160,11 +169,18 @@ public class StandardPosAppender extends PosAppender {
       return output;
     } else {
       LinkedList<Pos> output = new LinkedList<Pos>();
+      Pos prevPos = null;
       for (Pos pos: poses) {
-        if (isAbsolutePos(pos)) {
-          pos.setPositionIncr(0);
-          output.add(pos);
+        // TODO: pos 를 하나씩 append하자. pos.append(pos, posid.nng, 0);
+        if (prevPos != null) {
+          pos = prevPos.append(pos, prevPos.getPosId(), 0);
         }
+        output.add(pos);
+        prevPos = pos;
+//        if (isAbsolutePos(pos)) {
+//          pos.setPositionIncr(0);
+//          output.add(pos);
+//        }
         if (pos.isPosIdOf(PosId.INFLECT)) {
           Pos firstPos = extractFirstPos(pos);
           if (isAbsolutePos(firstPos) &&
@@ -246,9 +262,7 @@ public class StandardPosAppender extends PosAppender {
           pos.isPosIdOf(PosId.UNKNOWN) ||
           pos.isPosIdOf(PosId.VA) ||
           pos.isPosIdOf(PosId.VV) ||
-          pos.isPosIdOf(PosId.XPN) ||
-          pos.isPosIdOf(PosId.XSN)
-      );
+          pos.isPosIdOf(PosId.XPN));
     } else {
       return (pos.getPosId().in(PosId.NNG, PosId.NR) ||
           pos.isPosIdOf(PosId.COMPOUND) ||
@@ -258,9 +272,7 @@ public class StandardPosAppender extends PosAppender {
           pos.isPosIdOf(PosId.SL) ||
           pos.isPosIdOf(PosId.SN) ||
           pos.isPosIdOf(PosId.UNKNOWN) ||
-          pos.isPosIdOf(PosId.XPN) ||
-          pos.isPosIdOf(PosId.XSN)
-      );
+          pos.isPosIdOf(PosId.XPN));
     }
   }
 

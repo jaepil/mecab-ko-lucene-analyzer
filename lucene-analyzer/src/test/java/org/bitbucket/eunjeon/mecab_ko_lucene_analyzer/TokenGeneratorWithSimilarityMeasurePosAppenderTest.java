@@ -50,7 +50,7 @@ public class TokenGeneratorWithSimilarityMeasurePosAppenderTest
     });
 
     TokenGenerator generator = new TokenGenerator(
-        new SimilarityMeasurePosAppender(option), TokenGenerator.NO_DECOMPOUND, node);
+        new SimilarityMeasurePosAppender(option), node, TokenGenerator.NO_DECOMPOUND);
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
     assertEquals("[진달래/NNG/null/1/1/0/3]", tokens.toString());
@@ -76,7 +76,7 @@ public class TokenGeneratorWithSimilarityMeasurePosAppenderTest
     });
 
     TokenGenerator generator = new TokenGenerator(
-        new SimilarityMeasurePosAppender(option), TokenGenerator.NO_DECOMPOUND, node);
+        new SimilarityMeasurePosAppender(option), node, TokenGenerator.NO_DECOMPOUND);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -118,7 +118,7 @@ public class TokenGeneratorWithSimilarityMeasurePosAppenderTest
     });
 
     TokenGenerator generator = new TokenGenerator(
-        new SimilarityMeasurePosAppender(option), TokenGenerator.NO_DECOMPOUND, node);
+        new SimilarityMeasurePosAppender(option), node, TokenGenerator.NO_DECOMPOUND);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -159,7 +159,7 @@ public class TokenGeneratorWithSimilarityMeasurePosAppenderTest
     });
 
     TokenGenerator generator = new TokenGenerator(
-        new SimilarityMeasurePosAppender(option), TokenGenerator.NO_DECOMPOUND, node);
+        new SimilarityMeasurePosAppender(option), node, TokenGenerator.NO_DECOMPOUND);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -242,7 +242,8 @@ public class TokenGeneratorWithSimilarityMeasurePosAppenderTest
 
     TokenGenerator generator = new TokenGenerator(
         new SimilarityMeasurePosAppender(option),
-        TokenGenerator.NO_DECOMPOUND, node);
+        node,
+        TokenGenerator.NO_DECOMPOUND);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();

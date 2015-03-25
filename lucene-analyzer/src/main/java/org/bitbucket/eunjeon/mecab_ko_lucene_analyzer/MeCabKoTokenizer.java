@@ -141,7 +141,10 @@ public final class MeCabKoTokenizer extends Tokenizer {
     lattice.set_sentence(document);
     tagger.parse(lattice);
     this.generator = new TokenGenerator(
-        posAppender, option.compoundNounMinLength, lattice.bos_node());
+        posAppender,
+        lattice.bos_node(),
+        option.compoundNounMinLength,
+        option.partitionEojeol);
   }
   
   private void setAttributes(Pos token) {

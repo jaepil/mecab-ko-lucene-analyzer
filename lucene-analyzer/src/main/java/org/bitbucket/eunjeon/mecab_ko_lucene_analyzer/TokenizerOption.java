@@ -23,9 +23,16 @@ public class TokenizerOption {
 
   /** mecab 실행옵션(ex: -d /usr/local/lib/mecab/dic/mecab-ko-dic/) */
   public String mecabArgs = "-d /usr/local/lib/mecab/dic/mecab-ko-dic/";
+
   /** 분해를 해야하는 복합명사의 최소 길이. */
   public int compoundNounMinLength = 3;
+
   /** 동사, 형용사 원형 검색 여부 */
   public boolean useAdjectiveAndVerbOriginalForm = true;
   // boolean useHanjaRead = false;
+
+  /** 어절을 체언부와 조사부 또는 어간부와 어미부 두개로 간주하고 토큰을 생성한다.
+   * ex) case true : 선생님에게는 -> 선생님/선생님에게는
+   *     case false: 선생님에게는 -> 선생/선생님/선생님에게/선선생님에게는 */
+  public boolean partitionEojeol = false;
 }

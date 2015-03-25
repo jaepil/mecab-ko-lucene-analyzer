@@ -52,7 +52,7 @@ public class TokenGeneratorWithKeywordSearchPosAppenderTest
 
     TokenGenerator generator = new TokenGenerator(
         new KeywordSearchPosAppender(option),
-        TokenGenerator.NO_DECOMPOUND, node);
+        node, TokenGenerator.NO_DECOMPOUND);
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
     assertEquals("[파란/INFLECT/null/1/1/0/2]", tokens.toString());
@@ -81,7 +81,7 @@ public class TokenGeneratorWithKeywordSearchPosAppenderTest
 
     TokenGenerator generator = new TokenGenerator(
         new KeywordSearchPosAppender(option),
-        TokenGenerator.NO_DECOMPOUND, node);
+        node, TokenGenerator.NO_DECOMPOUND);
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
     assertEquals("[훈민정음/COMPOUND/null/1/2/0/4]", tokens.toString());
@@ -110,7 +110,7 @@ public class TokenGeneratorWithKeywordSearchPosAppenderTest
 
     TokenGenerator generator = new TokenGenerator(
         new KeywordSearchPosAppender(option),
-        TokenGenerator.NO_DECOMPOUND, node);
+        node, TokenGenerator.NO_DECOMPOUND);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -153,7 +153,7 @@ public class TokenGeneratorWithKeywordSearchPosAppenderTest
 
     TokenGenerator generator = new TokenGenerator(
         new KeywordSearchPosAppender(option),
-        TokenGenerator.NO_DECOMPOUND, node);
+        node, TokenGenerator.NO_DECOMPOUND);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -199,7 +199,7 @@ public class TokenGeneratorWithKeywordSearchPosAppenderTest
 
     TokenGenerator generator = new TokenGenerator(
         new KeywordSearchPosAppender(option),
-        TokenGenerator.NO_DECOMPOUND, node);
+        node, TokenGenerator.NO_DECOMPOUND);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();

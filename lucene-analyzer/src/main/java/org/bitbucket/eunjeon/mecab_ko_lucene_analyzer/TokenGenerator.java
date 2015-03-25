@@ -35,6 +35,7 @@ public class TokenGenerator {
   private LinkedList<Pos> posList = new LinkedList<Pos>();
   private ListIterator<Pos> posIter;
   private int compoundNounMinLength;
+  private boolean partitionEojeol;
   
   /**
    * TokenGenerator 생성자
@@ -45,13 +46,22 @@ public class TokenGenerator {
    * @param beginNode 시작 노드
    */
   public TokenGenerator(
-      PosAppender appender, int compoundNounMinLength, Node beginNode) {
+      PosAppender appender, Node beginNode, int compoundNounMinLength) {
+    this(appender, beginNode, compoundNounMinLength, false);
+  }
+
+  public TokenGenerator(
+      PosAppender appender,
+      Node beginNode,
+      int compoundNounMinLength,
+      boolean partitionEojeol) {
     this.appender = appender;
     this.compoundNounMinLength = compoundNounMinLength;
+    this.partitionEojeol = partitionEojeol;
     convertNodeListToPosList(beginNode);
     posIter = posList.listIterator();
   }
-  
+
   private void convertNodeListToPosList(Node beginNode) {
     Node node = beginNode.getNext();
     Pos prevPos = new Pos("", PosId.UNKNOWN, 0, 0, 0);

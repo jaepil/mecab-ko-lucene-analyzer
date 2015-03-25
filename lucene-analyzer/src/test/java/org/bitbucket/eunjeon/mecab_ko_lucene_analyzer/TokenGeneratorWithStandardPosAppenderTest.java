@@ -50,7 +50,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     });
   
     TokenGenerator generator = new TokenGenerator(
-        new StandardPosAppender(option), TokenGenerator.NO_DECOMPOUND, node);
+        new StandardPosAppender(option), node, TokenGenerator.NO_DECOMPOUND);
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
     assertEquals("[진달래/NNG/null/1/1/0/3]", tokens.toString());
@@ -80,7 +80,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     TokenizerOption opt = new TokenizerOption();
     opt.useAdjectiveAndVerbOriginalForm = false;
     TokenGenerator generator = new TokenGenerator(
-        new StandardPosAppender(opt), TokenGenerator.NO_DECOMPOUND, node);
+        new StandardPosAppender(opt), node, TokenGenerator.NO_DECOMPOUND);
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
     assertEquals("[진달래/NNG/null/1/1/0/3]", tokens.toString());
@@ -99,7 +99,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
         "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성/NNG/*+전자/NNG/*",
     });
     TokenGenerator generator =
-        new TokenGenerator(new StandardPosAppender(option), 1, node);
+        new TokenGenerator(new StandardPosAppender(option), node, 1);
     
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -117,7 +117,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
         "아/NNG/*+질산/NNG/*+나트륨/NNG/*"
     });
     TokenGenerator generator =
-        new TokenGenerator(new StandardPosAppender(option), 1, node);
+        new TokenGenerator(new StandardPosAppender(option), node, 1);
     
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -135,7 +135,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
             "을지로/NNP/*+3/SN/*+가/NNG/*+역/NNG/*"
     });
     TokenGenerator generator =
-        new TokenGenerator(new StandardPosAppender(option), 1, node);
+        new TokenGenerator(new StandardPosAppender(option), node, 1);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -154,7 +154,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
         "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성/NNG/*+전자/NNG/*",
     });
     TokenGenerator generator = new TokenGenerator(
-        new StandardPosAppender(option), TokenGenerator.NO_DECOMPOUND, node);
+        new StandardPosAppender(option), node, TokenGenerator.NO_DECOMPOUND);
     
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -170,7 +170,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     });
     TokenGenerator generator =
         new TokenGenerator(
-            new StandardPosAppender(option), 4, node);
+            new StandardPosAppender(option), node, 4);
     
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -181,7 +181,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     node = mockNodeListFactory(new String[] {
         "삼성전자\tNNP,*,F,삼성전자,Compound,*,*,삼성/NNG/*+전자/NNG/*"
     });
-    generator = new TokenGenerator(new StandardPosAppender(option), 4, node);
+    generator = new TokenGenerator(new StandardPosAppender(option), node, 4);
     
     tokens = generator.getNextEojeolTokens();
     assertEquals(
@@ -207,7 +207,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     });
   	
     TokenGenerator generator =
-        new TokenGenerator(new StandardPosAppender(option), 1, node);
+        new TokenGenerator(new StandardPosAppender(option), node, 1);
     
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -245,7 +245,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     });
     
     TokenGenerator generator =
-        new TokenGenerator(new StandardPosAppender(option), 1, node);
+        new TokenGenerator(new StandardPosAppender(option), node, 1);
     
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -274,7 +274,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     });
   	
     TokenGenerator generator =
-        new TokenGenerator(new StandardPosAppender(option), 4, node);
+        new TokenGenerator(new StandardPosAppender(option), node, 4);
     
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -312,7 +312,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     });
   	
     TokenGenerator generator =
-        new TokenGenerator(new StandardPosAppender(option), 2, node);
+        new TokenGenerator(new StandardPosAppender(option), node, 2);
     
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -344,7 +344,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     });
 
     TokenGenerator generator =
-        new TokenGenerator(new StandardPosAppender(option), 4, node);
+        new TokenGenerator(new StandardPosAppender(option), node, 4);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -369,7 +369,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     });
 
     TokenGenerator generator =
-        new TokenGenerator(new StandardPosAppender(option), 4, node);
+        new TokenGenerator(new StandardPosAppender(option), node, 4);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -396,7 +396,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     });
 
     TokenGenerator generator =
-        new TokenGenerator(new StandardPosAppender(option), 4, node);
+        new TokenGenerator(new StandardPosAppender(option), node, 4);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -418,8 +418,8 @@ public class TokenGeneratorWithStandardPosAppenderTest
     TokenGenerator generator =
         new TokenGenerator(
             new StandardPosAppender(option),
-            TokenGenerator.DEFAULT_COMPOUND_NOUN_MIN_LENGTH,
-            node);
+            node,
+            TokenGenerator.DEFAULT_COMPOUND_NOUN_MIN_LENGTH);
     
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -435,7 +435,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     });
 
     TokenGenerator generator =
-        new TokenGenerator(new StandardPosAppender(option), 4, node);
+        new TokenGenerator(new StandardPosAppender(option), node, 4);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -457,7 +457,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     });
 
     TokenGenerator generator =
-        new TokenGenerator(new StandardPosAppender(option), 4, node);
+        new TokenGenerator(new StandardPosAppender(option), node, 4);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -470,6 +470,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
         "[바쁘다/EOJEOL/null/1/1/5/8, 바쁘/VA/null/0/1/5/7]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(null, tokens);
+    // TODO: 공대생들에게는
   }
 
   @Test
@@ -480,7 +481,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     });
 
     TokenGenerator generator =
-        new TokenGenerator(new StandardPosAppender(option), 4, node);
+        new TokenGenerator(new StandardPosAppender(option), node, 4);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -503,7 +504,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     });
 
     TokenGenerator generator =
-        new TokenGenerator(new StandardPosAppender(option), 4, node);
+        new TokenGenerator(new StandardPosAppender(option), node, 4);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -532,7 +533,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     });
 
     TokenGenerator generator =
-        new TokenGenerator(new StandardPosAppender(option), 4, node);
+        new TokenGenerator(new StandardPosAppender(option), node, 4);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -558,7 +559,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     });
 
     TokenGenerator generator =
-        new TokenGenerator(new StandardPosAppender(option), 4, node);
+        new TokenGenerator(new StandardPosAppender(option), node, 4);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
@@ -586,7 +587,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
     });
 
     TokenGenerator generator =
-        new TokenGenerator(new StandardPosAppender(option), 4, node);
+        new TokenGenerator(new StandardPosAppender(option), node, 4);
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();

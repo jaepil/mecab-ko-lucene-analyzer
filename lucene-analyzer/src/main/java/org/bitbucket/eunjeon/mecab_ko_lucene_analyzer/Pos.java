@@ -34,7 +34,6 @@ public class Pos {
   private int positionIncr;
   private int positionLength;
   private String expression;
-  private String indexExpression;
   private Node node;
   
   // index_expression
@@ -53,8 +52,6 @@ public class Pos {
     final static int START_POS = 5;
     final static int END_POS = 6;
     final static int EXPRESSION = 7;
-    // when Compound
-    final static int INDEX_EXPRESSION = 8;
   }
   
   public Pos(
@@ -120,13 +117,12 @@ public class Pos {
       this.startPosId = PosId.convertFrom(items[NodeIndex.START_POS].toUpperCase());
       this.endPosId = PosId.convertFrom(items[NodeIndex.END_POS].toUpperCase());
       expression = items[NodeIndex.EXPRESSION];
-      indexExpression = items[NodeIndex.INDEX_EXPRESSION];
     } else if (posId == PosId.COMPOUND){
-      this.startPosId = PosId.N;
-      this.endPosId = PosId.N;
+      this.startPosId = PosId.NNG;
+      this.endPosId = PosId.NNG;
       this.positionLength =
-          getCompoundNounPositionLength(items[NodeIndex.INDEX_EXPRESSION]);
-      indexExpression = items[NodeIndex.INDEX_EXPRESSION];
+          getCompoundNounPositionLength(items[NodeIndex.EXPRESSION]);
+      expression = items[NodeIndex.EXPRESSION];
     } else {
       this.startPosId = posId;
       this.endPosId = posId;
@@ -196,10 +192,6 @@ public class Pos {
     return expression;
   }
 
-  public String getIndexExpression() {
-    return indexExpression;
-  }
-  
   public int getStartOffset() {
     return startOffset;
   }

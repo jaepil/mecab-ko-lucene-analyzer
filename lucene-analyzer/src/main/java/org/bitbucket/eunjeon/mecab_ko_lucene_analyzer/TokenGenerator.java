@@ -76,7 +76,7 @@ public class TokenGenerator {
    */
   static public LinkedList<Pos> getAnalyzedPoses(Pos pos) {
     LinkedList<Pos> output = new LinkedList<Pos>();
-    String indexExp = pos.getIndexExpression();
+    String indexExp = pos.getExpression();
     if (indexExp == null) {
       output.add(pos);
       return output;

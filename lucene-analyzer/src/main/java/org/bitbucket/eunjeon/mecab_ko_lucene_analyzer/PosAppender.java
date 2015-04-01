@@ -24,6 +24,12 @@ import java.util.LinkedList;
  * @author bibreen <bibreen@gmail.com>
  */
 public abstract class PosAppender {
+  protected TokenizerOption option;
+
+  public PosAppender(TokenizerOption option) {
+    this.option = option;
+  }
+
   /**
    * left PosId와 right PosId가 어절의 형태로 붙을 수 있는 품사인지 여부를 반환한다.
    */

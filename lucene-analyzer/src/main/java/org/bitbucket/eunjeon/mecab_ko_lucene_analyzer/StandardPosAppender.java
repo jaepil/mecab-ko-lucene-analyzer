@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.PosIdManager.PosId;
+import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.util.XpnDiscriminator;
 
 /**
  * 표준 tokenizer를 위한 PosAppender.
@@ -91,7 +92,9 @@ public class StandardPosAppender extends PosAppender {
     appendableSet.add(new Appendable(PosId.COMPOUND, PosId.J));
     appendableSet.add(new Appendable(PosId.UNKNOWN, PosId.J));
     // 체언 접두사(XPN) + 체언(N*)
-    appendableSet.add(new Appendable(PosId.XPN, PosId.N));
+    appendableSet.add(new Appendable(PosId.XPN, PosId.NNG));
+    appendableSet.add(new Appendable(PosId.XPN, PosId.NR));
+    appendableSet.add(new Appendable(PosId.XPN, PosId.NP));
     // 명사 파생 접미사(XSN) + 조사(J)
     appendableSet.add(new Appendable(PosId.XSN, PosId.J));
     // 어미(E) + 조사(J) - 어미가 명사형 전성 어미인 경우
@@ -120,6 +123,10 @@ public class StandardPosAppender extends PosAppender {
     if (right.getNode() != null && right.hasSpace()) {
       return false;
     }
+    if (left.isPosIdOf(PosId.XPN) &&
+        XpnDiscriminator.isIndependentXpn(left.getSurface())) {
+      return false;
+    }
     return appendableSet.contains(
         new Appendable(left.getEndPosId(), right.getStartPosId()));
   }
@@ -141,18 +148,23 @@ public class StandardPosAppender extends PosAppender {
   }
 
   /**
-   * 체언 접두사로 시작하는 경우, 뒤의 명사와 합쳐서 새로운 명사를 만들어 넣는다.
-   * 비/XPN+정상/N -> 비정상/N
+   * 체언 접두사로 시작하는 경우, 뒤의 일반명사, 수사, 대명사와 합쳐서 새로운 명사를 만들어
+   * 넣는다.
+   * 비/XPN+정상/NNG -> 비정상/NNG
    *
    * @param eojeolPosList Eojeol 클래스의 posList
    */
   private void preprocessXpn(LinkedList<Pos> eojeolPosList) {
     if (eojeolPosList.size() > 1) {
-      if (eojeolPosList.get(0).isPosIdOf(PosId.XPN) &&
-          eojeolPosList.get(1).isPosIdOf(PosId.N)) {
+      Pos first = eojeolPosList.get(0);
+      Pos second = eojeolPosList.get(1);
+      if (first.isPosIdOf(PosId.XPN) &&
+          (second.isPosIdOf(PosId.NNG) ||
+              second.isPosIdOf(PosId.NR) ||
+              second.isPosIdOf(PosId.NP))) {
         Pos xpn = eojeolPosList.poll();
         Pos noun = eojeolPosList.poll();
-        Pos newNoun = xpn.append(noun, PosId.N, 1);
+        Pos newNoun = xpn.append(noun, PosId.NNG, 1);
         newNoun.setPositionLength(1);
         eojeolPosList.addFirst(newNoun);
       }

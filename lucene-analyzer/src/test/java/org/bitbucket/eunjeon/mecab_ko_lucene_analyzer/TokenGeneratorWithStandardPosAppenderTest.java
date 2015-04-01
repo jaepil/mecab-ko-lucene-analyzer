@@ -473,7 +473,7 @@ public class TokenGeneratorWithStandardPosAppenderTest
   }
 
   @Test
-  public void testXpn() {
+  public void testIndependentXpn() {
     Node node = mockNodeListFactory(new String[] {
         "왕\tXPN,*,T,왕,*,*,*,*",
         "게임\tNNG,*,T,게임,*,*,*,*",
@@ -487,6 +487,49 @@ public class TokenGeneratorWithStandardPosAppenderTest
     assertEquals("[왕/XPN/null/1/1/0/1]", tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals("[게임/NNG/null/1/1/1/3]", tokens.toString());
+    tokens = generator.getNextEojeolTokens();
+    assertEquals(null, tokens);
+  }
+
+  @Test
+  public void testXpn() {
+    Node node = mockNodeListFactory(new String[] {
+        "비\tXPN,*,F,비,*,*,*,*",
+        "정상\tNNG,*,T,정상,*,*,*,*",
+    });
+
+    TokenGenerator generator =
+        new TokenGenerator(new StandardPosAppender(option), 4, node);
+
+    List<Pos> tokens;
+    tokens = generator.getNextEojeolTokens();
+    assertEquals("[비정상/NNG/null/1/1/0/3]", tokens.toString());
+    tokens = generator.getNextEojeolTokens();
+    assertEquals(null, tokens);
+  }
+
+  @Test
+  public void testXpn1() {
+    Node node = mockNodeListFactory(new String[] {
+        "너\tNP,*,F,너,*,*,*,*",
+        "는\tJX,*,T,는,*,*,*,*",
+        "비\tXPN,*,F,비,*,*,*,*",
+        "정상\tNNG,*,T,정상,*,*,*,*",
+        "이\tVCP,*,F,이,*,*,*,*",
+        "다\tEF,*,F,다,*,*,*,*"
+    });
+
+    TokenGenerator generator =
+        new TokenGenerator(new StandardPosAppender(option), 4, node);
+
+    List<Pos> tokens;
+    tokens = generator.getNextEojeolTokens();
+    assertEquals(
+        "[너는/EOJEOL/null/1/1/0/2, 너/NP/null/0/1/0/1]", tokens.toString());
+    tokens = generator.getNextEojeolTokens();
+    assertEquals(
+        "[비정상이다/EOJEOL/null/1/1/2/7, 비정상/NNG/null/0/1/2/5]",
+        tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(null, tokens);
   }

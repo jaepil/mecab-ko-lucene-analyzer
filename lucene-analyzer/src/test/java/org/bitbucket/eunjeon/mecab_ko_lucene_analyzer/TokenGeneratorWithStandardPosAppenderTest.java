@@ -484,9 +484,9 @@ public class TokenGeneratorWithStandardPosAppenderTest
 
     List<Pos> tokens;
     tokens = generator.getNextEojeolTokens();
-    assertEquals("[왕/XPN/null/1/1/0/1]", tokens.toString());
-    tokens = generator.getNextEojeolTokens();
-    assertEquals("[게임/NNG/null/1/1/1/3]", tokens.toString());
+    assertEquals(
+        "[왕/XPN/null/1/1/0/1, 왕게임/COMPOUND/null/0/2/0/3, 게임/NNG/null/1/1/1/3]",
+        tokens.toString());
     tokens = generator.getNextEojeolTokens();
     assertEquals(null, tokens);
   }

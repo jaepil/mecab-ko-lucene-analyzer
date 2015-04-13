@@ -73,6 +73,14 @@ class Eojeol {
             (posList.size() == 1 && appender.isSkippablePos(posList.get(0)));
   }
 
+  public int getNumPoses() {
+    return posList.size();
+  }
+
+  public Pos getPos(int index) {
+    return posList.get(index);
+  }
+
   public LinkedList<Pos> getPosList() {
     return posList;
   }
@@ -87,6 +95,10 @@ class Eojeol {
 
   public boolean hasCompoundNoun() {
     return hasCompoundNoun;
+  }
+
+  public void setToCompoundNoun() {
+    hasCompoundNoun = true;
   }
 
   public void clear() {

@@ -123,10 +123,6 @@ public class StandardPosAppender extends PosAppender {
     if (right.getNode() != null && right.hasSpace()) {
       return false;
     }
-    if (left.isPosIdOf(PosId.XPN) &&
-        XpnDiscriminator.isIndependentXpn(left.getSurface())) {
-      return false;
-    }
     return appendableSet.contains(
         new Appendable(left.getEndPosId(), right.getStartPosId()));
   }
@@ -141,33 +137,43 @@ public class StandardPosAppender extends PosAppender {
 
   @Override
   public LinkedList<Pos> getTokensFrom(Eojeol eojeol) {
-    preprocessXpn(eojeol.getPosList());
+    preprocessXpn(eojeol);
     LinkedList<Pos> output = getAdditionalPosesFrom(eojeol);
     insertEojeolPosTo(eojeol, output);
     return output;
   }
 
   /**
-   * 체언 접두사로 시작하는 경우, 뒤의 일반명사, 수사, 대명사와 합쳐서 새로운 명사를 만들어
-   * 넣는다.
-   * 비/XPN+정상/NNG -> 비정상/NNG
-   *
-   * @param eojeolPosList Eojeol 클래스의 posList
+   * 비독립적인 체언 접두사로 시작하는 경우, 뒤의 일반명사, 수사, 대명사와 합쳐서 새로운 명사를
+   * 만들어 넣는다
+   *   - 비/XPN + 정상/NNG -> 비정상/NNG
+   * 독립적으로 사용되는 체언 접두사(XpnDiscriminator에 정의)인 경우 복합명사가 포함된 것으로
+   * 설정해서 접두사와 체언이 복합명사의 로직으로 인덱싱한다.
+   *   - 왕/XPN + 만두/NNG -> 왕/XPN         + 만두/NNG
+   *                        왕만두/COMPOUND
+   * @param eojeol
    */
-  private void preprocessXpn(LinkedList<Pos> eojeolPosList) {
-    if (eojeolPosList.size() > 1) {
-      Pos first = eojeolPosList.get(0);
-      Pos second = eojeolPosList.get(1);
-      if (first.isPosIdOf(PosId.XPN) &&
-          (second.isPosIdOf(PosId.NNG) ||
-              second.isPosIdOf(PosId.NR) ||
-              second.isPosIdOf(PosId.NP))) {
-        Pos xpn = eojeolPosList.poll();
-        Pos noun = eojeolPosList.poll();
-        Pos newNoun = xpn.append(noun, PosId.NNG, 1);
-        newNoun.setPositionLength(1);
-        eojeolPosList.addFirst(newNoun);
-      }
+  private void preprocessXpn(Eojeol eojeol) {
+    if (eojeol.getNumPoses() < 2) {
+      return;
+    }
+    Pos first = eojeol.getPos(0);
+    Pos second = eojeol.getPos(1);
+    if (!first.isPosIdOf(PosId.XPN) ||
+        (!second.isPosIdOf(PosId.NNG) &&
+            !second.isPosIdOf(PosId.NR) &&
+            !second.isPosIdOf(PosId.NP))) {
+      return;
+    }
+    if (XpnDiscriminator.isIndependentXpn(first.getSurface())) {
+      eojeol.setToCompoundNoun();
+    } else {
+      LinkedList<Pos> eojeolPosList = eojeol.getPosList();
+      Pos xpn = eojeolPosList.poll();
+      Pos noun = eojeolPosList.poll();
+      Pos newNoun = xpn.append(noun, PosId.NNG, 1);
+      newNoun.setPositionLength(1);
+      eojeolPosList.addFirst(newNoun);
     }
   }
 

@@ -180,26 +180,34 @@ public class StandardPosAppender extends PosAppender {
   private LinkedList<Pos> getAdditionalPosesFrom(Eojeol eojeol) {
     LinkedList<Pos> poses = eojeol.getPosList();
     if (eojeol.hasCompoundNoun()) {
-      LinkedList<Pos> output = new LinkedList<Pos>();
+      LinkedList<Pos> output = new LinkedList<>();
       // TODO: 이해하기 어려운 코드 리팩토링 해보자
       Pos prevPos = null;
+      int numAbsolutePos = 0;
       for (Pos pos: poses) {
         if (!isAbsolutePos(pos)) {
           break;
         }
-
         output.add(pos);
+        numAbsolutePos += 1;
         if (prevPos == null) {
           prevPos = pos;
         } else {
+          if (areAllSingleLengthNoun(prevPos, pos)) {
+            prevPos = pos;
+            continue;
+          }
           Pos compound = prevPos.append(pos, PosId.COMPOUND, 0);
-          output.add(1, compound);
-          prevPos = compound;
+          output.add(output.size() - 1, compound);
+          prevPos = pos;
         }
+      }
+      if (numAbsolutePos >= 3) {
+        output.add(1, generateWholeCompoundNoun(poses));
       }
       return output;
     } else {
-      LinkedList<Pos> output = new LinkedList<Pos>();
+      LinkedList<Pos> output = new LinkedList<>();
       for (Pos pos: poses) {
         if (isAbsolutePos(pos)) {
           pos.setPositionIncr(0);
@@ -215,6 +223,24 @@ public class StandardPosAppender extends PosAppender {
       }
       return output;
     }
+  }
+
+  private boolean areAllSingleLengthNoun(Pos p1, Pos p2) {
+    return (p1.getPosId().in(PosId.NNG, PosId.NNP) &&
+        p1.getSurfaceLength() == 1 &&
+        p2.getPosId().in(PosId.NNG, PosId.NNP) &&
+        p2.getSurfaceLength() == 1);
+  }
+
+  private Pos generateWholeCompoundNoun(LinkedList<Pos> poses) {
+    Pos wholeCompoundNoun = poses.getFirst();
+    for (Pos pos: poses.subList(1, poses.size())) {
+      if (!isAbsolutePos(pos)) {
+        break;
+      }
+      wholeCompoundNoun = wholeCompoundNoun.append(pos, PosId.COMPOUND, 0);
+    }
+    return wholeCompoundNoun;
   }
 
   private Pos insertEojeolPosTo(Eojeol eojeol, LinkedList<Pos> eojeolTokens) {

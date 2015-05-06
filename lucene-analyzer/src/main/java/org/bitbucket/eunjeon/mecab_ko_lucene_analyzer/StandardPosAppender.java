@@ -193,7 +193,7 @@ public class StandardPosAppender extends PosAppender {
         if (prevPos == null) {
           prevPos = pos;
         } else {
-          if (areAllSingleLengthNoun(prevPos, pos)) {
+          if (areBothSingleLengthNoun(prevPos, pos)) {
             prevPos = pos;
             continue;
           }
@@ -225,7 +225,7 @@ public class StandardPosAppender extends PosAppender {
     }
   }
 
-  private boolean areAllSingleLengthNoun(Pos p1, Pos p2) {
+  private boolean areBothSingleLengthNoun(Pos p1, Pos p2) {
     return (p1.getPosId().in(PosId.NNG, PosId.NNP) &&
         p1.getSurfaceLength() == 1 &&
         p2.getPosId().in(PosId.NNG, PosId.NNP) &&

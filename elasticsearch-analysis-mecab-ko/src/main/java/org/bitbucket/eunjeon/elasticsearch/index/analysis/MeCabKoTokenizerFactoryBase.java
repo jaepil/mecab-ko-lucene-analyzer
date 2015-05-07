@@ -52,6 +52,7 @@ public abstract class MeCabKoTokenizerFactoryBase
     setMeCabArgs(settings);
     setCompoundNounMinLength(settings);
     setUseAdjectiveAndVerbOriginalForm(settings);
+    setPosAppender();
   }
   
   protected void setDefaultOption() {

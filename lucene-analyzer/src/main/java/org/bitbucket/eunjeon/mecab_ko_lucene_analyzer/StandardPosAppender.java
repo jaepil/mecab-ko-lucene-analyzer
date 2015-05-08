@@ -256,7 +256,7 @@ public class StandardPosAppender extends PosAppender {
       eojeolPos = eojeolTokens.getFirst();
       eojeolPos.setPositionIncr(1);
     } else {
-      if (eojeol.hasCompoundNoun()) {
+      if (eojeol.hasCompoundNoun() && eojeolTokens.size() > 0) {
         int positionLength = recalcEojeolPositionLength(eojeolTokens);
         eojeolPos = new Pos(
             eojeol.getTerm(), PosId.EOJEOL,
@@ -305,6 +305,7 @@ public class StandardPosAppender extends PosAppender {
       return (pos.getPosId().in(PosId.NNG, PosId.NR) ||
           pos.isPosIdOf(PosId.COMPOUND) ||
           pos.isPosIdOf(PosId.MAG) ||
+          pos.isPosIdOf(PosId.MM) ||
           pos.isPosIdOf(PosId.XR) ||
           pos.isPosIdOf(PosId.SH) ||
           pos.isPosIdOf(PosId.SL) ||
@@ -319,6 +320,7 @@ public class StandardPosAppender extends PosAppender {
       return (pos.getPosId().in(PosId.NNG, PosId.NR) ||
           pos.isPosIdOf(PosId.COMPOUND) ||
           pos.isPosIdOf(PosId.MAG) ||
+          pos.isPosIdOf(PosId.MM) ||
           pos.isPosIdOf(PosId.XR) ||
           pos.isPosIdOf(PosId.SH) ||
           pos.isPosIdOf(PosId.SL) ||

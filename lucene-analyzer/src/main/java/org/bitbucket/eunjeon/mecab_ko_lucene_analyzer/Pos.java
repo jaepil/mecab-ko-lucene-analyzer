@@ -93,16 +93,20 @@ public class Pos {
    * ex) 판교/NNP/지명
    */
   public Pos(String expression, int startOffset) {
-    String[] datas = expression.split("/");
-    this.surface = datas[ExpressionIndex.TERM];
-    this.posId = PosId.convertFrom(datas[ExpressionIndex.TAG]);
-    this.pos = datas[ExpressionIndex.TAG];
-    this.semanticClass = convertSemanticClass(datas[ExpressionIndex.SEMANTIC_CLASS]);
-    startPosId = posId;
-    endPosId = posId;
-    this.startOffset = startOffset;
-    this.positionIncr = 1;
-    this.positionLength = 1;
+    try {
+      String[] datas = expression.split("/");
+      this.surface = datas[ExpressionIndex.TERM];
+      this.posId = PosId.convertFrom(datas[ExpressionIndex.TAG]);
+      this.pos = datas[ExpressionIndex.TAG];
+      this.semanticClass = convertSemanticClass(datas[ExpressionIndex.SEMANTIC_CLASS]);
+      startPosId = posId;
+      endPosId = posId;
+      this.startOffset = startOffset;
+      this.positionIncr = 1;
+      this.positionLength = 1;
+    } catch (IndexOutOfBoundsException e) {
+      throw new RuntimeException("Use mecab-ko-dic 2.0.0 or higher.");
+    }
   }
   
   private void parseFeatureString() {

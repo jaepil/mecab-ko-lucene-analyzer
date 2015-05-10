@@ -1,5 +1,17 @@
 # mecab-ko-lucene-analyzer ChangeLog
 
+## 0.17.0
+
+  - 새로운 기능
+    - mecab-ko-dic-2.0.0 의 변경된 사전 포멧에 따른 변경.
+    - 동사와 형용사 원형을 사용하여 검색할 수 있는 기능 추가
+    - StandardIndexTokenizerFactory, StandardQueryTokenizerFactory 제거하고 StandardTokenizerFactory로 합침
+    - Tokenizer 실행 옵션 변경 (Solr, ElasticSearch 모두)
+      - mecabDicDir -> mecabArgs로 변경하면서 사전 경로가 아니라, mecab 옵션을 지정하도록 수정
+      - useAdjectiveAndVerbOriginForm 동사와 형용사 원형을 사용하여 검색할지 여부
+    - 복합명사 분해 로직 변경
+    - 체언 접두사 처리 로직 변경
+
 ## 0.16.2
 
   - 새로운 기능

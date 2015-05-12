@@ -1,8 +1,8 @@
 # mecab-ko analysis for ElasticSearch
 mecab-ko Analysis Plugin은 [mecab-ko-lucene-analyzer](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer)를 elasticsearch에서 사용하는 플러그인 입니다.
 
-  - 이 플러그인은 `mecab_ko_standard_tokenizer`를 포함하고 있습니다.
-  - elasticsearch 1.3.0 버전 기준으로 작성되었습니다. (elasticsearch 1.3.2에서 사용 가능)
+- 이 플러그인은 `mecab_ko_standard_tokenizer`를 포함하고 있습니다.
+- elasticsearch 1.3.0 버전 기준으로 작성되었습니다. (elasticsearch 1.3.2에서 사용 가능)
 
 ## 설명
 

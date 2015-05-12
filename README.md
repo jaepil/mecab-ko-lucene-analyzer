@@ -6,25 +6,25 @@
 
 다음과 같은 기능들을 제공합니다.
 
-  - 명사추출
-  - 복합명사 분해
-  - 원어절 추출
+- 명사추출
+- 복합명사 분해
+- 원어절 추출
 
 [ElasticSearch](http://www.elasticsearch.org/)용 형태소 분석기의 사용 설명서는 [mecab-ko analysis for ElasticSearch](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/raw/master/elasticsearch-analysis-mecab-ko/)에서 보실 수 있습니다.
 
 ## 특징
 
-  - '무궁화꽃이피었습니다.'와 같이 띄어 쓰기가 잘못된 오류를 교정하여 형태소 분석이 가능합니다.
-  - StandardTokenizer의 경우, 명사뿐 아니라 품사가 결합된 어절도 Token으로 뽑아냅니다.
+- '무궁화꽃이피었습니다.'와 같이 띄어 쓰기가 잘못된 오류를 교정하여 형태소 분석이 가능합니다.
+- StandardTokenizer의 경우, 명사뿐 아니라 품사가 결합된 어절도 Token으로 뽑아냅니다.
 
         철수가 학교에 간다. -> 철수가, 철수, 학교에, 학교, 간다
 
-  - 문장의 끝에 문장의 끝을 알리는 기호 "`.!?`"가 있으면 더 자연스럽게 형태소 분석이 됩니다.
-  - 분석된 token의 형태소를 구체적으로 볼 수 있습니다.
+- 문장의 끝에 문장의 끝을 알리는 기호 "`.!?`"가 있으면 더 자연스럽게 형태소 분석이 됩니다.
+- 분석된 token의 형태소를 구체적으로 볼 수 있습니다.
 
         박보영이(NNP+JKS), 박보영(NNP), 서울에(NNP+JKB), 서울(NNP), 갔다(VV+EP+EF), 가/VV(VV)
 
-  - Apache Lucene/Solr 4.9.X 버전 기준으로 작성되었습니다. (Apache Lucene/Solr 4.10.4에서 사용 가능)
+- Apache Lucene/Solr 4.9.X 버전 기준으로 작성되었습니다. (Apache Lucene/Solr 4.10.4에서 사용 가능)
 
 ## 설치
 
@@ -49,15 +49,15 @@ Solr example(Solr with Jetty)의 사용을 기준으로 설명합니다.
 
 __주의 사항__
 
-  - mecab-ko의 버전에 맞는 mecab-java-0.996.tar.gz를 선택해야 합니다. mecab-0.996-ko.0.9.0 버전에서는 mecab-java-0.996을 사용해야 합니다.
-  - Makefile에서 INCLUDE 값을 자신의 환경에 맞게 변경해야 합니다.
-  - OpenJDK를 사용하시는 경우, 최적화 옵션을 -O나 -O1로 고쳐야 합니다. [mecab-ko-lucene-analyzer OpenJDK에서 사용하기](http://eunjeon.blogspot.kr/2013/04/mecab-ko-lucene-analyzer-openjdk.html) 참조
+- mecab-ko의 버전에 맞는 mecab-java-0.996.tar.gz를 선택해야 합니다. mecab-0.996-ko.0.9.0 버전에서는 mecab-java-0.996을 사용해야 합니다.
+- Makefile에서 INCLUDE 값을 자신의 환경에 맞게 변경해야 합니다.
+- OpenJDK를 사용하시는 경우, 최적화 옵션을 -O나 -O1로 고쳐야 합니다. [mecab-ko-lucene-analyzer OpenJDK에서 사용하기](http://eunjeon.blogspot.kr/2013/04/mecab-ko-lucene-analyzer-openjdk.html) 참조
 
 ### mecab-ko-lucene-analyzer 다운로드 및 설치
 [mecab-ko-lucene-analyzer 다운로드 페이지](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/downloads)에서 `mecab-ko-lucene-analyzer-XX.tar.gz`의 최신 버전을 다운 받아 압축을 풀면 두개의 jar파일이 있습니다. 
 
-  - mecab-ko-mecab-loader-XX.jar: System classpath에 복사합니다. (ex: `[solr 디렉터리]/example/lib/ext`)
-  - mecab-ko-lucene-analyzer-XX.jar: Solr 라이브러리 디렉터리에 설치합니다. (ex: `[solr 디렉터리]/example/solr/lib`)
+- mecab-ko-mecab-loader-XX.jar: System classpath에 복사합니다. (ex: `[solr 디렉터리]/example/lib/ext`)
+- mecab-ko-lucene-analyzer-XX.jar: Solr 라이브러리 디렉터리에 설치합니다. (ex: `[solr 디렉터리]/example/solr/lib`)
 
 #### mecab-ko-lucene-analyzer 버전별 mecab-ko-dic, Lucene/Solr, elasticsearch 지원 버전
 

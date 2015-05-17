@@ -24,6 +24,12 @@ import java.util.LinkedList;
  * @author bibreen <bibreen@gmail.com>
  */
 public abstract class PosAppender {
+  protected TokenizerOption option;
+
+  public PosAppender(TokenizerOption option) {
+    this.option = option;
+  }
+
   /**
    * left PosId와 right PosId가 어절의 형태로 붙을 수 있는 품사인지 여부를 반환한다.
    */
@@ -33,10 +39,7 @@ public abstract class PosAppender {
    */
   public abstract boolean isSkippablePos(Pos pos);
   /**
-   * 어절을 구성하는 POS 리스트에서 추가적인 POS가 token으로 뽑혀야 하는 경우, 해당
-   * POS 리스트를 반환한다.
-   *
-   * @param poses 어절을 구성하는 POS 리스트
+   * 어절을 구성하는 POS 리스트에서 token으로 뽑히는 POS를 반환한다.
    */
-  public abstract LinkedList<Pos> extractAdditionalPoses(LinkedList<Pos> poses);
+  public abstract LinkedList<Pos> getTokensFrom(Eojeol eojeol);
 }

@@ -23,10 +23,14 @@ import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.*;
 import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.tokenattributes.PartOfSpeechAttribute;
 import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.tokenattributes.SemanticClassAttribute;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 public class MeCabKoStandardTokenizerTest {
+  private TokenizerOption option;
+
   private String tokenizerToString(Tokenizer tokenizer) throws Exception {
     OffsetAttribute extOffset = tokenizer.addAttribute(OffsetAttribute.class);
     PositionIncrementAttribute posIncrAtt = 
@@ -57,14 +61,23 @@ public class MeCabKoStandardTokenizerTest {
     tokenizer.end();
     return result.toString();
   }
-  
+
+  @Before
+  public void setUp() throws Exception {
+    option = new TokenizerOption();
+  }
+
+  @After
+  public void tearDown() throws Exception {
+  }
+
   private Tokenizer createTokenizer(
-      StringReader reader, int decompoundMinLength) {
+      StringReader reader, int compoundNounMinLength) {
+    option.compoundNounMinLength = compoundNounMinLength;
     Tokenizer tokenizer = new MeCabKoTokenizer(
         reader,
-        "/usr/local/lib/mecab/dic/mecab-ko-dic",
-        new StandardPosAppender(),
-        decompoundMinLength);
+        option,
+        new StandardPosAppender(option));
     return tokenizer;
   }
   
@@ -92,8 +105,8 @@ public class MeCabKoStandardTokenizerTest {
     Tokenizer tokenizer = createTokenizer(
         new StringReader("이승기 미근동"), 2);
     assertEquals(
-        "이승기:N:NNP:인명:1:1:0:3,미근:N:NNP:지명:1:1:4:6,"
-        + "미근동:COMPOUND:Compound:지명:0:2:4:7,동:N:NNG:null:1:1:6:7,",
+        "이승기:NNP:NNP:인명:1:1:0:3,미근:NNP:NNP:지명:1:1:4:6,"
+        + "미근동:COMPOUND:null:null:0:2:4:7,동:NNG:NNG:null:1:1:6:7,",
         tokenizerToString(tokenizer));
   }
   
@@ -103,18 +116,18 @@ public class MeCabKoStandardTokenizerTest {
     Tokenizer tokenizer = createTokenizer(
         new StringReader("꽃배달 꽃망울 오토바이"), 2);
     assertEquals(
-        "꽃:N:NNG:null:1:1:0:1,배달:N:NNG:null:1:1:1:3,"
-        + "꽃:N:NNG:null:1:1:4:5,꽃망울:COMPOUND:Compound:null:0:2:4:7,"
-        + "망울:N:NNG:null:1:1:5:7,오토바이:N:NNG:null:1:1:8:12,",
+        "꽃:NNG:NNG:null:1:1:0:1,배달:NNG:NNG:null:1:1:1:3,"
+        + "꽃:NNG:NNG:null:1:1:4:5,꽃망울:COMPOUND:null:null:0:2:4:7,"
+        + "망울:NNG:NNG:null:1:1:5:7,오토바이:NNG:NNG:null:1:1:8:12,",
         tokenizerToString(tokenizer));
    
     tokenizer.reset();
     tokenizer.setReader(new StringReader("소설 무궁화꽃이 피었습니다."));
     assertEquals(
-        "소설:N:NNG:null:1:1:0:2,무궁:N:NNG:null:1:1:3:5,"
-        + "무궁화:COMPOUND:Compound:null:0:2:3:6,화:N:NNG:null:1:1:5:6,"
-        + "꽃이:EOJEOL:NNG+JKS:null:1:1:6:8,꽃:N:NNG:null:0:1:6:7,"
-        + "피었습니다:EOJEOL:VV+EP+EF:null:1:1:9:14,",
+        "소설:NNG:NNG:null:1:1:0:2,무궁:NNG:NNG:null:1:1:3:5,"
+        + "무궁화:COMPOUND:null:null:0:2:3:6,화:NNG:NNG:null:1:1:5:6,"
+        + "꽃이:EOJEOL:NNG+JKS:null:1:1:6:8,꽃:NNG:NNG:null:0:1:6:7,"
+        + "피었습니다:EOJEOL:VV+EP+EF:null:1:1:9:14,피/VV:VV:VV:null:0:1:9:10,",
         tokenizerToString(tokenizer));
     tokenizer.close();
   }
@@ -130,14 +143,14 @@ public class MeCabKoStandardTokenizerTest {
         "지금:MAG:MAG:성분부사/시간부사:1:1:0:2," +
         "보다:MAG:MAG:성분부사/정도부사:1:1:2:4,어리고:EOJEOL:VA+EC:null:1:1:5:8," +
         "민감하던:EOJEOL:XR+XSA+ETM:null:1:1:9:13,민감:XR:XR:null:0:1:9:11," +
-        "시절:N:NNG:null:1:1:14:16,아버지가:EOJEOL:NNG+JKS:null:1:1:17:21," +
-        "아버지:N:NNG:null:0:1:17:20,충고를:EOJEOL:NNG+JKO:null:1:1:22:25," +
-        "충고:N:NNG:null:0:1:22:24,한:N:NNG:null:1:1:26:27," +
-        "한마디:COMPOUND:Compound:null:0:2:26:29,마디:N:NNG:null:1:1:27:29," +
+        "시절:NNG:NNG:null:1:1:14:16,아버지가:EOJEOL:NNG+JKS:null:1:1:17:21," +
+        "아버지:NNG:NNG:null:0:1:17:20,충고를:EOJEOL:NNG+JKO:null:1:1:22:25," +
+        "충고:NNG:NNG:null:0:1:22:24,한:NNG:NNG:null:1:1:26:27," +
+        "한마디:COMPOUND:null:null:0:2:26:29,마디:NNG:NNG:null:1:1:27:29," +
         "했는데:EOJEOL:VV+EP+EC:null:1:1:30:33," +
         "아직도:EOJEOL:MAG+JX:null:1:1:34:37," +
         "아직:MAG:MAG:성분부사/시간부사:0:1:34:36,그:MM:MM:~명사:1:1:38:39," +
-        "말이:EOJEOL:NNG+JKS:null:1:1:40:42,말:N:NNG:null:0:1:40:41," +
+        "말이:EOJEOL:NNG+JKS:null:1:1:40:42,말:NNG:NNG:null:0:1:40:41," +
         "기억난다:INFLECT:VV+EF:null:1:1:43:47,",
         tokenizerToString(tokenizer));
     tokenizer.close();
@@ -148,7 +161,7 @@ public class MeCabKoStandardTokenizerTest {
     Tokenizer tokenizer = createTokenizer(
         new StringReader("한글win"),
         TokenGenerator.DEFAULT_COMPOUND_NOUN_MIN_LENGTH);
-    assertEquals("한글:N:NNG:null:1:1:0:2,win:SL:SL:null:1:1:2:5,", 
+    assertEquals("한글:NNG:NNG:null:1:1:0:2,win:SL:SL:null:1:1:2:5,",
         tokenizerToString(tokenizer));
     tokenizer.close();
   }
@@ -159,7 +172,7 @@ public class MeCabKoStandardTokenizerTest {
         new StringReader("형태소"),
         TokenGenerator.DEFAULT_COMPOUND_NOUN_MIN_LENGTH);
     assertEquals(
-        "형태:N:NNG:null:1:1:0:2,형태소:COMPOUND:Compound:null:0:2:0:3,소:N:NNG:null:1:1:2:3,",
+        "형태:NNG:NNG:null:1:1:0:2,형태소:COMPOUND:null:null:0:2:0:3,소:NNG:NNG:null:1:1:2:3,",
         tokenizerToString(tokenizer));
     tokenizer.close();
     
@@ -167,8 +180,8 @@ public class MeCabKoStandardTokenizerTest {
         new StringReader("가고문헌"),
         TokenGenerator.DEFAULT_COMPOUND_NOUN_MIN_LENGTH);
     assertEquals(
-        "가고:N:NNG:null:1:1:0:2,가고문헌:COMPOUND:Compound:null:0:2:0:4,"
-        + "문헌:N:NNG:null:1:1:2:4,",
+        "가고:NNG:NNG:null:1:1:0:2,가고문헌:COMPOUND:null:null:0:2:0:4,"
+        + "문헌:NNG:NNG:null:1:1:2:4,",
         tokenizerToString(tokenizer));
     tokenizer.close();
   }
@@ -195,10 +208,10 @@ public class MeCabKoStandardTokenizerTest {
         new StringReader("은전한닢 프로젝트는 오픈소스이다."),
         TokenGenerator.DEFAULT_COMPOUND_NOUN_MIN_LENGTH);
     assertEquals(
-        "은전:N:NNG:null:1:1:0:2,한:N:NR:null:1:1:2:3,닢:N:NNG:null:1:1:3:4,"
-        + "프로젝트는:EOJEOL:NNG+JX:null:1:1:5:10,프로젝트:N:NNG:null:0:1:5:9,"
-        + "오픈:N:NNG:null:1:1:11:13,소스이다:EOJEOL:NNG+VCP+EF:null:1:1:13:17,"
-        + "소스:N:NNG:null:0:1:13:15,",
+        "은전:NNG:NNG:null:1:1:0:2,한:NR:NR:null:1:1:2:3,닢:NNG:NNG:null:1:1:3:4,"
+        + "프로젝트는:EOJEOL:NNG+JX:null:1:1:5:10,프로젝트:NNG:NNG:null:0:1:5:9,"
+        + "오픈:NNG:NNG:null:1:1:11:13,소스이다:EOJEOL:NNG+VCP+EF:null:1:1:13:17,"
+        + "소스:NNG:NNG:null:0:1:13:15,",
         tokenizerToString(tokenizer));
     tokenizer.close();
   }
@@ -210,7 +223,7 @@ public class MeCabKoStandardTokenizerTest {
         TokenGenerator.DEFAULT_COMPOUND_NOUN_MIN_LENGTH);
     assertEquals(
         "걀꿀:UNKNOWN:UNKNOWN:null:1:1:0:2,없는:EOJEOL:VA+ETM:null:1:1:3:5,"
-        + "단어:N:NNG:null:1:1:6:8,",
+        + "없/VA:VA:VA:null:0:1:3:4,단어:NNG:NNG:null:1:1:6:8,",
         tokenizerToString(tokenizer));
     tokenizer.close();
   }

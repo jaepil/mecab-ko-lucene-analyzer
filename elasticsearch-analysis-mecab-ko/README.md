@@ -1,8 +1,8 @@
 # mecab-ko analysis for ElasticSearch
 mecab-ko Analysis Plugin은 [mecab-ko-lucene-analyzer](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer)를 elasticsearch에서 사용하는 플러그인 입니다.
 
-  - 이 플러그인은 `mecab_ko_standard_tokenizer`를 포함하고 있습니다.
-  - elasticsearch 1.3.0 버전 기준으로 작성되었습니다. (elasticsearch 1.3.2에서 사용 가능)
+- 이 플러그인은 `mecab_ko_standard_tokenizer`를 포함하고 있습니다.
+- elasticsearch 1.3.0 버전 기준으로 작성되었습니다. (elasticsearch 1.3.2에서 사용 가능)
 
 ## 설명
 
@@ -11,10 +11,11 @@ mecab-ko Analysis Plugin의 기본 tokenizer.
 
 `mecab_ko_standard_tokenizer`에 세팅할 수 있는 것들은 다음과 같다.
 
-| 세팅                         |  설명                                                                       |
-| ---------------------------- | --------------------------------------------------------------------------- |
-| **mecab_dic_dir**            | mecab-ko-dic 사전 경로. 기본 경로는 '/usr/local/lib/mecab/dic/mecab-ko-dic' |
-| **compound_noun_min_length** | 분해를 해야하는 복합명사의 최소 길이. 기본 값은 3                           |
+| 세팅                                   |  설명                                                                                                                                  |
+| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| **mecab_args**                         | mecab 실행옵션. 디폴트 값은 '-d /usr/local/lib/mecab/dic/mecab-ko-dic'<br />다른 옵션은 http://taku910.github.io/mecab/mecab.html 참조 |
+| **compound_noun_min_length**           | 분해를 해야하는 복합명사의 최소 길이. 기본 값은 3                                                                                      |
+| **use_adjective_and_verb_origin_form** | 동사와 형용사 원형을 사용하여 검색할지 여부. 디폴트 값은 true                                                                          |
 
 ## 설치
 

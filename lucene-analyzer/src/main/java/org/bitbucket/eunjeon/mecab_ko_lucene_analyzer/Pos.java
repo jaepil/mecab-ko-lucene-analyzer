@@ -33,7 +33,7 @@ public class Pos {
   private int startOffset;
   private int positionIncr;
   private int positionLength;
-  private String indexExpression;
+  private String expression;
   private Node node;
   
   // index_expression
@@ -41,8 +41,6 @@ public class Pos {
     final static int TERM = 0;
     final static int TAG = 1;
     final static int SEMANTIC_CLASS = 2;
-    final static int POSITION_INCR = 3;
-    final static int POSITION_LENGTH = 4;
   }
   
   // feature
@@ -53,8 +51,7 @@ public class Pos {
     // when Inflect
     final static int START_POS = 5;
     final static int END_POS = 6;
-    // when Compound
-    final static int INDEX_EXPRESSION = 8;
+    final static int EXPRESSION = 7;
   }
   
   public Pos(
@@ -92,22 +89,24 @@ public class Pos {
   /**
    * Pos를 표현하는 문자열을 받는 Pos 생성자.
    * expression은 다음과 같이 구성된다.
-   * '<surface>/<tag>/<position_incr>/<position_length>'
-   * ex) 명사/NN/1/1
+   * '<surface>/<tag>/<semantic_class>'
+   * ex) 판교/NNP/지명
    */
   public Pos(String expression, int startOffset) {
-    String[] datas = expression.split("/");
-    this.surface = datas[ExpressionIndex.TERM];
-    this.posId = PosId.convertFrom(datas[ExpressionIndex.TAG]);
-    this.pos = datas[ExpressionIndex.TAG];
-    this.semanticClass = convertSemanticClass(datas[ExpressionIndex.SEMANTIC_CLASS]);
-    startPosId = posId;
-    endPosId = posId;
-    this.startOffset = startOffset;
-    this.positionIncr =
-        Integer.parseInt(datas[ExpressionIndex.POSITION_INCR]);
-    this.positionLength =
-        Integer.parseInt(datas[ExpressionIndex.POSITION_LENGTH]);
+    try {
+      String[] datas = expression.split("/");
+      this.surface = datas[ExpressionIndex.TERM];
+      this.posId = PosId.convertFrom(datas[ExpressionIndex.TAG]);
+      this.pos = datas[ExpressionIndex.TAG];
+      this.semanticClass = convertSemanticClass(datas[ExpressionIndex.SEMANTIC_CLASS]);
+      startPosId = posId;
+      endPosId = posId;
+      this.startOffset = startOffset;
+      this.positionIncr = 1;
+      this.positionLength = 1;
+    } catch (IndexOutOfBoundsException e) {
+      throw new RuntimeException("Use mecab-ko-dic 2.0.0 or higher.");
+    }
   }
   
   private void parseFeatureString() {
@@ -121,13 +120,13 @@ public class Pos {
     if (posId == PosId.INFLECT || posId == PosId.PREANALYSIS) {
       this.startPosId = PosId.convertFrom(items[NodeIndex.START_POS].toUpperCase());
       this.endPosId = PosId.convertFrom(items[NodeIndex.END_POS].toUpperCase());
-      indexExpression = items[NodeIndex.INDEX_EXPRESSION];
+      expression = items[NodeIndex.EXPRESSION];
     } else if (posId == PosId.COMPOUND){
-      this.startPosId = PosId.N;
-      this.endPosId = PosId.N;
+      this.startPosId = PosId.NNG;
+      this.endPosId = PosId.NNG;
       this.positionLength =
-          getCompoundNounPositionLength(items[NodeIndex.INDEX_EXPRESSION]);
-      indexExpression = items[NodeIndex.INDEX_EXPRESSION];
+          getCompoundNounPositionLength(items[NodeIndex.EXPRESSION]);
+      expression = items[NodeIndex.EXPRESSION];
     } else {
       this.startPosId = posId;
       this.endPosId = posId;
@@ -135,8 +134,20 @@ public class Pos {
   }
   
   private int getCompoundNounPositionLength(String indexExpression) {
-    String firstToken = indexExpression.split("\\+")[1];
-    return Integer.parseInt(firstToken.split("/")[ExpressionIndex.POSITION_LENGTH]);
+    String[] tokens = indexExpression.split("\\+");
+    return tokens.length;
+  }
+
+  public Pos append(Pos pos, PosId posId, int positionIncr) {
+    return new Pos(
+            this.getSurface() + pos.getSurface(),
+            posId, this.getStartOffset(),
+            positionIncr, this.getPositionLength() + pos.getPositionLength());
+  }
+
+  public boolean equalsOffset(Pos pos) {
+    return (this.getStartOffset() == pos.getStartOffset() &&
+        this.getEndOffset() == pos.getEndOffset());
   }
   
   public Node getNode() {
@@ -158,6 +169,16 @@ public class Pos {
   public String getSurface() {
     return surface;
   }
+
+  public String getTokenString() {
+    switch (posId) {
+      case VV:
+      case VA:
+        return surface + '/' + posId.toString();
+      default:
+        return surface;
+    }
+  }
   
   public int getSurfaceLength() {
     return surface.length();
@@ -170,11 +191,11 @@ public class Pos {
   public String getSemanticClass() {
     return semanticClass;
   }
-  
-  public String getIndexExpression() {
-    return indexExpression;
+
+  public String getExpression() {
+    return expression;
   }
-  
+
   public int getStartOffset() {
     return startOffset;
   }

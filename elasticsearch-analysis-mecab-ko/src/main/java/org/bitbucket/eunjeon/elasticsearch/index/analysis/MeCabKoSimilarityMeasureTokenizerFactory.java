@@ -15,71 +15,40 @@
  ******************************************************************************/
 package org.bitbucket.eunjeon.elasticsearch.index.analysis;
 
-import org.apache.lucene.analysis.Tokenizer;
 import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.*;
-import org.elasticsearch.index.analysis.AbstractTokenizerFactory;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.inject.assistedinject.Assisted;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.env.Environment;
 import org.elasticsearch.index.Index;
 import org.elasticsearch.index.settings.IndexSettings;
 
-import java.io.IOException;
-import java.io.Reader;
-
 /**
  * 문서 유사도 측적용 tokenizer 팩토리 생성자. 다음과 같은 파라미터를 받는다. (실험적인)
- *   - mecab_dic_dir: mecab-ko-dic 사전 경로. 디폴트 경로는 /usr/local/lib/mecab/dic/mecab-ko-dic 이다.
+ *   - mecab_args: mecab 실행옵션. 디폴트 값은 "-d /usr/local/lib/mecab/dic/mecab-ko-dic/" 이다.
+ *     mecab 실행 옵션은 다음의 URL을 참조. http://mecab.googlecode.com/svn/trunk/mecab/doc/mecab.html
  *   - compound_noun_min_length: 분해를 해야하는 복합명사의 최소 길이. 디폴트 값은 9999이다. (복합명사 분해 안함)
  *
  * @author bibreen <bibreen@gmail.com>
  */
-public class MeCabKoSimilarityMeasureTokenizerFactory extends AbstractTokenizerFactory {
-  private static final String DEFAULT_MECAB_DIC_DIR =
-      "/usr/local/lib/mecab/dic/mecab-ko-dic";
-  private String mecabDicDir;
-  private int compoundNounMinLength;
+public class MeCabKoSimilarityMeasureTokenizerFactory
+    extends MeCabKoTokenizerFactoryBase {
 
   @Inject
   public MeCabKoSimilarityMeasureTokenizerFactory(
       Index index,
       @IndexSettings Settings indexSettings,
-      Environment env,
       @Assisted String name,
       @Assisted Settings settings) {
     super(index, indexSettings, name, settings);
-    setMeCabDicDir(env, settings);
-    setCompoundNounMinLength(settings);
   }
 
-  private void setMeCabDicDir(Environment env, Settings settings) {
-    String path = settings.get(
-        "mecab_dic_dir",
-        MeCabKoSimilarityMeasureTokenizerFactory.DEFAULT_MECAB_DIC_DIR);
-    if (path.startsWith("/")) {
-      mecabDicDir = path;
-    } else {
-      try {
-        mecabDicDir = env.homeFile().getCanonicalPath() + "/" + path;
-      } catch (IOException e) {
-        mecabDicDir = path;
-      }
-    }
-  }
-
-  private void setCompoundNounMinLength(Settings settings) {
-    compoundNounMinLength = settings.getAsInt(
-        "compound_noun_min_length",
-        TokenGenerator.NO_DECOMPOUND);
+  protected void setDefaultOption() {
+    option.compoundNounMinLength = TokenizerOption.NO_DECOMPOUND;
+    option.useAdjectiveAndVerbOriginalForm = false;
   }
 
   @Override
-  public Tokenizer create(Reader reader) {
-    return new MeCabKoTokenizer(
-        reader,
-        mecabDicDir,
-        new SimilarityMeasurePosAppender(),
-        compoundNounMinLength);
+  protected void setPosAppender() {
+    posAppender = new SimilarityMeasurePosAppender(option);
   }
 }

@@ -17,9 +17,11 @@ package org.bitbucket.eunjeon.mecab_ko_lucene_analyzer;
 
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.PosIdManager.PosId;
+import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.util.XpnDiscriminator;
 
 /**
  * 표준 tokenizer를 위한 PosAppender.
@@ -49,26 +51,50 @@ public class StandardPosAppender extends PosAppender {
     appendableSet.add(new Appendable(PosId.XSV, PosId.E));
     appendableSet.add(new Appendable(PosId.XSA, PosId.E));
     // 체언(N*)|일반부사(MAG)|어근(XR) + 동사 파생 접미사(XSV)
-    appendableSet.add(new Appendable(PosId.N, PosId.XSV));
+    appendableSet.add(new Appendable(PosId.NNG, PosId.XSV));
+    appendableSet.add(new Appendable(PosId.NNP, PosId.XSV));
+    appendableSet.add(new Appendable(PosId.NNB, PosId.XSV));
+    appendableSet.add(new Appendable(PosId.NNBC, PosId.XSV));
+    appendableSet.add(new Appendable(PosId.NP, PosId.XSV));
+    appendableSet.add(new Appendable(PosId.NR, PosId.XSV));
     appendableSet.add(new Appendable(PosId.COMPOUND, PosId.XSV));
     appendableSet.add(new Appendable(PosId.MAG, PosId.XSV));
     appendableSet.add(new Appendable(PosId.XR, PosId.XSV));
     appendableSet.add(new Appendable(PosId.UNKNOWN, PosId.XSV));
     // 체언(N*)|일반부사(MAG)|어근(XR) + 형용사 파생 접미사(XSA)
-    appendableSet.add(new Appendable(PosId.N, PosId.XSA));
+    appendableSet.add(new Appendable(PosId.NNG, PosId.XSA));
+    appendableSet.add(new Appendable(PosId.NNP, PosId.XSA));
+    appendableSet.add(new Appendable(PosId.NNB, PosId.XSA));
+    appendableSet.add(new Appendable(PosId.NNBC, PosId.XSA));
+    appendableSet.add(new Appendable(PosId.NP, PosId.XSA));
+    appendableSet.add(new Appendable(PosId.NR, PosId.XSA));
     appendableSet.add(new Appendable(PosId.COMPOUND, PosId.XSA));
     appendableSet.add(new Appendable(PosId.MAG, PosId.XSA));
     appendableSet.add(new Appendable(PosId.XR, PosId.XSA));
     appendableSet.add(new Appendable(PosId.UNKNOWN, PosId.XSA));
     // 체언(N*)|명사 파생 접미사(XSN) + 긍정지정사(VCP)
-    appendableSet.add(new Appendable(PosId.N, PosId.VCP));
+    appendableSet.add(new Appendable(PosId.NNG, PosId.VCP));
+    appendableSet.add(new Appendable(PosId.NNP, PosId.VCP));
+    appendableSet.add(new Appendable(PosId.NNB, PosId.VCP));
+    appendableSet.add(new Appendable(PosId.NNBC, PosId.VCP));
+    appendableSet.add(new Appendable(PosId.NP, PosId.VCP));
+    appendableSet.add(new Appendable(PosId.NR, PosId.VCP));
     appendableSet.add(new Appendable(PosId.COMPOUND, PosId.VCP));
     appendableSet.add(new Appendable(PosId.XSN, PosId.VCP));
     appendableSet.add(new Appendable(PosId.UNKNOWN, PosId.VCP));
     // 체언(N*) + 조사 [+ 조사]*
-    appendableSet.add(new Appendable(PosId.N, PosId.J));
+    appendableSet.add(new Appendable(PosId.NNG, PosId.J));
+    appendableSet.add(new Appendable(PosId.NNP, PosId.J));
+    appendableSet.add(new Appendable(PosId.NNB, PosId.J));
+    appendableSet.add(new Appendable(PosId.NNBC, PosId.J));
+    appendableSet.add(new Appendable(PosId.NP, PosId.J));
+    appendableSet.add(new Appendable(PosId.NR, PosId.J));
     appendableSet.add(new Appendable(PosId.COMPOUND, PosId.J));
     appendableSet.add(new Appendable(PosId.UNKNOWN, PosId.J));
+    // 체언 접두사(XPN) + 체언(N*)
+    appendableSet.add(new Appendable(PosId.XPN, PosId.NNG));
+    appendableSet.add(new Appendable(PosId.XPN, PosId.NR));
+    appendableSet.add(new Appendable(PosId.XPN, PosId.NP));
     // 명사 파생 접미사(XSN) + 조사(J)
     appendableSet.add(new Appendable(PosId.XSN, PosId.J));
     // 어미(E) + 조사(J) - 어미가 명사형 전성 어미인 경우
@@ -86,6 +112,10 @@ public class StandardPosAppender extends PosAppender {
     appendableSet.add(new Appendable(PosId.SL, PosId.J));
     // 한자(SH) + 조사(J)
     appendableSet.add(new Appendable(PosId.SH, PosId.J));
+  }
+
+  public StandardPosAppender(TokenizerOption option) {
+    super(option);
   }
 
   @Override
@@ -106,15 +136,163 @@ public class StandardPosAppender extends PosAppender {
   }
 
   @Override
-  public LinkedList<Pos> extractAdditionalPoses(LinkedList<Pos> poses) {
-    LinkedList<Pos> output = new LinkedList<Pos>();
-    for (Pos pos: poses) {
-      if (isAbsolutePos(pos)) {
-        pos.setPositionIncr(0);
+  public LinkedList<Pos> getTokensFrom(Eojeol eojeol) {
+    preprocessXpn(eojeol);
+    LinkedList<Pos> output = getAdditionalPosesFrom(eojeol);
+    insertEojeolPosTo(eojeol, output);
+    return output;
+  }
+
+  /**
+   * 비독립적인 체언 접두사로 시작하는 경우, 뒤의 일반명사, 수사, 대명사와 합쳐서 새로운 명사를
+   * 만들어 넣는다
+   *   - 비/XPN + 정상/NNG -> 비정상/NNG
+   * 독립적으로 사용되는 체언 접두사(XpnDiscriminator에 정의)인 경우 복합명사가 포함된 것으로
+   * 설정해서 접두사와 체언이 복합명사의 로직으로 인덱싱한다.
+   *   - 왕/XPN + 만두/NNG -> 왕/XPN         + 만두/NNG
+   *                        왕만두/COMPOUND
+   * @param eojeol
+   */
+  private void preprocessXpn(Eojeol eojeol) {
+    if (eojeol.getNumPoses() < 2) {
+      return;
+    }
+    Pos first = eojeol.getPos(0);
+    Pos second = eojeol.getPos(1);
+    if (!first.isPosIdOf(PosId.XPN) ||
+        (!second.isPosIdOf(PosId.NNG) &&
+            !second.isPosIdOf(PosId.NR) &&
+            !second.isPosIdOf(PosId.NP))) {
+      return;
+    }
+    if (XpnDiscriminator.isIndependentXpn(first.getSurface())) {
+      eojeol.setToCompoundNoun();
+    } else {
+      LinkedList<Pos> eojeolPosList = eojeol.getPosList();
+      Pos xpn = eojeolPosList.poll();
+      Pos noun = eojeolPosList.poll();
+      Pos newNoun = xpn.append(noun, PosId.NNG, 1);
+      newNoun.setPositionLength(1);
+      eojeolPosList.addFirst(newNoun);
+    }
+  }
+
+  private LinkedList<Pos> getAdditionalPosesFrom(Eojeol eojeol) {
+    LinkedList<Pos> poses = eojeol.getPosList();
+    if (eojeol.hasCompoundNoun()) {
+      LinkedList<Pos> output = new LinkedList<>();
+      // TODO: 이해하기 어려운 코드 리팩토링 해보자
+      Pos prevPos = null;
+      int numAbsolutePos = 0;
+      for (Pos pos: poses) {
+        if (!isAbsolutePos(pos)) {
+          break;
+        }
         output.add(pos);
+        numAbsolutePos += 1;
+        if (prevPos == null) {
+          prevPos = pos;
+        } else {
+          if (areBothSingleLengthNoun(prevPos, pos)) {
+            prevPos = pos;
+            continue;
+          }
+          Pos compound = prevPos.append(pos, PosId.COMPOUND, 0);
+          output.add(output.size() - 1, compound);
+          prevPos = pos;
+        }
+      }
+      if (numAbsolutePos >= 3) {
+        output.add(1, generateWholeCompoundNoun(poses));
+      }
+      return output;
+    } else {
+      LinkedList<Pos> output = new LinkedList<>();
+      for (Pos pos: poses) {
+        if (isAbsolutePos(pos)) {
+          pos.setPositionIncr(0);
+          output.add(pos);
+        }
+        if (pos.isPosIdOf(PosId.INFLECT)) {
+          Pos firstPos = extractFirstPos(pos);
+          if (isAbsolutePos(firstPos) &&
+                  firstPos.getSurfaceLength() <= pos.getSurfaceLength()) {
+            output.add(firstPos);
+          }
+        }
+      }
+      return output;
+    }
+  }
+
+  private boolean areBothSingleLengthNoun(Pos p1, Pos p2) {
+    return (p1.getPosId().in(PosId.NNG, PosId.NNP) &&
+        p1.getSurfaceLength() == 1 &&
+        p2.getPosId().in(PosId.NNG, PosId.NNP) &&
+        p2.getSurfaceLength() == 1);
+  }
+
+  private Pos generateWholeCompoundNoun(LinkedList<Pos> poses) {
+    Pos wholeCompoundNoun = poses.getFirst();
+    for (Pos pos: poses.subList(1, poses.size())) {
+      if (!isAbsolutePos(pos)) {
+        break;
+      }
+      wholeCompoundNoun = wholeCompoundNoun.append(pos, PosId.COMPOUND, 0);
+    }
+    return wholeCompoundNoun;
+  }
+
+  private Pos insertEojeolPosTo(Eojeol eojeol, LinkedList<Pos> eojeolTokens) {
+    Pos eojeolPos;
+    LinkedList<Pos> posList = eojeol.getPosList();
+    if (posList.size() == 1) {
+      if (eojeolTokens.isEmpty()) {
+        eojeolTokens.add(posList.getFirst());
+      }
+      if (eojeolTokens.getFirst() != posList.getFirst()) {
+        eojeolTokens.addFirst(posList.getFirst());
+      }
+      eojeolPos = eojeolTokens.getFirst();
+      eojeolPos.setPositionIncr(1);
+    } else {
+      if (eojeol.hasCompoundNoun() && eojeolTokens.size() > 0) {
+        int positionLength = recalcEojeolPositionLength(eojeolTokens);
+        eojeolPos = new Pos(
+            eojeol.getTerm(), PosId.EOJEOL,
+            eojeol.getStartOffset(), 0, positionLength);
+        eojeolPos.setPos(concatMophemes(posList));
+        if (eojeolTokens.size() < 2 ||
+            !eojeolPos.equalsOffset(eojeolTokens.get(1))) {
+          eojeolTokens.add(1, eojeolPos);
+        }
+      } else {
+        eojeolPos = new Pos(
+            eojeol.getTerm(), PosId.EOJEOL, eojeol.getStartOffset(), 1, 1);
+        eojeolPos.setPos(concatMophemes(posList));
+        eojeolTokens.addFirst(eojeolPos);
       }
     }
-    return output;
+    return eojeolPos;
+  }
+
+  private String concatMophemes(List<Pos> poses) {
+    StringBuilder buff = new StringBuilder();
+    for (int i = 0; i < poses.size(); i++) {
+      if (i != 0) {
+        buff.append("+");
+      }
+      buff.append(poses.get(i).getMophemes());
+    }
+    return buff.toString();
+  }
+
+  private int recalcEojeolPositionLength(LinkedList<Pos> eojeolTokens) {
+    int positionLength = 0;
+    for (Pos pos: eojeolTokens) {
+      positionLength += pos.getPositionIncr();
+    }
+    return positionLength;
   }
 
   /**
@@ -123,15 +301,55 @@ public class StandardPosAppender extends PosAppender {
    * @param pos 형태소 품사.
    */
   private boolean isAbsolutePos(Pos pos) {
-    return (pos.isPosIdOf(PosId.COMPOUND) ||
-        pos.isPosIdOf(PosId.MAG) ||
-        pos.isPosIdOf(PosId.N) ||
-        pos.isPosIdOf(PosId.XR) ||
-        pos.isPosIdOf(PosId.SH) ||
-        pos.isPosIdOf(PosId.SL) ||
-        pos.isPosIdOf(PosId.UNKNOWN) ||
-        pos.isPosIdOf(PosId.XPN) ||
-        pos.isPosIdOf(PosId.XSN)
-    );
+    if (option.useAdjectiveAndVerbOriginalForm) {
+      return (pos.getPosId().in(PosId.NNG, PosId.NR) ||
+          pos.isPosIdOf(PosId.COMPOUND) ||
+          pos.isPosIdOf(PosId.MAG) ||
+          pos.isPosIdOf(PosId.MM) ||
+          pos.isPosIdOf(PosId.XR) ||
+          pos.isPosIdOf(PosId.SH) ||
+          pos.isPosIdOf(PosId.SL) ||
+          pos.isPosIdOf(PosId.SN) ||
+          pos.isPosIdOf(PosId.UNKNOWN) ||
+          pos.isPosIdOf(PosId.VA) ||
+          pos.isPosIdOf(PosId.VV) ||
+          pos.isPosIdOf(PosId.XPN) ||
+          pos.isPosIdOf(PosId.XSN)
+      );
+    } else {
+      return (pos.getPosId().in(PosId.NNG, PosId.NR) ||
+          pos.isPosIdOf(PosId.COMPOUND) ||
+          pos.isPosIdOf(PosId.MAG) ||
+          pos.isPosIdOf(PosId.MM) ||
+          pos.isPosIdOf(PosId.XR) ||
+          pos.isPosIdOf(PosId.SH) ||
+          pos.isPosIdOf(PosId.SL) ||
+          pos.isPosIdOf(PosId.SN) ||
+          pos.isPosIdOf(PosId.UNKNOWN) ||
+          pos.isPosIdOf(PosId.XPN) ||
+          pos.isPosIdOf(PosId.XSN)
+      );
+    }
+  }
+
+  /**
+   * Infelct Pos에서 첫번째 pos를 가져온다.
+   *
+   * @param inflectPos
+   * @return pos 형태소 품사
+   */
+  private Pos extractFirstPos(Pos inflectPos) {
+    if (!inflectPos.isPosIdOf(PosId.INFLECT)) {
+      return null;
+    }
+    String first = inflectPos.getExpression().split("\\+")[0];
+    String[] datas = first.split("/");
+    if (datas.length != 3) {
+      return null;
+    }
+    String surface = datas[0];
+    PosId posId = PosId.convertFrom(datas[1]);
+    int startOffset = inflectPos.getStartOffset();
+    return new Pos(surface, posId, startOffset, 0, 1);
   }
 }

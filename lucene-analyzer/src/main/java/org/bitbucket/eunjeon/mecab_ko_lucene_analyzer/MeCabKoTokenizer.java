@@ -30,6 +30,7 @@ import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.tokenattributes.PartOfSpee
 import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.tokenattributes.SemanticClassAttribute;
 import org.bitbucket.eunjeon.mecab_ko_mecab_loader.MeCabLoader;
 import org.chasen.mecab.Lattice;
+import org.chasen.mecab.Model;
 import org.chasen.mecab.Tagger;
 
 /**
@@ -48,12 +49,11 @@ public final class MeCabKoTokenizer extends Tokenizer {
   private SemanticClassAttribute semanticClassAtt;
  
   private String document;
-  private String mecabDicDir;
-  private MeCabLoader mecabLoader;
+  private TokenizerOption option;
+  private Model model;
   private Lattice lattice;
   private Tagger tagger;
   private PosAppender posAppender;
-  private int compoundNounMinLength;
   private TokenGenerator generator;
   private Queue<Pos> tokensQueue;
   
@@ -62,22 +62,19 @@ public final class MeCabKoTokenizer extends Tokenizer {
    * Default AttributeFactory 사용.
    * 
    * @param input
-   * @param dicDir mecab 사전 디렉터리 경로
+   * @param option Tokenizer 옵션
    * @param appender PosAppender
-   * @param compoundNounMinLength 분해를 해야하는 복합명사의 최소 길이.
    * 복합명사 분해가 필요없는 경우, TokenGenerator.NO_DECOMPOUND를 입력한다.
    */
   public MeCabKoTokenizer(
       Reader input,
-      String dicDir,
-      PosAppender appender,
-      int compoundNounMinLength) {
+      TokenizerOption option,
+      PosAppender appender) {
     this(
         AttributeFactory.DEFAULT_ATTRIBUTE_FACTORY,
         input,
-        dicDir,
-        appender,
-        compoundNounMinLength);
+        option,
+        appender);
   }
 
   /**
@@ -85,29 +82,26 @@ public final class MeCabKoTokenizer extends Tokenizer {
    * 
    * @param factory the AttributeFactory to use
    * @param input
-   * @param dicDir mecab 사전 디렉터리 경로
+   * @param option MeCabTokenizer 옵션
    * @param appender PosAppender
-   * @param compoundNounMinLength 분해를 해야하는 복합명사의 최소 길이.
    * 복합명사 분해가 필요없는 경우, TokenGenerator.NO_DECOMPOUND를 입력한다.
    */
   public MeCabKoTokenizer(
       AttributeFactory factory,
       Reader input,
-      String dicDir,
-      PosAppender appender,
-      int compoundNounMinLength) {
+      TokenizerOption option,
+      PosAppender appender) {
     super(factory, input);
     posAppender = appender;
-    mecabDicDir = dicDir;
-    this.compoundNounMinLength = compoundNounMinLength;
+    this.option = option;
     setMeCab();
     setAttributes();
   }
 
   private void setMeCab() {
-    mecabLoader = MeCabLoader.getInstance(mecabDicDir);
-    lattice = mecabLoader.createLattice();
-    tagger = mecabLoader.createTagger();
+    model = MeCabLoader.getModel(option.mecabArgs);
+    lattice = model.createLattice();
+    tagger = model.createTagger();
   }
   
   private void setAttributes() {
@@ -147,7 +141,7 @@ public final class MeCabKoTokenizer extends Tokenizer {
     lattice.set_sentence(document);
     tagger.parse(lattice);
     this.generator = new TokenGenerator(
-        posAppender, compoundNounMinLength, lattice.bos_node());
+        posAppender, option.compoundNounMinLength, lattice.bos_node());
   }
   
   private void setAttributes(Pos token) {
@@ -156,8 +150,8 @@ public final class MeCabKoTokenizer extends Tokenizer {
     offsetAtt.setOffset(
         correctOffset(token.getStartOffset()),
         correctOffset(token.getEndOffset()));
-    charTermAtt.copyBuffer(
-        token.getSurface().toCharArray(), 0, token.getSurfaceLength());
+    String term = token.getTokenString();
+    charTermAtt.copyBuffer(term.toCharArray(), 0, term.length());
     typeAtt.setType(token.getPosId().toString());
     posAtt.setPartOfSpeech(token.getMophemes());
     semanticClassAtt.setSemanticClass(token.getSemanticClass());

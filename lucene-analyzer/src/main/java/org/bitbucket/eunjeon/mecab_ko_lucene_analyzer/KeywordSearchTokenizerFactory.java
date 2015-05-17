@@ -15,17 +15,12 @@
  ******************************************************************************/
 package org.bitbucket.eunjeon.mecab_ko_lucene_analyzer;
 
-import org.apache.lucene.analysis.Tokenizer;
-import org.apache.lucene.analysis.util.TokenizerFactory;
-import org.apache.lucene.util.AttributeFactory;
-import org.apache.solr.core.SolrResourceLoader;
-
-import java.io.Reader;
 import java.util.Map;
 
 /**
  * 주요 단어 tokenizer 팩토리 생성자. 다음과 같은 파라미터를 받는다. (실험적인)
- *   - mecabDicDir: mecab-ko-dic 사전 경로. 디폴트 경로는 /usr/local/lib/mecab/dic/mecab-ko-dic 이다.
+ *   - mecabArgs: mecab 실행옵션. 디폴트 값은 "-d /usr/local/lib/mecab/dic/mecab-ko-dic/" 이다.
+ *     mecab 실행 옵션은 다음의 URL을 참조. http://mecab.googlecode.com/svn/trunk/mecab/doc/mecab.html
  *   - compoundNounMinLength: 분해를 해야하는 복합명사의 최소 길이. 디폴트 값은 9999이다. (복합명사 분해 안함)
  *
  * <pre>
@@ -33,7 +28,7 @@ import java.util.Map;
  * <fieldType name="text_ko" class="solr.TextField" positionIncrementGap="100">
  *   <analyzer type="index">
  *     <tokenizer class="org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.KeywordSearchTokenizerFactory"
- *                mecabDicDir="/usr/local/lib/mecab/dic/mecab-ko-dic"
+ *                mecabArgs="-d /usr/local/lib/mecab/dic/mecab-ko-dic"
  *                compoundNounMinLength="9999"/>
  *   </analyzer>
  * </fieldType>
@@ -42,49 +37,18 @@ import java.util.Map;
  *
  * @author bibreen <bibreen@gmail.com>
  */
-public class KeywordSearchTokenizerFactory extends TokenizerFactory {
-  public static final String DEFAULT_MECAB_DIC_DIR =
-      "/usr/local/lib/mecab/dic/mecab-ko-dic";
-  private String mecabDicDir;
-  private int compoundNounMinLength;
-
+public class KeywordSearchTokenizerFactory extends TokenizerFactoryBase {
   public KeywordSearchTokenizerFactory(Map<String, String> args) {
     super(args);
-    setMeCabDicDir(args);
-    setCompoundNounMinLength(args);
-    if (!args.isEmpty()) {
-      throw new IllegalArgumentException("Unknown parameters: " + args);
-    }
   }
 
-  private void setMeCabDicDir(Map<String,String> args) {
-    String path = get(
-        args,
-        "mecabDicDir",
-        KeywordSearchTokenizerFactory.DEFAULT_MECAB_DIC_DIR);
-    if (path != null) {
-      if (path.startsWith("/")) {
-        mecabDicDir = path;
-      } else {
-        mecabDicDir = SolrResourceLoader.locateSolrHome() + path;
-      }
-    }
-  }
-
-  private void setCompoundNounMinLength(Map<String,String> args) {
-    compoundNounMinLength = getInt(
-        args,
-        "compoundNounMinLength",
-        TokenGenerator.NO_DECOMPOUND);
+  protected void setDefaultOption() {
+    option.compoundNounMinLength = TokenizerOption.NO_DECOMPOUND;
+    option.useAdjectiveAndVerbOriginalForm = false;
   }
 
   @Override
-  public Tokenizer create(AttributeFactory factory, Reader input) {
-    return new MeCabKoTokenizer(
-        factory,
-        input,
-        mecabDicDir,
-        new KeywordSearchPosAppender(),
-        compoundNounMinLength);
+  protected void setPosAppender() {
+    posAppender = new KeywordSearchPosAppender(option);
   }
 }

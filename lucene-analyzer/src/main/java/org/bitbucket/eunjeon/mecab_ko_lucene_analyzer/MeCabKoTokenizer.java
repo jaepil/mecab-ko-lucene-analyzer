@@ -174,6 +174,13 @@ public final class MeCabKoTokenizer extends Tokenizer {
     tokensQueue = null;
   }
 
+  @Override
+  public final void close() throws IOException {
+    super.close();
+    tagger.delete();
+    lattice.delete();
+  }
+
   private String getDocument() throws IOException {
     StringBuilder document = new StringBuilder();
     char[] tmp = new char[1024];

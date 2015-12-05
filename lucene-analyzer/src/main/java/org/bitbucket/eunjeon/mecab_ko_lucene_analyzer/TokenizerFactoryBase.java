@@ -19,7 +19,6 @@ import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.util.TokenizerFactory;
 import org.apache.lucene.util.AttributeFactory;
 
-import java.io.Reader;
 import java.util.Map;
 
 /**
@@ -65,10 +64,9 @@ public abstract class TokenizerFactoryBase extends TokenizerFactory {
   }
 
   @Override
-  public Tokenizer create(AttributeFactory factory, Reader input) {
+  public Tokenizer create(AttributeFactory factory) {
     return new MeCabKoTokenizer(
         factory,
-        input,
         option,
         new StandardPosAppender(option));
   }

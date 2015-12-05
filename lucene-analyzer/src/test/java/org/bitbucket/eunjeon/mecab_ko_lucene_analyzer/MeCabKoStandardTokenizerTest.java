@@ -17,6 +17,7 @@ package org.bitbucket.eunjeon.mecab_ko_lucene_analyzer;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.io.StringReader;
 
 import org.apache.lucene.analysis.Tokenizer;
@@ -72,12 +73,12 @@ public class MeCabKoStandardTokenizerTest {
   }
 
   private Tokenizer createTokenizer(
-      StringReader reader, int compoundNounMinLength) {
+      StringReader reader, int compoundNounMinLength) throws IOException {
     option.compoundNounMinLength = compoundNounMinLength;
     Tokenizer tokenizer = new MeCabKoTokenizer(
-        reader,
         option,
         new StandardPosAppender(option));
+    tokenizer.setReader(reader);
     return tokenizer;
   }
   

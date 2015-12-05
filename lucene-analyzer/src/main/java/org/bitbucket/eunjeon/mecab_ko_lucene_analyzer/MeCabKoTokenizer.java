@@ -61,18 +61,15 @@ public final class MeCabKoTokenizer extends Tokenizer {
    * MeCabKoTokenizer 생성자.
    * Default AttributeFactory 사용.
    * 
-   * @param input
    * @param option Tokenizer 옵션
    * @param appender PosAppender
    * 복합명사 분해가 필요없는 경우, TokenGenerator.NO_DECOMPOUND를 입력한다.
    */
   public MeCabKoTokenizer(
-      Reader input,
       TokenizerOption option,
       PosAppender appender) {
     this(
         AttributeFactory.DEFAULT_ATTRIBUTE_FACTORY,
-        input,
         option,
         appender);
   }
@@ -81,17 +78,15 @@ public final class MeCabKoTokenizer extends Tokenizer {
    * MeCabKoTokenizer 생성자.
    * 
    * @param factory the AttributeFactory to use
-   * @param input
    * @param option MeCabTokenizer 옵션
    * @param appender PosAppender
    * 복합명사 분해가 필요없는 경우, TokenGenerator.NO_DECOMPOUND를 입력한다.
    */
   public MeCabKoTokenizer(
       AttributeFactory factory,
-      Reader input,
       TokenizerOption option,
       PosAppender appender) {
-    super(factory, input);
+    super(factory);
     posAppender = appender;
     this.option = option;
     setMeCab();

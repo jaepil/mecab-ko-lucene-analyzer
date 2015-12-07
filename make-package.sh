@@ -19,9 +19,10 @@ mkdir $dir
 cp lucene-analyzer/target/$lucene_analyzer-$version-SNAPSHOT.jar $dir/$lucene_analyzer-$version.jar
 cp mecab-loader/target/$mecab_loader-$version-SNAPSHOT.jar $dir/$mecab_loader-$version.jar
 cp elasticsearch-analysis-mecab-ko/target/$elasticsearch_analysis-$version-SNAPSHOT.jar $dir/$elasticsearch_analysis-$version.jar
+cp elasticsearch-analysis-mecab-ko/plugin-descriptor.properties $dir/plugin-descriptor.properties
 pushd $dir
 wget https://bitbucket.org/eunjeon/mecab-java/downloads/mecab-java-0.996.jar
-zip $elasticsearch_analysis-$version.zip *.jar
+zip $elasticsearch_analysis-$version.zip *
 mv $elasticsearch_analysis-$version.zip ../.
 popd
 rm -rf $dir

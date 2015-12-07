@@ -20,9 +20,8 @@ import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.TokenizerOption;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.inject.assistedinject.Assisted;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.env.Environment;
 import org.elasticsearch.index.Index;
-import org.elasticsearch.index.settings.IndexSettings;
+import org.elasticsearch.index.settings.IndexSettingsService;
 
 /**
  * 주요 단어 tokenizer 팩토리 생성자. 다음과 같은 파라미터를 받는다. (실험적인)
@@ -37,10 +36,10 @@ public class MeCabKoKeywordSearchTokenizerFactory
   @Inject
   public MeCabKoKeywordSearchTokenizerFactory(
       Index index,
-      @IndexSettings Settings indexSettings,
+      IndexSettingsService indexSettingsService,
       @Assisted String name,
       @Assisted Settings settings) {
-    super(index, indexSettings, name, settings);
+    super(index, indexSettingsService, name, settings);
   }
 
   protected void setDefaultOption() {

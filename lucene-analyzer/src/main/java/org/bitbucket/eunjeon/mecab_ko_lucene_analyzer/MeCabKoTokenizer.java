@@ -16,7 +16,6 @@
 package org.bitbucket.eunjeon.mecab_ko_lucene_analyzer;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.util.Queue;
 
 import org.apache.lucene.analysis.Tokenizer;

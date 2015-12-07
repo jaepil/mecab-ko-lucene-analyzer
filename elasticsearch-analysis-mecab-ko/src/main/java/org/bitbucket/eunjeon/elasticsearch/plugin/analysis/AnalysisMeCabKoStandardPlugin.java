@@ -17,9 +17,10 @@ package org.bitbucket.eunjeon.elasticsearch.plugin.analysis;
 
 import org.bitbucket.eunjeon.elasticsearch.index.analysis.*;
 import org.elasticsearch.index.analysis.AnalysisModule;
-import org.elasticsearch.plugins.AbstractPlugin;
+import org.elasticsearch.plugins.Plugin;
 
-public class AnalysisMeCabKoStandardPlugin extends AbstractPlugin {
+
+public class AnalysisMeCabKoStandardPlugin extends Plugin {
   @Override
   public String name() {
     return "analysis-mecab-ko-standard";

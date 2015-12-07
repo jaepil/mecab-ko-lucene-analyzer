@@ -20,7 +20,7 @@ import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.inject.assistedinject.Assisted;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.Index;
-import org.elasticsearch.index.settings.IndexSettings;
+import org.elasticsearch.index.settings.IndexSettingsService;
 
 /**
  * 문서 유사도 측적용 tokenizer 팩토리 생성자. 다음과 같은 파라미터를 받는다. (실험적인)
@@ -32,14 +32,13 @@ import org.elasticsearch.index.settings.IndexSettings;
  */
 public class MeCabKoSimilarityMeasureTokenizerFactory
     extends MeCabKoTokenizerFactoryBase {
-
   @Inject
   public MeCabKoSimilarityMeasureTokenizerFactory(
       Index index,
-      @IndexSettings Settings indexSettings,
+      IndexSettingsService indexSettingsService,
       @Assisted String name,
       @Assisted Settings settings) {
-    super(index, indexSettings, name, settings);
+    super(index, indexSettingsService, name, settings);
   }
 
   protected void setDefaultOption() {

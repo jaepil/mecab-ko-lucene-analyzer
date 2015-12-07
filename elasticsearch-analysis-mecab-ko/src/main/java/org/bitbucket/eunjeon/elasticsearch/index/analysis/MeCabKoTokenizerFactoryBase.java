@@ -25,9 +25,7 @@ import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.Index;
 import org.elasticsearch.index.analysis.AbstractTokenizerFactory;
-import org.elasticsearch.index.settings.IndexSettings;
-
-import java.io.Reader;
+import org.elasticsearch.index.settings.IndexSettingsService;
 
 /**
  * MeCabKo Tokenizer Factory 추상 클래스
@@ -43,10 +41,10 @@ public abstract class MeCabKoTokenizerFactoryBase
   @Inject
   public MeCabKoTokenizerFactoryBase(
       Index index,
-      @IndexSettings Settings indexSettings,
+      IndexSettingsService indexSettingsService,
       @Assisted String name,
       @Assisted Settings settings) {
-    super(index, indexSettings, name, settings);
+    super(index, indexSettingsService.getSettings(), name, settings);
     option = new TokenizerOption();
     setDefaultOption();
     setMeCabArgs(settings);
@@ -77,11 +75,10 @@ public abstract class MeCabKoTokenizerFactoryBase
   }
 
   @Override
-  public Tokenizer create(Reader reader) {
+  public Tokenizer create() {
     logger.debug("already allocated model's count is #" + MeCabLoader.getModelCount());
     logger.debug("creating tokenizer from model " + option.mecabArgs);
     return new MeCabKoTokenizer(
-        reader,
         option,
         posAppender);
   }

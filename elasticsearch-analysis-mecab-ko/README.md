@@ -2,7 +2,7 @@
 mecab-ko Analysis Plugin은 [mecab-ko-lucene-analyzer](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer)를 elasticsearch에서 사용하는 플러그인 입니다.
 
 - 이 플러그인은 `mecab_ko_standard_tokenizer`를 포함하고 있습니다.
-- elasticsearch 1.3.0 버전 기준으로 작성되었습니다. (elasticsearch 1.3.2에서 사용 가능)
+- elasticsearch 2.1.0 버전 기준으로 작성되었습니다.
 
 ## 설명
 
@@ -36,10 +36,22 @@ mecab-ko와 mecab-ko-dic의 설치는 [mecab-ko-dic 설명](https://bitbucket.or
     $ sudo cp libMeCab.so /usr/local/lib
 
 ### ElasticSearch Plugin 설치
-    bin/plugin --install analysis-mecab-ko-x.x.x --url https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/downloads/elasticsearch-analysis-mecab-ko-x.x.x.zip
+    $ ./bin/plugin install https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/downloads/elasticsearch-analysis-mecab-ko-x.x.x.x.zip
+
+#### 주의
+ElasticSearch 2.1.0 플러그인부터 plugin 버전을 ElasticSearch 버전에 맞춥니다. 예를 들어 ElasticSearch 2.1.0의 플러그인의 버전은 `2.1.0.{patch_version}` 입니다.
+
+관련 링크 - https://www.elastic.co/guide/en/elasticsearch/plugins/current/plugin-authors.html#_mandatory_elements_for_java_plugins - Plugin release lifecycle
 
 ### ElasticSearch 실행
-    $ ./elasticsearch -Djava.library.path=/usr/local/lib
+    $ export LD_LIBRARY_PATH=/usr/local/lib; ./bin/elasticsearch -Des.security.manager.enabled=false
+
+#### 주의
+ElasticSearch 2.0.0부터 java security manager가 동작하는데, java security manager가 플러그인이 `System.loadLibrary()`를 허용하지 않습니다. 때문에, `-Des.security.manager.enabled=false` 옵션을 줘서 실행해야 합니다.
+
+관련 링크 - https://www.elastic.co/guide/en/elasticsearch/reference/current/breaking_20_plugin_and_packaging_changes.html#_symbolic_links_and_paths
+
+
 
 ## 테스트 스크립트
 ### index, query 모두 복합명사 분해를 하는 경우

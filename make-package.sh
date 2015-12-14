@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/bin/bash -x
 
 version=$(grep -m 1 "<version>.*</version>" pom.xml | sed -n 's/.*>\(.*\)-SNAPSHOT.*/\1/p')
+elasticsearch_plugin_version=$(grep -m 1 "<version>.*</version>" elasticsearch-analysis-mecab-ko/pom.xml | sed -n 's/.*>\(.*\)-SNAPSHOT.*/\1/p')
 lucene_analyzer=mecab-ko-lucene-analyzer
 mecab_loader=mecab-ko-mecab-loader
 elasticsearch_analysis=elasticsearch-analysis-mecab-ko
@@ -18,11 +19,11 @@ dir=$elasticsearch_analysis-$version
 mkdir $dir
 cp lucene-analyzer/target/$lucene_analyzer-$version-SNAPSHOT.jar $dir/$lucene_analyzer-$version.jar
 cp mecab-loader/target/$mecab_loader-$version-SNAPSHOT.jar $dir/$mecab_loader-$version.jar
-cp elasticsearch-analysis-mecab-ko/target/$elasticsearch_analysis-$version-SNAPSHOT.jar $dir/$elasticsearch_analysis-$version.jar
+cp elasticsearch-analysis-mecab-ko/target/$elasticsearch_analysis-$version-SNAPSHOT.jar $dir/$elasticsearch_analysis-$elasticsearch_plugin_version.jar
 cp elasticsearch-analysis-mecab-ko/plugin-descriptor.properties $dir/plugin-descriptor.properties
 pushd $dir
 wget https://bitbucket.org/eunjeon/mecab-java/downloads/mecab-java-0.996.jar
-zip $elasticsearch_analysis-$version.zip *
-mv $elasticsearch_analysis-$version.zip ../.
+zip $elasticsearch_analysis-$elasticsearch_plugin_version.zip *
+mv $elasticsearch_analysis-$elasticsearch_plugin_version.zip ../.
 popd
 rm -rf $dir

@@ -24,7 +24,7 @@
 
         박보영이(NNP+JKS), 박보영(NNP), 서울에(NNP+JKB), 서울(NNP), 갔다(VV+EP+EF), 가/VV(VV)
 
-- Apache Lucene/Solr 4.9.X 버전 기준으로 작성되었습니다. (Apache Lucene/Solr 4.10.4에서 사용 가능)
+- Apache Lucene/Solr 5.3.1 버전 기준으로 작성되었습니다. (Apache Lucene/Solr 5.4.0에서 사용 가능)
 
 ## 설치
 
@@ -33,18 +33,19 @@
 mecab-ko와 mecab-ko-dic의 설치는 [mecab-ko-dic 설명](https://bitbucket.org/eunjeon/mecab-ko-dic)을 참조하시기 바랍니다.
 
 ### MeCab.jar와 libMeCab.so 설치
-Solr example(Solr with Jetty)의 사용을 기준으로 설명합니다.
+
+설치 문서는 [Solr Quick Start](http://lucene.apache.org/solr/quickstart.html) 문서 기준으로 작성되었습니다.
 
 [mecab-java-0.996.tar.gz](https://bitbucket.org/eunjeon/mecab-java/downloads/mecab-java-0.996.tar.gz) 를 다운받아 설치합니다.
 
     $ tar zxvf mecab-java-0.996.tar.gz
     $ cd mecab-java-0.996
     $ vi Makefile
-        # java path 설정.               ; INCLUDE=/usr/local/jdk1.6.0_41/include
+        # java path 설정.               ; INCLUDE=/usr/lib/jvm/java-7-oracle/include
         # OpenJDK 사용시 "-O1" 로 변경. ; $(CXX) -O1 -c -fpic $(TARGET)_wrap.cxx  $(INC)
         # "-cp ." 추가.                 ; $(JAVAC) -cp . test.java
     $ make
-    $ cp MeCab.jar [solr 디렉터리]/example/lib/ext # JNI 클래스는 System classpath에 위치해야 합니다. Jetty는 기본값으로 $jetty.home/lib/ext에 추가적인 jar를 넣을 수 있습니다.
+    $ cp MeCab.jar [solr 디렉터리]/server/lib/ext # JNI 클래스는 System classpath에 위치해야 합니다. Jetty는 기본값으로 $jetty.home/lib/ext에 추가적인 jar를 넣을 수 있습니다.
     $ sudo cp libMeCab.so /usr/local/lib
 
 __주의 사항__
@@ -56,13 +57,14 @@ __주의 사항__
 ### mecab-ko-lucene-analyzer 다운로드 및 설치
 [mecab-ko-lucene-analyzer 다운로드 페이지](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/downloads)에서 `mecab-ko-lucene-analyzer-XX.tar.gz`의 최신 버전을 다운 받아 압축을 풀면 두개의 jar파일이 있습니다. 
 
-- mecab-ko-mecab-loader-XX.jar: System classpath에 복사합니다. (ex: `[solr 디렉터리]/example/lib/ext`)
-- mecab-ko-lucene-analyzer-XX.jar: Solr 라이브러리 디렉터리에 설치합니다. (ex: `[solr 디렉터리]/example/solr/lib`)
+- mecab-ko-mecab-loader-XX.jar: System classpath에 복사합니다. (ex: `[solr 디렉터리]/server/lib/ext`)
+- mecab-ko-lucene-analyzer-XX.jar: Solr contrib 디렉터리에 디렉터리를 생성후 복사합니다. (ex: `[solr 디렉터리]/contrib/eunjeon/lib`)
 
 #### mecab-ko-lucene-analyzer 버전별 mecab-ko-dic, Lucene/Solr, elasticsearch 지원 버전
 
 | mecab-ko-lucene-analyzer | mecab-ko-dic                 | Lucene/Solr                 | elasticsearch               |
 | ------------------------ | ---------------------------- | --------------------------- | --------------------------- |
+| **0.18.x**               | mecab-ko-dic-2.0.0 or higher | Lucene/Solr 5.3.x or higher | [mecab-ko analysis for ElasticSearch](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/raw/master/elasticsearch-analysis-mecab-ko/) 참조 |
 | **0.17.x**               | mecab-ko-dic-2.0.0 or higher | Lucene/Solr 4.9.x - 4.10.x  | 1.3.x or higher             |
 | **0.16.x**               | mecab-ko-dic-1.6.0 - 1.6.1   | Lucene/Solr 4.9.x - 4.10.x  | 1.3.x or higher             |
 | **0.15.x**               | mecab-ko-dic-1.6.0 - 1.6.1   | Lucene/Solr 4.3.x - 4.8.x   | 0.90.x - 1.2.x              |
@@ -78,12 +80,12 @@ __주의 사항__
 ### solr 설정
 
 #### solrconfig.xml 설정
-`solrconfig.xml` 에 `mecab-ko-lucene-analyzer-XX.jar`가 있는 경로를 설정합니다.
+`server/solr/configsets/data_driven_schema_configs/conf/solrconfig.xml`에 `mecab-ko-lucene-analyzer-XX.jar`가 있는 경로를 설정합니다.
 
-    <lib dir="../lib" regex=".*\.jar" />
+    <lib dir="${solr.install.dir:../../../..}/contrib/eunjeon/lib" regex=".*\.jar" />
 
-#### schema.xml 설정
-`schema.xml` 에 `fieldType` 을 설정합니다.
+#### managed-schema 설정
+`server/solr/configsets/data_driven_schema_configs/conf/managed-schema` 에 `fieldType` 을 설정합니다.
 
 ##### Tokenizer 옵션 속성
 
@@ -93,10 +95,11 @@ __주의 사항__
 | **compoundNounMinLength**         | 분해를 해야하는 복합명사의 최소 길이. 기본 값은 3                                                                                      |
 | **useAdjectiveAndVerbOriginForm** | 동사와 형용사 원형을 사용하여 검색할지 여부. 디폴트 값은 true                                                                          |
 
-##### schema.xml 설정 예
+##### managed-schema 설정 예
 ###### query에서는 복합명사 분해를 하지 않는 경우
 
     <!-- Korean -->
+    <dynamicField name="*_txt_ko" type="text_ko" indexed="true" stored="true"/>
     <fieldType name="text_ko" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">
         <tokenizer class="org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.StandardTokenizerFactory"/>
@@ -112,16 +115,19 @@ __주의 사항__
          분해를 하는 복합명사의 최소 길이를 뜻하며 기본 값은 3입니다. 이 경우, 길이가 3미만인 복합명사는 분해하지 않습니다.
     -->
     <!-- Korean -->
+    <dynamicField name="*_txt_ko" type="text_ko" indexed="true" stored="true"/>
     <fieldType name="text_ko" class="solr.TextField" positionIncrementGap="100">
-      <analyzer>
+      <analyzer> 
         <tokenizer class="org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.StandardTokenizerFactory" compoundNounMinLength="3"/>
       </analyzer>
     </fieldType>
+
 
 mecab-ko-dic을 디폴트 경로\(`/usr/local/lib/mecab/dic/mecab-ko-dic`\)에 설치하지 않은 경우에는 `mecabArgs` 속성을 사용하여 사전 경로를 지정해야 합니다.
 mecab 다른 옵션은 다음의 URL을 참조하십시오. http://taku910.github.io/mecab/mecab.html
 
     <!-- Korean -->
+    <dynamicField name="*_txt_ko" type="text_ko" indexed="true" stored="true"/>
     <fieldType name="text_ko" class="solr.TextField" positionIncrementGap="100">
       <analyzer>
         <tokenizer class="org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.StandardTokenizerFactory" compoundNounMinLength="3" mecabArgs="-d /my/mecab-ko-dic/directory"/>
@@ -131,7 +137,7 @@ mecab 다른 옵션은 다음의 URL을 참조하십시오. http://taku910.githu
 ### solr 실행
 `libMeCab.so` 파일이 있는 라이브러리 경로를 지정해 주면서 solr를 실행합니다.
 
-    $ java -Djava.library.path="/usr/local/lib" -jar start.jar
+    $ ./bin/solr start -e cloud -noprompt -Djava.library.path=/usr/local/lib
 
 ### 분석 결과
 ![Alt 박보영이 서울에 갔다.](solr_demo.png)

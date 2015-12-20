@@ -1,5 +1,10 @@
 # mecab-ko-lucene-analyzer ChangeLog
 
+## 0.18.0
+
+- 새로운 기능
+    - Lucene/Solr 5.3.1, Elasticsearch 2.1에 맞추어 코드 및 문서 수정
+
 ## 0.17.0
 
 - 새로운 기능

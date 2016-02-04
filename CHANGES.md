@@ -1,5 +1,10 @@
 # mecab-ko-lucene-analyzer ChangeLog
 
+## 0.19.0
+
+- 새로운 기능
+    - Elasticsearch 2.2.0 지원
+    
 ## 0.18.2
 
 - 새로운 기능

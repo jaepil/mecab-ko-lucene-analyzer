@@ -121,7 +121,7 @@ public class MeCabKoStandardTokenizerTest {
         + "꽃:NNG:NNG:null:1:1:4:5,꽃망울:COMPOUND:null:null:0:2:4:7,"
         + "망울:NNG:NNG:null:1:1:5:7,오토바이:NNG:NNG:null:1:1:8:12,",
         tokenizerToString(tokenizer));
-   
+
     tokenizer.reset();
     tokenizer.setReader(new StringReader("소설 무궁화꽃이 피었습니다."));
     assertEquals(

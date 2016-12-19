@@ -25,19 +25,17 @@ import java.util.WeakHashMap;
 public final class MeCabLoader {
   private static Map<String, Model> models = new WeakHashMap<>();
   static {
-    AccessController.doPrivileged((PrivilegedAction<Void>)
-            () -> {
-              try {
-                System.loadLibrary("MeCab");
-              } catch (UnsatisfiedLinkError e) {
-                System.err.println(
-                        "Cannot load the native code.\n"
-                                + "Make sure your LD_LIBRARY_PATH contains MeCab.so path.\n" + e);
-                System.exit(1);
-              }
-              return null; // nothing to return
-            }
-    );
+    AccessController.doPrivileged((PrivilegedAction<Void>) () -> {
+      try {
+        System.loadLibrary("MeCab");
+      } catch (UnsatisfiedLinkError e) {
+        System.err.println(
+                "Cannot load the native code.\n"
+                        + "Make sure your LD_LIBRARY_PATH contains MeCab.so path.\n" + e);
+        System.exit(1);
+      }
+      return null; // nothing to return
+    });
   }
 
   public static synchronized Model getModel(String args) throws RuntimeException {

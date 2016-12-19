@@ -34,7 +34,7 @@ public final class MeCabLoader {
                         + "Make sure your LD_LIBRARY_PATH contains MeCab.so path.\n" + e);
         System.exit(1);
       }
-      return null; // nothing to return
+      return null;
     });
   }
 

@@ -24,7 +24,7 @@
 
         박보영이(NNP+JKS), 박보영(NNP), 서울에(NNP+JKB), 서울(NNP), 갔다(VV+EP+EF), 가/VV(VV)
 
-- Apache Lucene/Solr 5.3.1 버전 기준으로 작성되었습니다. (Apache Lucene/Solr 5.4.0에서 사용 가능)
+- Apache Lucene/Solr 6.3.0 버전 기준으로 작성되었습니다. (Apache Lucene/Solr 6.3.0에서 사용 가능)
 
 ## 설치
 
@@ -64,7 +64,8 @@ __주의 사항__
 
 | mecab-ko-lucene-analyzer | mecab-ko-dic                 | Lucene/Solr                 | elasticsearch               |
 | ------------------------ | ---------------------------- | --------------------------- | --------------------------- |
-| **0.18.x or higher**     | mecab-ko-dic-2.0.0 or higher | Lucene/Solr 5.3.x or higher | [mecab-ko analysis for ElasticSearch](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/raw/master/elasticsearch-analysis-mecab-ko/) 참조 |
+| **0.21.0 or higher**     | mecab-ko-dic-2.0.0 or higher | Lucene/Solr 6.3.0 or higher | [mecab-ko analysis for ElasticSearch](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/raw/master/elasticsearch-analysis-mecab-ko/) 참조 |
+| **0.18.x - 0.20.x**      | mecab-ko-dic-2.0.0 or higher | Lucene/Solr 5.3.x           | [mecab-ko analysis for ElasticSearch](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/raw/master/elasticsearch-analysis-mecab-ko/) 참조 |
 | **0.17.x**               | mecab-ko-dic-2.0.0 or higher | Lucene/Solr 4.9.x - 4.10.x  | 1.3.x or higher             |
 | **0.16.x**               | mecab-ko-dic-1.6.0 - 1.6.1   | Lucene/Solr 4.9.x - 4.10.x  | 1.3.x or higher             |
 | **0.15.x**               | mecab-ko-dic-1.6.0 - 1.6.1   | Lucene/Solr 4.3.x - 4.8.x   | 0.90.x - 1.2.x              |

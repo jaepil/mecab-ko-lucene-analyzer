@@ -16,29 +16,23 @@
 package org.bitbucket.eunjeon.elasticsearch.plugin.analysis;
 
 import org.bitbucket.eunjeon.elasticsearch.index.analysis.*;
-import org.elasticsearch.index.analysis.AnalysisModule;
+import org.elasticsearch.index.analysis.TokenizerFactory;
+import org.elasticsearch.indices.analysis.AnalysisModule;
+import org.elasticsearch.plugins.AnalysisPlugin;
 import org.elasticsearch.plugins.Plugin;
 
+import java.util.HashMap;
+import java.util.Map;
 
-public class AnalysisMeCabKoStandardPlugin extends Plugin {
+public class AnalysisMeCabKoStandardPlugin extends Plugin implements AnalysisPlugin {
   @Override
-  public String name() {
-    return "analysis-mecab-ko-standard";
-  }
+  public Map<String, AnalysisModule.AnalysisProvider<TokenizerFactory>> getTokenizers() {
+    Map<String, AnalysisModule.AnalysisProvider<TokenizerFactory>> tokenizers = new HashMap<>();
 
-  @Override
-  public String description() {
-    return "mecab-ko-lucene-analyzer analysis support";
-  }
+    tokenizers.put("mecab_ko_standard_tokenizer", MeCabKoStandardTokenizerFactory::new);
+    tokenizers.put("mecab_ko_similarity_measure_tokenizer", MeCabKoSimilarityMeasureTokenizerFactory::new);
+    tokenizers.put("mecab_ko_keyword_search_tokenizer", MeCabKoKeywordSearchTokenizerFactory::new);
 
-  public void onModule(AnalysisModule module) {
-    module.addTokenizer(
-        "mecab_ko_standard_tokenizer", MeCabKoStandardTokenizerFactory.class);
-    module.addTokenizer(
-        "mecab_ko_similarity_measure_tokenizer",
-        MeCabKoSimilarityMeasureTokenizerFactory.class);
-    module.addTokenizer(
-        "mecab_ko_keyword_search_tokenizer",
-        MeCabKoKeywordSearchTokenizerFactory.class);
+    return tokenizers;
   }
 }

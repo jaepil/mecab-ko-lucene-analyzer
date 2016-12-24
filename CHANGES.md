@@ -1,5 +1,13 @@
 # mecab-ko-lucene-analyzer ChangeLog
 
+## 0.21.0
+
+- 새로운 기능
+    - Lucene/Solr 6.3.0 지원
+    - Elasticsearch 5.1.1 지원 - issue #6
+- 수정
+    - 로딩 실패시 UnsatisfiedLinkError throw 하도록 수정 - issue #5
+
 ## 0.20.2
 
 - 새로운 기능

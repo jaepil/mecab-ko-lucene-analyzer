@@ -16,11 +16,9 @@
 package org.bitbucket.eunjeon.elasticsearch.index.analysis;
 
 import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.*;
-import org.elasticsearch.common.inject.Inject;
-import org.elasticsearch.common.inject.assistedinject.Assisted;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.index.Index;
-import org.elasticsearch.index.settings.IndexSettingsService;
+import org.elasticsearch.env.Environment;
+import org.elasticsearch.index.IndexSettings;
 
 /**
  * 문서 유사도 측적용 tokenizer 팩토리 생성자. 다음과 같은 파라미터를 받는다. (실험적인)
@@ -30,15 +28,12 @@ import org.elasticsearch.index.settings.IndexSettingsService;
  *
  * @author bibreen <bibreen@gmail.com>
  */
-public class MeCabKoSimilarityMeasureTokenizerFactory
-    extends MeCabKoTokenizerFactoryBase {
-  @Inject
-  public MeCabKoSimilarityMeasureTokenizerFactory(
-      Index index,
-      IndexSettingsService indexSettingsService,
-      @Assisted String name,
-      @Assisted Settings settings) {
-    super(index, indexSettingsService, name, settings);
+public class MeCabKoSimilarityMeasureTokenizerFactory extends MeCabKoTokenizerFactoryBase {
+  public MeCabKoSimilarityMeasureTokenizerFactory(IndexSettings indexSettings,
+                                                  Environment environment,
+                                                  String name,
+                                                  Settings settings) {
+    super(indexSettings, environment, name, settings);
   }
 
   protected void setDefaultOption() {

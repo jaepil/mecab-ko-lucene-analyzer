@@ -15,36 +15,31 @@
  ******************************************************************************/
 package org.bitbucket.eunjeon.elasticsearch.index.analysis;
 
+import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Tokenizer;
 import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.*;
 import org.bitbucket.eunjeon.mecab_ko_mecab_loader.MeCabLoader;
-import org.elasticsearch.common.inject.Inject;
-import org.elasticsearch.common.inject.assistedinject.Assisted;
-import org.elasticsearch.common.logging.ESLogger;
-import org.elasticsearch.common.logging.Loggers;
+import org.elasticsearch.common.logging.ESLoggerFactory;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.index.Index;
+import org.elasticsearch.env.Environment;
+import org.elasticsearch.index.IndexSettings;
 import org.elasticsearch.index.analysis.AbstractTokenizerFactory;
-import org.elasticsearch.index.settings.IndexSettingsService;
 
 /**
  * MeCabKo Tokenizer Factory 추상 클래스
  * @author bibreen <bibreen@gmail.com>
  */
-public abstract class MeCabKoTokenizerFactoryBase
-    extends AbstractTokenizerFactory {
+public abstract class MeCabKoTokenizerFactoryBase extends AbstractTokenizerFactory {
   protected PosAppender posAppender;
   protected TokenizerOption option;
 
-  private ESLogger logger = Loggers.getLogger(MeCabKoTokenizerFactoryBase.class, "mecab-ko");
+  private Logger logger = ESLoggerFactory.getLogger("mecab-ko", MeCabKoTokenizerFactoryBase.class);
 
-  @Inject
-  public MeCabKoTokenizerFactoryBase(
-      Index index,
-      IndexSettingsService indexSettingsService,
-      @Assisted String name,
-      @Assisted Settings settings) {
-    super(index, indexSettingsService.getSettings(), name, settings);
+  public MeCabKoTokenizerFactoryBase(IndexSettings indexSettings,
+                                     Environment environment,
+                                     String name,
+                                     Settings settings) {
+    super(indexSettings, name, settings);
     option = new TokenizerOption();
     setDefaultOption();
     setMeCabArgs(settings);
@@ -52,7 +47,7 @@ public abstract class MeCabKoTokenizerFactoryBase
     setUseAdjectiveAndVerbOriginalForm(settings);
     setPosAppender();
   }
-  
+
   protected void setDefaultOption() {
     return;
   }

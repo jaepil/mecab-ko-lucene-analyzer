@@ -4,3 +4,5 @@
 .classpath
 .settings
 .idea
+*.zip
+*.tar.gz

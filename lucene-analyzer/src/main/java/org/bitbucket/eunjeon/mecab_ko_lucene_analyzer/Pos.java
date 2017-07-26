@@ -105,7 +105,7 @@ public class Pos {
       this.positionIncr = 1;
       this.positionLength = 1;
     } catch (IndexOutOfBoundsException e) {
-      throw new RuntimeException("Use mecab-ko-dic 2.0.0 or higher.");
+      throw new RuntimeException(String.format("Invalid data format with token: %s. Fix this token or use mecab-ko-dic 2.0.0 or higher.", expression));
     }
   }
   

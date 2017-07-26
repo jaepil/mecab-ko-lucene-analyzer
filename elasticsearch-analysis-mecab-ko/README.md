@@ -2,7 +2,7 @@
 mecab-ko Analysis Plugin은 [mecab-ko-lucene-analyzer](https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer)를 elasticsearch에서 사용하는 플러그인 입니다.
 
 - 이 플러그인은 `mecab_ko_standard_tokenizer`를 포함하고 있습니다.
-- elasticsearch 2.1.1 버전 기준으로 작성되었습니다.
+- elasticsearch 5.1.1 버전 기준으로 작성되었습니다.
 
 ## 설명
 
@@ -44,10 +44,11 @@ ElasticSearch 2.1.0 플러그인부터 plugin 버전을 ElasticSearch 버전에 
 관련 링크 - https://www.elastic.co/guide/en/elasticsearch/plugins/current/plugin-authors.html#_mandatory_elements_for_java_plugins - Plugin release lifecycle
 
 ### ElasticSearch 실행
-    $ export LD_LIBRARY_PATH=/usr/local/lib; ./bin/elasticsearch -Des.security.manager.enabled=false
+    $ export LD_LIBRARY_PATH=/usr/local/lib; ./bin/elasticsearch
 
 #### 주의
 ElasticSearch 2.0.0부터 java security manager가 동작하는데, java security manager가 플러그인이 `System.loadLibrary()`를 허용하지 않습니다. 때문에, `-Des.security.manager.enabled=false` 옵션을 줘서 실행해야 합니다.
+ElasticSearch 5.0.0 이상에서는 해당 옵션이 필요하지 않습니다.
 
 관련 링크 - https://www.elastic.co/guide/en/elasticsearch/reference/current/breaking_20_plugin_and_packaging_changes.html#_symbolic_links_and_paths
 

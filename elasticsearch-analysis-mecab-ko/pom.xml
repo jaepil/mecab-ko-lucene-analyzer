@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.bitbucket.eunjeon</groupId>
     <artifactId>mecab-ko</artifactId>
-    <version>0.20.1-SNAPSHOT</version>
+    <version>0.21.0-SNAPSHOT</version>
   </parent>
   <artifactId>elasticsearch-analysis-mecab-ko</artifactId>
   <packaging>jar</packaging>
@@ -15,12 +15,12 @@
     <dependency>
      <groupId>org.bitbucket.eunjeon</groupId>
      <artifactId>mecab-ko-mecab-loader</artifactId>
-     <version>0.20.1-SNAPSHOT</version>
+     <version>0.21.0-SNAPSHOT</version>
     </dependency>
     <dependency>
      <groupId>org.bitbucket.eunjeon</groupId>
      <artifactId>mecab-ko-lucene-analyzer</artifactId>
-     <version>0.20.1-SNAPSHOT</version>
+     <version>0.21.0-SNAPSHOT</version>
     </dependency>
   </dependencies>
 

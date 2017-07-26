@@ -34,8 +34,8 @@ public final class MeCabLoader {
 //                        + "Make sure your LD_LIBRARY_PATH contains MeCab.so path.\n" + e);
 //        System.exit(1);
         throw new UnsatisfiedLinkError(
-                "Cannot load the native code.\n"
-                        + "Make sure your LD_LIBRARY_PATH contains MeCab.so path.\n" + e);
+            "Cannot load the native code.\n"
+                + "Make sure your LD_LIBRARY_PATH contains MeCab.so path.\n" + e);
       }
       return null;
     });

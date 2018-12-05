@@ -16,10 +16,10 @@
 package org.bitbucket.eunjeon.elasticsearch.index.analysis;
 
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.lucene.analysis.Tokenizer;
 import org.bitbucket.eunjeon.mecab_ko_lucene_analyzer.*;
 import org.bitbucket.eunjeon.mecab_ko_mecab_loader.MeCabLoader;
-import org.elasticsearch.common.logging.ESLoggerFactory;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
 import org.elasticsearch.index.IndexSettings;
@@ -33,7 +33,7 @@ public abstract class MeCabKoTokenizerFactoryBase extends AbstractTokenizerFacto
   protected PosAppender posAppender;
   protected TokenizerOption option;
 
-  private Logger logger = ESLoggerFactory.getLogger("mecab-ko", MeCabKoTokenizerFactoryBase.class);
+  private Logger logger = LogManager.getLogger(MeCabKoTokenizerFactoryBase.class);
 
   public MeCabKoTokenizerFactoryBase(IndexSettings indexSettings,
                                      Environment environment,

@@ -39,7 +39,7 @@ public abstract class MeCabKoTokenizerFactoryBase extends AbstractTokenizerFacto
                                      Environment environment,
                                      String name,
                                      Settings settings) {
-    super(indexSettings, name, settings);
+    super(indexSettings, settings, name);
     option = new TokenizerOption();
     setDefaultOption();
     setMeCabArgs(settings);

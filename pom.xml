@@ -47,14 +47,14 @@
       <version>1.10.19</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.solr</groupId>
-      <artifactId>solr-core</artifactId>
-      <version>8.3.0</version>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-core</artifactId>
+      <version>8.4.1</version>
     </dependency>
     <dependency>
       <groupId>org.elasticsearch</groupId>
       <artifactId>elasticsearch</artifactId>
-      <version>7.5.2</version>
+      <version>7.6.1</version>
     </dependency>
     <dependency>
       <groupId>org.chasen.mecab</groupId>
